@@ -9,38 +9,160 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as SavedRouteImport } from './routes/saved'
+import { Route as EditionsRouteImport } from './routes/editions'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SectionCategoryRouteImport } from './routes/section.$category'
+import { Route as EditionsDateRouteImport } from './routes/editions.$date'
+import { Route as ArticleSlugRouteImport } from './routes/article.$slug'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SavedRoute = SavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditionsRoute = EditionsRouteImport.update({
+  id: '/editions',
+  path: '/editions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SectionCategoryRoute = SectionCategoryRouteImport.update({
+  id: '/section/$category',
+  path: '/section/$category',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditionsDateRoute = EditionsDateRouteImport.update({
+  id: '/$date',
+  path: '/$date',
+  getParentRoute: () => EditionsRoute,
+} as any)
+const ArticleSlugRoute = ArticleSlugRouteImport.update({
+  id: '/article/$slug',
+  path: '/article/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/editions': typeof EditionsRouteWithChildren
+  '/saved': typeof SavedRoute
+  '/search': typeof SearchRoute
+  '/settings': typeof SettingsRoute
+  '/article/$slug': typeof ArticleSlugRoute
+  '/editions/$date': typeof EditionsDateRoute
+  '/section/$category': typeof SectionCategoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/editions': typeof EditionsRouteWithChildren
+  '/saved': typeof SavedRoute
+  '/search': typeof SearchRoute
+  '/settings': typeof SettingsRoute
+  '/article/$slug': typeof ArticleSlugRoute
+  '/editions/$date': typeof EditionsDateRoute
+  '/section/$category': typeof SectionCategoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/editions': typeof EditionsRouteWithChildren
+  '/saved': typeof SavedRoute
+  '/search': typeof SearchRoute
+  '/settings': typeof SettingsRoute
+  '/article/$slug': typeof ArticleSlugRoute
+  '/editions/$date': typeof EditionsDateRoute
+  '/section/$category': typeof SectionCategoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/editions'
+    | '/saved'
+    | '/search'
+    | '/settings'
+    | '/article/$slug'
+    | '/editions/$date'
+    | '/section/$category'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/editions'
+    | '/saved'
+    | '/search'
+    | '/settings'
+    | '/article/$slug'
+    | '/editions/$date'
+    | '/section/$category'
+  id:
+    | '__root__'
+    | '/'
+    | '/editions'
+    | '/saved'
+    | '/search'
+    | '/settings'
+    | '/article/$slug'
+    | '/editions/$date'
+    | '/section/$category'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EditionsRoute: typeof EditionsRouteWithChildren
+  SavedRoute: typeof SavedRoute
+  SearchRoute: typeof SearchRoute
+  SettingsRoute: typeof SettingsRoute
+  ArticleSlugRoute: typeof ArticleSlugRoute
+  SectionCategoryRoute: typeof SectionCategoryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/saved': {
+      id: '/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof SavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editions': {
+      id: '/editions'
+      path: '/editions'
+      fullPath: '/editions'
+      preLoaderRoute: typeof EditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +170,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/section/$category': {
+      id: '/section/$category'
+      path: '/section/$category'
+      fullPath: '/section/$category'
+      preLoaderRoute: typeof SectionCategoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editions/$date': {
+      id: '/editions/$date'
+      path: '/$date'
+      fullPath: '/editions/$date'
+      preLoaderRoute: typeof EditionsDateRouteImport
+      parentRoute: typeof EditionsRoute
+    }
+    '/article/$slug': {
+      id: '/article/$slug'
+      path: '/article/$slug'
+      fullPath: '/article/$slug'
+      preLoaderRoute: typeof ArticleSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface EditionsRouteChildren {
+  EditionsDateRoute: typeof EditionsDateRoute
+}
+
+const EditionsRouteChildren: EditionsRouteChildren = {
+  EditionsDateRoute: EditionsDateRoute,
+}
+
+const EditionsRouteWithChildren = EditionsRoute._addFileChildren(
+  EditionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EditionsRoute: EditionsRouteWithChildren,
+  SavedRoute: SavedRoute,
+  SearchRoute: SearchRoute,
+  SettingsRoute: SettingsRoute,
+  ArticleSlugRoute: ArticleSlugRoute,
+  SectionCategoryRoute: SectionCategoryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
