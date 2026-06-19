@@ -5,9 +5,9 @@ import { SidebarStory, hoursAgo } from "@/components/newspaper/SidebarStory";
 import { getLatestEdition } from "@/lib/api";
 import { CategorySchema, type Category, type Article } from "@/lib/types";
 
-const editionQuery = queryOptions({ queryKey: ["edition", "latest"], queryFn: () => getLatestEdition() });
+export const editionQuery = queryOptions({ queryKey: ["edition", "latest"], queryFn: () => getLatestEdition() });
 
-const CATEGORY_COPY: Record<Category, { eyebrow: string; title: string; dek: string }> = {
+export const CATEGORY_COPY: Record<Category, { eyebrow: string; title: string; dek: string }> = {
   world: {
     eyebrow: "The World Desk",
     title: "World",
@@ -52,6 +52,10 @@ export const Route = createFileRoute("/section/$category")({
 
 function SectionPage() {
   const { category } = Route.useParams();
+  return <SectionPageContent category={category} />;
+}
+
+export function SectionPageContent({ category }: { category: string }) {
   const { data: edition } = useSuspenseQuery(editionQuery);
   const cat = CategorySchema.safeParse(category);
   if (!cat.success) {
