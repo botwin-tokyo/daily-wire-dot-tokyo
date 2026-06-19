@@ -1,0 +1,54 @@
+import { Cloud, CloudRain, Sun, CloudSun } from "lucide-react";
+import type { Edition } from "@/lib/types";
+
+const iconMap = {
+  sun: Sun,
+  cloud: Cloud,
+  rain: CloudRain,
+  snow: Cloud,
+  partly: CloudSun,
+} as const;
+
+export function WeatherStrip({ edition }: { edition: Edition }) {
+  return (
+    <section className="border-y border-[var(--ink)] bg-[var(--paper)]">
+      <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-0 px-6 py-4 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="flex flex-wrap items-center gap-6">
+          <div>
+            <p className="eyebrow eyebrow-red">Weather Overview</p>
+            <p className="meta">Source: AccuWeather</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
+            {edition.weather.map((w) => {
+              const Icon = iconMap[w.icon];
+              return (
+                <div key={w.city} className="flex items-center gap-2.5">
+                  <Icon className="h-5 w-5 text-[var(--ink-mid)]" strokeWidth={1.4} />
+                  <div className="font-sans text-[12px] leading-tight">
+                    <div className="text-[var(--ink-mid)]">{w.city}</div>
+                    <div className="text-[var(--ink)] font-semibold">{w.tempC}°C</div>
+                    <div className="text-[var(--ink-faint)]">{w.condition}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-6 border-t border-[var(--rule)] pt-4 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
+          {edition.commodities.map((c) => (
+            <div key={c.symbol}>
+              <div className="eyebrow">{c.symbol.split(" ")[0] === "Brent" ? "Energy" : c.symbol.split(" ")[0]}</div>
+              <div className="font-serif text-[15px]">{c.symbol}</div>
+              <div className="font-mono text-[13px]">
+                <span className="text-[var(--ink)]">{c.value}</span>
+                <span className="ml-2" style={{ color: c.changePct >= 0 ? "var(--positive)" : "var(--negative)" }}>
+                  {c.changePct >= 0 ? "+" : ""}{c.changePct}% {c.changePct >= 0 ? "▲" : "▼"}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
