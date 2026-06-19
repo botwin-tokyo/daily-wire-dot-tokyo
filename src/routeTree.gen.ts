@@ -9,15 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorldRouteImport } from './routes/world'
+import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as ScienceRouteImport } from './routes/science'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as EditionsRouteImport } from './routes/editions'
+import { Route as CultureRouteImport } from './routes/culture'
+import { Route as BusinessRouteImport } from './routes/business'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectionCategoryRouteImport } from './routes/section.$category'
 import { Route as EditionsDateRouteImport } from './routes/editions.$date'
 import { Route as ArticleSlugRouteImport } from './routes/article.$slug'
 
+const WorldRoute = WorldRouteImport.update({
+  id: '/world',
+  path: '/world',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TechnologyRoute = TechnologyRouteImport.update({
+  id: '/technology',
+  path: '/technology',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -28,6 +43,11 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScienceRoute = ScienceRouteImport.update({
+  id: '/science',
+  path: '/science',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SavedRoute = SavedRouteImport.update({
   id: '/saved',
   path: '/saved',
@@ -36,6 +56,16 @@ const SavedRoute = SavedRouteImport.update({
 const EditionsRoute = EditionsRouteImport.update({
   id: '/editions',
   path: '/editions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CultureRoute = CultureRouteImport.update({
+  id: '/culture',
+  path: '/culture',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessRoute = BusinessRouteImport.update({
+  id: '/business',
+  path: '/business',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -61,20 +91,30 @@ const ArticleSlugRoute = ArticleSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/business': typeof BusinessRoute
+  '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
   '/saved': typeof SavedRoute
+  '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
+  '/technology': typeof TechnologyRoute
+  '/world': typeof WorldRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/business': typeof BusinessRoute
+  '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
   '/saved': typeof SavedRoute
+  '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
+  '/technology': typeof TechnologyRoute
+  '/world': typeof WorldRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
@@ -82,10 +122,15 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/business': typeof BusinessRoute
+  '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
   '/saved': typeof SavedRoute
+  '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
+  '/technology': typeof TechnologyRoute
+  '/world': typeof WorldRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
@@ -94,30 +139,45 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/business'
+    | '/culture'
     | '/editions'
     | '/saved'
+    | '/science'
     | '/search'
     | '/settings'
+    | '/technology'
+    | '/world'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/business'
+    | '/culture'
     | '/editions'
     | '/saved'
+    | '/science'
     | '/search'
     | '/settings'
+    | '/technology'
+    | '/world'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
   id:
     | '__root__'
     | '/'
+    | '/business'
+    | '/culture'
     | '/editions'
     | '/saved'
+    | '/science'
     | '/search'
     | '/settings'
+    | '/technology'
+    | '/world'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
@@ -125,16 +185,35 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BusinessRoute: typeof BusinessRoute
+  CultureRoute: typeof CultureRoute
   EditionsRoute: typeof EditionsRouteWithChildren
   SavedRoute: typeof SavedRoute
+  ScienceRoute: typeof ScienceRoute
   SearchRoute: typeof SearchRoute
   SettingsRoute: typeof SettingsRoute
+  TechnologyRoute: typeof TechnologyRoute
+  WorldRoute: typeof WorldRoute
   ArticleSlugRoute: typeof ArticleSlugRoute
   SectionCategoryRoute: typeof SectionCategoryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/world': {
+      id: '/world'
+      path: '/world'
+      fullPath: '/world'
+      preLoaderRoute: typeof WorldRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/technology': {
+      id: '/technology'
+      path: '/technology'
+      fullPath: '/technology'
+      preLoaderRoute: typeof TechnologyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -149,6 +228,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/science': {
+      id: '/science'
+      path: '/science'
+      fullPath: '/science'
+      preLoaderRoute: typeof ScienceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/saved': {
       id: '/saved'
       path: '/saved'
@@ -161,6 +247,20 @@ declare module '@tanstack/react-router' {
       path: '/editions'
       fullPath: '/editions'
       preLoaderRoute: typeof EditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/culture': {
+      id: '/culture'
+      path: '/culture'
+      fullPath: '/culture'
+      preLoaderRoute: typeof CultureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business': {
+      id: '/business'
+      path: '/business'
+      fullPath: '/business'
+      preLoaderRoute: typeof BusinessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -208,10 +308,15 @@ const EditionsRouteWithChildren = EditionsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BusinessRoute: BusinessRoute,
+  CultureRoute: CultureRoute,
   EditionsRoute: EditionsRouteWithChildren,
   SavedRoute: SavedRoute,
+  ScienceRoute: ScienceRoute,
   SearchRoute: SearchRoute,
   SettingsRoute: SettingsRoute,
+  TechnologyRoute: TechnologyRoute,
+  WorldRoute: WorldRoute,
   ArticleSlugRoute: ArticleSlugRoute,
   SectionCategoryRoute: SectionCategoryRoute,
 }
