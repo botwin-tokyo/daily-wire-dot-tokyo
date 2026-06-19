@@ -4,11 +4,11 @@ import { useState } from "react";
 
 const SECTIONS = [
   { label: "Top Stories", to: "/" },
-  { label: "World", to: "/section/world" },
-  { label: "Technology", to: "/section/technology" },
-  { label: "Business", to: "/section/business" },
-  { label: "Science", to: "/section/science" },
-  { label: "Culture", to: "/section/culture" },
+  { label: "World", to: "/world" },
+  { label: "Technology", to: "/technology" },
+  { label: "Business", to: "/business" },
+  { label: "Science", to: "/science" },
+  { label: "Culture", to: "/culture" },
 ] as const;
 
 export function SectionNav() {
