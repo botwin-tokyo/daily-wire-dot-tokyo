@@ -8,6 +8,8 @@
 
 import { JSDOM } from "jsdom";
 import { buildResult, printResult } from "./fetch";
+import { plainText, extractArticleFromHtml } from "./extract";
+import { fetchViaLadder, isLadderConfigured } from "./ladder";
 import type { NormalizedArticle } from "./types";
 
 export interface RssFeed {
@@ -19,6 +21,8 @@ export interface RssFeed {
   maxItems?: number;
   /** Optional regex applied to the absolute article URL to filter items. */
   linkPattern?: RegExp;
+  /** Fetch the full article HTML via Ladder and extract body text (default: false). */
+  fetchFullContent?: boolean;
 }
 
 function stripHtml(html: string | null | undefined): string | undefined {
@@ -81,6 +85,33 @@ function extractSummary(item: Element): string | undefined {
   return undefined;
 }
 
+async function fetchFullContent(url: string): Promise<string | undefined> {
+  if (!isLadderConfigured()) return undefined;
+  try {
+    const html = await fetchViaLadder(url);
+    const extracted = extractArticleFromHtml(html, url);
+    return extracted.content;
+  } catch {
+    return undefined;
+  }
+}
+
+function extractRssContent(item: Element): string | undefined {
+  const encoded = getChildText(item, "encoded", "http://purl.org/rss/1.0/modules/content/");
+  if (encoded) {
+    const text = plainText(encoded);
+    if (text) return text;
+  }
+
+  const description = getChildText(item, "description");
+  if (description) {
+    const text = plainText(description);
+    if (text) return text;
+  }
+
+  return undefined;
+}
+
 export async function aggregateFromRssFeeds(
   source: string,
   resultCategory: string,
@@ -117,12 +148,15 @@ export async function aggregateFromRssFeeds(
         const cleanedAuthor = author?.replace(/^\s*By\s+/i, "");
 
         accepted++;
+        const rssContent = extractRssContent(item);
+        const fullContent = feed.fetchFullContent ? await fetchFullContent(link) : undefined;
         articles.push({
           source,
           category: feed.category,
           title,
           url: link,
           summary: extractSummary(item),
+          content: fullContent ?? rssContent,
           imageUrl: extractImageUrl(item),
           publishedAt: parseRssDate(getChildText(item, "pubDate")),
           author: cleanedAuthor,

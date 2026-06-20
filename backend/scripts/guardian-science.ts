@@ -11,6 +11,7 @@ const FEEDS = [
     category: "science",
     url: "https://www.theguardian.com/science/rss",
     linkPattern: /^https?:\/\/www\.theguardian\.com\/science\/\d{4}\/[a-z]{3}\/\d{2}\//,
+    fetchFullContent: true,
   },
 ];
 

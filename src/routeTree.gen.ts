@@ -16,8 +16,10 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as ScienceRouteImport } from './routes/science'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as PretextDemoRouteImport } from './routes/pretext-demo'
+import { Route as PoliticsRouteImport } from './routes/politics'
 import { Route as EditionsRouteImport } from './routes/editions'
 import { Route as CultureRouteImport } from './routes/culture'
+import { Route as CryptoRouteImport } from './routes/crypto'
 import { Route as BusinessRouteImport } from './routes/business'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectionCategoryRouteImport } from './routes/section.$category'
@@ -69,6 +71,11 @@ const PretextDemoRoute = PretextDemoRouteImport.update({
   path: '/pretext-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoliticsRoute = PoliticsRouteImport.update({
+  id: '/politics',
+  path: '/politics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EditionsRoute = EditionsRouteImport.update({
   id: '/editions',
   path: '/editions',
@@ -77,6 +84,11 @@ const EditionsRoute = EditionsRouteImport.update({
 const CultureRoute = CultureRouteImport.update({
   id: '/culture',
   path: '/culture',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CryptoRoute = CryptoRouteImport.update({
+  id: '/crypto',
+  path: '/crypto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessRoute = BusinessRouteImport.update({
@@ -158,8 +170,10 @@ const ApiAdminGenerateRoute = ApiAdminGenerateRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/business': typeof BusinessRoute
+  '/crypto': typeof CryptoRoute
   '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
+  '/politics': typeof PoliticsRoute
   '/pretext-demo': typeof PretextDemoRoute
   '/saved': typeof SavedRoute
   '/science': typeof ScienceRoute
@@ -184,8 +198,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/business': typeof BusinessRoute
+  '/crypto': typeof CryptoRoute
   '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
+  '/politics': typeof PoliticsRoute
   '/pretext-demo': typeof PretextDemoRoute
   '/saved': typeof SavedRoute
   '/science': typeof ScienceRoute
@@ -211,8 +227,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/business': typeof BusinessRoute
+  '/crypto': typeof CryptoRoute
   '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
+  '/politics': typeof PoliticsRoute
   '/pretext-demo': typeof PretextDemoRoute
   '/saved': typeof SavedRoute
   '/science': typeof ScienceRoute
@@ -239,8 +257,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/business'
+    | '/crypto'
     | '/culture'
     | '/editions'
+    | '/politics'
     | '/pretext-demo'
     | '/saved'
     | '/science'
@@ -265,8 +285,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/business'
+    | '/crypto'
     | '/culture'
     | '/editions'
+    | '/politics'
     | '/pretext-demo'
     | '/saved'
     | '/science'
@@ -291,8 +313,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/business'
+    | '/crypto'
     | '/culture'
     | '/editions'
+    | '/politics'
     | '/pretext-demo'
     | '/saved'
     | '/science'
@@ -318,8 +342,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BusinessRoute: typeof BusinessRoute
+  CryptoRoute: typeof CryptoRoute
   CultureRoute: typeof CultureRoute
   EditionsRoute: typeof EditionsRouteWithChildren
+  PoliticsRoute: typeof PoliticsRoute
   PretextDemoRoute: typeof PretextDemoRoute
   SavedRoute: typeof SavedRoute
   ScienceRoute: typeof ScienceRoute
@@ -391,6 +417,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PretextDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/politics': {
+      id: '/politics'
+      path: '/politics'
+      fullPath: '/politics'
+      preLoaderRoute: typeof PoliticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/editions': {
       id: '/editions'
       path: '/editions'
@@ -403,6 +436,13 @@ declare module '@tanstack/react-router' {
       path: '/culture'
       fullPath: '/culture'
       preLoaderRoute: typeof CultureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crypto': {
+      id: '/crypto'
+      path: '/crypto'
+      fullPath: '/crypto'
+      preLoaderRoute: typeof CryptoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/business': {
@@ -540,8 +580,10 @@ const ApiEditionsRouteWithChildren = ApiEditionsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BusinessRoute: BusinessRoute,
+  CryptoRoute: CryptoRoute,
   CultureRoute: CultureRoute,
   EditionsRoute: EditionsRouteWithChildren,
+  PoliticsRoute: PoliticsRoute,
   PretextDemoRoute: PretextDemoRoute,
   SavedRoute: SavedRoute,
   ScienceRoute: ScienceRoute,

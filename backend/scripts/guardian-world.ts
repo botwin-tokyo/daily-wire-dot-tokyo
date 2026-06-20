@@ -12,6 +12,7 @@ const FEEDS = [
     category: "world",
     url: "https://www.theguardian.com/world/rss",
     linkPattern: /^https?:\/\/www\.theguardian\.com\/world\/\d{4}\/[a-z]{3}\/\d{2}\//,
+    fetchFullContent: true,
   },
 ];
 

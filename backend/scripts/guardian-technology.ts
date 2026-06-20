@@ -11,6 +11,7 @@ const FEEDS = [
     category: "technology",
     url: "https://www.theguardian.com/technology/rss",
     linkPattern: /^https?:\/\/www\.theguardian\.com\/technology\/\d{4}\/[a-z]{3}\/\d{2}\//,
+    fetchFullContent: true,
   },
 ];
 

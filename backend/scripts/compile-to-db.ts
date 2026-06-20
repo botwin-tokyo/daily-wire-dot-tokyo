@@ -14,6 +14,7 @@
 
 import { listScriptFiles, runScript } from "./lib/runner";
 import { openDb, initSchema, startRun, finishRun, insertArticles, getRunStats } from "./lib/db";
+import { normalizeCategory } from "./lib/normalize";
 import { pathToFileURL } from "node:url";
 
 async function main(): Promise<void> {
@@ -37,10 +38,11 @@ async function main(): Promise<void> {
     if (result.status === "ok" && result.result) {
       const articles = (result.result.articles ?? []).map((article) => ({
         source: article.source ?? result.source,
-        category: article.category ?? result.category,
+        category: normalizeCategory(article.category, result.category),
         title: article.title ?? "Untitled",
         url: article.url ?? "",
         summary: article.summary,
+        content: article.content,
         publishedAt: article.publishedAt,
         imageUrl: article.imageUrl,
         author: article.author,

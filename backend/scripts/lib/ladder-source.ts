@@ -160,6 +160,7 @@ export async function aggregateFromLadderPages(
             title: extracted.title,
             url: link,
             summary: extracted.summary,
+            content: extracted.content,
             imageUrl: extracted.imageUrl ?? undefined,
             publishedAt: extracted.publishedAt ?? undefined,
             author: extracted.byline ?? undefined,

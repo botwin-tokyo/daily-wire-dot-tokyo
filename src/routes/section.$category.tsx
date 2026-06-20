@@ -36,7 +36,17 @@ export const CATEGORY_COPY: Record<Category, { eyebrow: string; title: string; d
   culture: {
     eyebrow: "Culture & Ideas",
     title: "Culture",
-    dek: "Art, books, film, and the conversations defining the week.",
+    dek: "Art, books, film, gaming, and the conversations defining the week.",
+  },
+  crypto: {
+    eyebrow: "The Crypto Desk",
+    title: "Crypto",
+    dek: "Bitcoin, Ethereum, regulation, and the forces moving digital assets.",
+  },
+  politics: {
+    eyebrow: "The Politics Desk",
+    title: "Politics",
+    dek: "Congress, the White House, elections, and the policies shaping the country.",
   },
 };
 

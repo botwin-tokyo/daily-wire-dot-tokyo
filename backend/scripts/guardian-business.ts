@@ -11,6 +11,7 @@ const FEEDS = [
     category: "business",
     url: "https://www.theguardian.com/business/rss",
     linkPattern: /^https?:\/\/www\.theguardian\.com\/business\/\d{4}\/[a-z]{3}\/\d{2}\//,
+    fetchFullContent: true,
   },
 ];
 

@@ -9,6 +9,7 @@ export interface ExtractedArticle {
   title: string;
   byline: string | null;
   summary: string;
+  content: string;
   imageUrl: string | null;
   publishedAt: string | null;
   siteName: string | null;
@@ -112,7 +113,7 @@ function silenceCssWarnings<T>(fn: () => T): T {
   }
 }
 
-function plainText(html: string): string {
+export function plainText(html: string): string {
   return silenceCssWarnings(() => {
     const dom = new JSDOM(html);
     const document = dom.window.document;
@@ -147,7 +148,8 @@ export function extractArticleFromHtml(
       throw new Error(`Readability could not parse article content for ${url}`);
     }
 
-    const summary = plainText(article.textContent ?? article.content ?? "").slice(0, 1200);
+    const content = plainText(article.textContent ?? article.content ?? "");
+    const summary = content.slice(0, 1200);
 
     let title = selectedTitle || article.title || metaTitle(document) || null;
     // Some sites (AP, Axios) produce a JSON-array-like title from structured data.
@@ -163,6 +165,7 @@ export function extractArticleFromHtml(
       title,
       byline: article.byline || metaAuthor(document) || null,
       summary,
+      content,
       imageUrl: metaImage(document, url), // Readability does not expose a hero image, fall back to OpenGraph/Twitter meta
       publishedAt: metaDate(document),
       siteName: article.siteName || null,

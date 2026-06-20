@@ -10,7 +10,15 @@ import { z } from "zod";
 
 export const CURRENT_SCHEMA_VERSION = "1.0.0" as const;
 
-export const CategorySchema = z.enum(["world", "technology", "business", "science", "culture"]);
+export const CategorySchema = z.enum([
+  "world",
+  "technology",
+  "business",
+  "science",
+  "culture",
+  "crypto",
+  "politics",
+]);
 export type Category = z.infer<typeof CategorySchema>;
 
 const IdSchema = z
@@ -129,7 +137,7 @@ export const BriefingItemSchema = z.object({
   text: plainText(500),
   sourceName: plainText(100),
   articleId: IdSchema.optional(),
-  icon: z.enum(["globe", "chart", "health", "tech", "culture"]).default("globe"),
+  icon: z.enum(["globe", "chart", "health", "tech", "culture", "crypto", "politics"]).default("globe"),
 });
 export type BriefingItem = z.infer<typeof BriefingItemSchema>;
 

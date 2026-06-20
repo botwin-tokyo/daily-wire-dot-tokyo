@@ -1,10 +1,18 @@
 [
   {
-    "id": "ed-2025-05-20-global",
-    "editionDate": "2025-05-20",
+    "id": "ed-2026-06-20-test",
+    "editionDate": "2026-06-20",
     "status": "published",
-    "storyCount": 18,
-    "leadHeadline": "Global cities race to adapt to a changing climate",
-    "categories": ["world", "business", "technology", "science", "culture"]
+    "storyCount": 264,
+    "leadHeadline": "Al Jazeera cameraman Ahmed Wishah killed in Israeli attack in Gaza",
+    "categories": [
+      "world",
+      "technology",
+      "business",
+      "science",
+      "culture",
+      "crypto",
+      "politics"
+    ]
   }
 ]

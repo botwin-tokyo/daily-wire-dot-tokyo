@@ -16,6 +16,7 @@ export interface ArticleInput {
   title: string;
   url: string;
   summary?: string;
+  content?: string;
   publishedAt?: string;
   imageUrl?: string;
   author?: string;
@@ -62,6 +63,7 @@ export function initSchema(db: DatabaseSync): void {
       title TEXT NOT NULL,
       url TEXT NOT NULL,
       summary TEXT,
+      content TEXT,
       publishedAt TEXT,
       imageUrl TEXT,
       author TEXT,
@@ -77,6 +79,13 @@ export function initSchema(db: DatabaseSync): void {
     CREATE INDEX IF NOT EXISTS idx_articles_category ON articles(category);
     CREATE INDEX IF NOT EXISTS idx_articles_publishedAt ON articles(publishedAt);
   `);
+
+  // Migrate existing databases that were created before the content column.
+  try {
+    db.exec("ALTER TABLE articles ADD COLUMN content TEXT;");
+  } catch {
+    // Column already exists; ignore.
+  }
 }
 
 export function startRun(db: DatabaseSync): number {
@@ -102,8 +111,8 @@ export function insertArticles(
 ): { inserted: number; duplicates: number } {
   const stmt = db.prepare(`
     INSERT OR IGNORE INTO articles
-      (runId, source, category, title, url, summary, publishedAt, imageUrl, author, language, fetchedAt)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (runId, source, category, title, url, summary, content, publishedAt, imageUrl, author, language, fetchedAt)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   let attempted = 0;
@@ -119,6 +128,7 @@ export function insertArticles(
       article.title,
       article.url,
       article.summary ?? null,
+      article.content ?? null,
       article.publishedAt ?? null,
       article.imageUrl ?? null,
       article.author ?? null,

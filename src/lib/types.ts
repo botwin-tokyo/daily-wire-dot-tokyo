@@ -1,7 +1,15 @@
 import { z } from "zod";
 import { SectionSchema } from "./schema";
 
-export const CategorySchema = z.enum(["world", "technology", "business", "science", "culture"]);
+export const CategorySchema = z.enum([
+  "world",
+  "technology",
+  "business",
+  "science",
+  "culture",
+  "crypto",
+  "politics",
+]);
 export type Category = z.infer<typeof CategorySchema>;
 
 export const ArticleSchema = z.object({
@@ -43,7 +51,7 @@ export const BriefingItemSchema = z.object({
   text: z.string(),
   sourceName: z.string(),
   articleId: z.string().optional(),
-  icon: z.enum(["globe", "chart", "health", "tech", "culture"]).default("globe"),
+  icon: z.enum(["globe", "chart", "health", "tech", "culture", "crypto", "politics"]).default("globe"),
 });
 export type BriefingItem = z.infer<typeof BriefingItemSchema>;
 

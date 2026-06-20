@@ -22,6 +22,8 @@ export interface NormalizedArticle {
   author?: string;
   /** Category the script was fetching (e.g. "technology", "business"). */
   category?: string;
+  /** Full article text, when available (for AI rewrite pipeline). */
+  content?: string;
   /** Language code, if available. */
   language?: string;
 }

@@ -12,6 +12,7 @@ const FEEDS = [
     category: "world",
     url: "https://www.france24.com/en/rss",
     linkPattern: /^https?:\/\/www\.france24\.com\/en\/[a-z-]+\/\d{8}-/,
+    fetchFullContent: true,
   },
 ];
 
