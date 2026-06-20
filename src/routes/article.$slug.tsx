@@ -3,6 +3,7 @@ import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-
 import { Bookmark, Check, Link2, ExternalLink, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { PageShell } from "@/components/newspaper/PageShell";
+import { ArticleBody } from "@/components/newspaper/ArticleBody";
 import { FitText } from "@/components/pretext";
 import { getArticle, toggleSaved, isSaved, markRead } from "@/lib/api";
 import { hoursAgo } from "@/components/newspaper/SidebarStory";
@@ -130,11 +131,7 @@ function ArticlePage() {
               fontWeight={700}
             />
           </h2>
-          <div className="mt-4 space-y-5 font-serif text-[17px] leading-relaxed">
-            {(article.content ?? article.summary ?? "").split(/\n\s*\n/).map((paragraph, i) =>
-              paragraph.trim() ? <p key={i}>{paragraph.trim()}</p> : null
-            )}
-          </div>
+          <ArticleBody content={article.content ?? article.summary} className="mt-4" />
         </section>
 
         {article.keyPoints.length > 0 && (

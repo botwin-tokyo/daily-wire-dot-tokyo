@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "ensure:ladder": "tsx scripts/ensure-ladder.ts",
     "ingest:articles": "tsx backend/scripts/compile-to-db.ts",
     "generate:edition": "tsx scripts/generate-edition-from-db.ts",
     "ladder:up": "docker compose -f docker-compose.ladder.yml up -d",

@@ -28,15 +28,54 @@ interface HackerNewsResponse {
 const SOURCE = "hackernews";
 const CATEGORY = "front-page";
 
-async function fetchFullContent(url: string): Promise<string | undefined> {
-  if (!isLadderConfigured() || !url) return undefined;
+async function fetchDirectContent(url: string): Promise<string | undefined> {
   try {
-    const html = await fetchViaLadder(url);
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; TheMorningWireBot/1.0)",
+        Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      },
+      redirect: "follow",
+    });
+    if (!response.ok) return undefined;
+    const html = await response.text();
     const extracted = extractArticleFromHtml(html, url);
-    return extracted.content;
+    return extracted.content.length > 200 ? extracted.content : undefined;
   } catch {
     return undefined;
   }
+}
+
+async function fetchJinaContent(url: string): Promise<string | undefined> {
+  try {
+    const response = await fetch(`https://r.jina.ai/http://${encodeURIComponent(url)}`, {
+      headers: { Accept: "text/plain,*/*" },
+    });
+    if (!response.ok) return undefined;
+    const text = await response.text();
+    return text.length > 200 ? text : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+async function fetchFullContent(url: string): Promise<string | undefined> {
+  if (!url) return undefined;
+
+  if (isLadderConfigured()) {
+    try {
+      const html = await fetchViaLadder(url);
+      const extracted = extractArticleFromHtml(html, url);
+      if (extracted.content.length > 200) return extracted.content;
+    } catch {
+      // fall through
+    }
+  }
+
+  const direct = await fetchDirectContent(url);
+  if (direct) return direct;
+
+  return fetchJinaContent(url);
 }
 
 export async function aggregate(): Promise<void> {

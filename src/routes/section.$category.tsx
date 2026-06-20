@@ -373,7 +373,7 @@ function SectionLead({ article }: { article: Article }) {
         <span className="italic">Source: {article.source.name}</span> · {article.readingTimeMin} min
         read
       </p>
-      <ArticleBody content={article.content ?? article.summary} className="mt-5 font-serif text-[17px]" />
+      <ArticleBody content={article.content ?? article.summary} className="mt-5" />
 
       {article.keyPoints.length > 0 && (
         <div className="mt-5 border-l-2 border-[var(--ink)] pl-4">

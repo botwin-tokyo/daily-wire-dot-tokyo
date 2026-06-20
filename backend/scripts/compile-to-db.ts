@@ -16,8 +16,11 @@ import { listScriptFiles, runScript } from "./lib/runner";
 import { openDb, initSchema, startRun, finishRun, insertArticles, getRunStats } from "./lib/db";
 import { normalizeCategory } from "./lib/normalize";
 import { pathToFileURL } from "node:url";
+import { ensureLadder } from "../../scripts/ensure-ladder";
 
 async function main(): Promise<void> {
+  await ensureLadder();
+
   const db = openDb();
   initSchema(db);
 

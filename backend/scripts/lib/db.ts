@@ -86,6 +86,7 @@ export function initSchema(db: DatabaseSync): void {
   } catch {
     // Column already exists; ignore.
   }
+
 }
 
 export function startRun(db: DatabaseSync): number {

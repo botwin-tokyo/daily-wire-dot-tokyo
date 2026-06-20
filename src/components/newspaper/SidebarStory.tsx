@@ -39,7 +39,7 @@ export function SidebarStory({ article }: { article: Article }) {
         {hoursAgo(article.publishedAt)} ·{" "}
         <span className="italic">Source: {article.source.name}</span>
       </p>
-      <ArticleBody content={article.content ?? article.summary} className="mt-2 text-[14px] text-[var(--ink)]" />
+      <ArticleBody content={article.content ?? article.summary} className="mt-2" />
     </article>
   );
 }

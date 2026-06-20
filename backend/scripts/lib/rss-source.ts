@@ -112,18 +112,20 @@ function extractRssContent(item: Element): string | undefined {
   return undefined;
 }
 
-export async function aggregateFromRssFeeds(
+export async function collectFromRssFeeds(
   source: string,
-  resultCategory: string,
   feeds: RssFeed[],
   defaultMax = 5,
-): Promise<void> {
+): Promise<NormalizedArticle[]> {
   const articles: NormalizedArticle[] = [];
 
   for (const feed of feeds) {
     try {
       const response = await fetch(feed.url, {
-        headers: { Accept: "application/rss+xml, application/xml, */*" },
+        headers: {
+          Accept: "application/rss+xml, application/xml, */*",
+          "User-Agent": "Mozilla/5.0 (compatible; TheMorningWireBot/1.0)",
+        },
       });
       if (!response.ok) {
         throw new Error(`Feed returned HTTP ${response.status}`);
@@ -170,5 +172,15 @@ export async function aggregateFromRssFeeds(
     }
   }
 
+  return articles;
+}
+
+export async function aggregateFromRssFeeds(
+  source: string,
+  resultCategory: string,
+  feeds: RssFeed[],
+  defaultMax = 5,
+): Promise<void> {
+  const articles = await collectFromRssFeeds(source, feeds, defaultMax);
   printResult(buildResult(source, resultCategory, articles));
 }

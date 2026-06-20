@@ -14,11 +14,9 @@ export function ArticleBody({
   const paragraphs = text.split(/\n+/).filter((p) => p.trim().length > 0);
 
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={`space-y-4 font-serif text-[16px] leading-relaxed ${className}`}>
       {paragraphs.map((paragraph, i) => (
-        <p key={i} className="leading-relaxed">
-          {paragraph.trim()}
-        </p>
+        <p key={i}>{paragraph.trim()}</p>
       ))}
     </div>
   );
