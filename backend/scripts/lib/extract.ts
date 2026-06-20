@@ -118,7 +118,7 @@ export function plainText(html: string): string {
     const dom = new JSDOM(html);
     const document = dom.window.document;
     document.querySelectorAll("br").forEach((br) => br.replaceWith("\n"));
-    document.querySelectorAll("p, li, h1, h2, h3, h4, h5, h6").forEach((el) => {
+    document.querySelectorAll("p, li, h1, h2, h3, h4, h5, h6, div").forEach((el) => {
       el.appendChild(document.createTextNode("\n"));
     });
     let text = document.body?.textContent ?? "";

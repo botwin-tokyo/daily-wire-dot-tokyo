@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { PageShell } from "@/components/newspaper/PageShell";
 import { SidebarStory, hoursAgo } from "@/components/newspaper/SidebarStory";
+import { ArticleBody } from "@/components/newspaper/ArticleBody";
 import { FitText } from "@/components/pretext";
 import { getLatestEdition } from "@/lib/api";
 
@@ -365,7 +366,7 @@ function SectionLead({ article }: { article: Article }) {
         <span className="italic">Source: {article.source.name}</span> · {article.readingTimeMin} min
         read
       </p>
-      <p className="mt-5 font-serif text-[17px] leading-relaxed">{article.summary}</p>
+      <ArticleBody content={article.content ?? article.summary} className="mt-5 font-serif text-[17px]" />
 
       {article.keyPoints.length > 0 && (
         <div className="mt-5 border-l-2 border-[var(--ink)] pl-4">
@@ -387,13 +388,6 @@ function SectionLead({ article }: { article: Article }) {
           </ul>
         </div>
       )}
-      <Link
-        to="/article/$slug"
-        params={{ slug: article.slug }}
-        className="read-more mt-5 inline-block"
-      >
-        Continue reading →
-      </Link>
     </article>
   );
 }

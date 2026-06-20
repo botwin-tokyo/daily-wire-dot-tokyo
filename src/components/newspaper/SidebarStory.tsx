@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { Article } from "@/lib/types";
 import { FitText } from "@/components/pretext";
+import { ArticleBody } from "./ArticleBody";
 
 export function SidebarStory({ article }: { article: Article }) {
   return (
@@ -38,7 +39,7 @@ export function SidebarStory({ article }: { article: Article }) {
         {hoursAgo(article.publishedAt)} ·{" "}
         <span className="italic">Source: {article.source.name}</span>
       </p>
-      <p className="mt-2 text-[14px] leading-relaxed text-[var(--ink)]">{article.summary}</p>
+      <ArticleBody content={article.content ?? article.summary} className="mt-2 text-[14px] text-[var(--ink)]" />
     </article>
   );
 }

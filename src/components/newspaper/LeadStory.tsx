@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { Article } from "@/lib/types";
 import { FitText } from "@/components/pretext";
 import { hoursAgo } from "./SidebarStory";
+import { ArticleBody } from "./ArticleBody";
 
 export function LeadStory({ article }: { article: Article }) {
   return (
@@ -74,14 +75,7 @@ export function LeadStory({ article }: { article: Article }) {
           · {hoursAgo(article.publishedAt)} · <em>Source: {article.source.name}</em>
         </span>
       </p>
-      <p className="mt-4 text-[16px] leading-relaxed">{article.summary}</p>
-      <Link
-        to="/article/$slug"
-        params={{ slug: article.slug }}
-        className="mt-4 inline-block read-more"
-      >
-        Read full story →
-      </Link>
+      <ArticleBody content={article.content ?? article.summary} className="mt-4 text-[16px]" />
     </article>
   );
 }

@@ -91,6 +91,105 @@ function isValidImageUrl(value: string): boolean {
   }
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+const SPEECH_VERBS =
+  "says|said|told|recalls|adds|added|notes|suggests|thinks|argues|explains|believes|claims|admits|insists|replies|remarks|comments|observes|reports|acknowledges|reveals|discloses|states|announces|maintains|contends|predicts|budgeted|explains|recounts|describes";
+
+function removeGluedCaptionNames(text: string): string {
+  // Some publishers (BBC, etc.) inline photo captions like:
+  //   "Jennifer Read-DominguezJennifer says..."
+  // Turn that into "Jennifer Read-Dominguez says...".
+  const pattern = new RegExp(
+    `\\b([A-Z][A-Za-z\-']+)((?:\\s+[A-Za-z][A-Za-z\-']*){0,2})(\\1(?:'s)?)\\s+(${SPEECH_VERBS})\\b`,
+    "g",
+  );
+  return text.replace(pattern, "$1$2 $4");
+}
+
+function splitGluedSentences(text: string): string {
+  // Insert a space when a sentence ends with .!? or a quote and the next
+  // sentence/caption is glued on with no space (e.g. "...bill.\"Jennifer...").
+  return text
+    .replace(/([.!?""''’])([A-Z])/g, "$1 $2")
+    .replace(/\s{2,}/g, " ");
+}
+
+function stripLeadingNoise(text: string, sourceName: string): string {
+  // Collapse internal whitespace so patterns match across odd HTML spacing.
+  let cleaned = text.replace(/\s+/g, " ").trim();
+
+  // "1 day ago", "18h ago", "27m ago", etc.
+  cleaned = cleaned.replace(
+    /^(\d{1,2}\s*(hour|hours|hr|hrs|day|days|minute|minutes|min)\s*ago)\s*/i,
+    "",
+  );
+
+  // "By Andrew Ackerman" or "By Yasmin Rufo"
+  cleaned = cleaned.replace(/^By\s+[A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){0,2}\s*/, "");
+
+  // Source name when it appears as a prefix, optionally preceded by author names
+  // glued together with no space (e.g. "Yasmin RufoBBCFew topics...").
+  if (sourceName && sourceName !== "unknown") {
+    const src = escapeRegExp(sourceName);
+    const gluedAuthorSource = new RegExp(
+      `^([A-Z][a-zA-Z]+(?:\\s+[A-Z][a-zA-Z]+){0,2})?\\s*${src}\\s*`,
+      "i",
+    );
+    cleaned = cleaned.replace(gluedAuthorSource, "");
+  }
+
+  // Standalone "Summary" header
+  cleaned = cleaned.replace(/^Summary\s*/i, "");
+
+  return cleaned.trim();
+}
+
+function sentenceSplit(text: string): string[] {
+  // Split on sentence terminators while keeping the terminator with the sentence.
+  // Avoid splitting on common abbreviations.
+  const matches = text.match(/[^.!?]+[.!?]+["']?\s*/g);
+  if (!matches) return [text];
+  return matches
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0)
+    .map((s) => s.replace(/\s+/g, " ").trim());
+}
+
+function paragraphize(text: string): string {
+  // If the extractor already produced paragraph breaks, keep them.
+  if (/\n\s*\n/.test(text)) {
+    return text
+      .split(/\n\s*\n/)
+      .map((p) => p.replace(/\s+/g, " ").trim())
+      .filter((p) => p.length > 0)
+      .join("\n\n");
+  }
+
+  // Otherwise group sentences into short newspaper paragraphs.
+  const sentences = sentenceSplit(text);
+  if (sentences.length <= 1) return text;
+
+  const paragraphs: string[] = [];
+  for (let i = 0; i < sentences.length; ) {
+    // Group 3-4 sentences, with some variation so paragraphs feel natural.
+    const size = Math.min(3 + (i % 2), sentences.length - i);
+    paragraphs.push(sentences.slice(i, i + size).join(" "));
+    i += size;
+  }
+  return paragraphs.join("\n\n");
+}
+
+function formatContent(text: string, sourceName: string): string {
+  let content = stripLeadingNoise(text, sourceName);
+  content = removeGluedCaptionNames(content);
+  content = splitGluedSentences(content);
+  content = paragraphize(content);
+  return content;
+}
+
 function sourceUrl(name: string): string {
   const lower = name.toLowerCase();
   if (lower.includes("guardian")) return "https://www.theguardian.com";
@@ -123,7 +222,7 @@ function buildArticle(row: ReturnType<typeof getLatestArticles>[number], index: 
   const slug = slugify(row.title);
   const id = idFromUrl(row.url, index);
   const rawContent = row.content ?? row.summary ?? "";
-  const content = plainText(rawContent).trim();
+  const content = formatContent(plainText(rawContent), row.source);
   const summary = (row.summary ?? content.slice(0, 500)).slice(0, 1997).trim();
 
   return {
