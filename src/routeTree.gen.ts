@@ -15,6 +15,7 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ScienceRouteImport } from './routes/science'
 import { Route as SavedRouteImport } from './routes/saved'
+import { Route as PretextDemoRouteImport } from './routes/pretext-demo'
 import { Route as EditionsRouteImport } from './routes/editions'
 import { Route as CultureRouteImport } from './routes/culture'
 import { Route as BusinessRouteImport } from './routes/business'
@@ -22,6 +23,16 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectionCategoryRouteImport } from './routes/section.$category'
 import { Route as EditionsDateRouteImport } from './routes/editions.$date'
 import { Route as ArticleSlugRouteImport } from './routes/article.$slug'
+import { Route as ApiSettingsRouteImport } from './routes/api/settings'
+import { Route as ApiSearchRouteImport } from './routes/api/search'
+import { Route as ApiSavedRouteImport } from './routes/api/saved'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as ApiEditionsRouteImport } from './routes/api/editions'
+import { Route as ApiEditionsDateRouteImport } from './routes/api/editions/$date'
+import { Route as ApiEditionLatestRouteImport } from './routes/api/edition/latest'
+import { Route as ApiArticlesIdRouteImport } from './routes/api/articles/$id'
+import { Route as ApiAdminRollbackRouteImport } from './routes/api/admin/rollback'
+import { Route as ApiAdminGenerateRouteImport } from './routes/api/admin/generate'
 
 const WorldRoute = WorldRouteImport.update({
   id: '/world',
@@ -51,6 +62,11 @@ const ScienceRoute = ScienceRouteImport.update({
 const SavedRoute = SavedRouteImport.update({
   id: '/saved',
   path: '/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PretextDemoRoute = PretextDemoRouteImport.update({
+  id: '/pretext-demo',
+  path: '/pretext-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EditionsRoute = EditionsRouteImport.update({
@@ -88,36 +104,108 @@ const ArticleSlugRoute = ArticleSlugRouteImport.update({
   path: '/article/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSettingsRoute = ApiSettingsRouteImport.update({
+  id: '/api/settings',
+  path: '/api/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSearchRoute = ApiSearchRouteImport.update({
+  id: '/api/search',
+  path: '/api/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSavedRoute = ApiSavedRouteImport.update({
+  id: '/api/saved',
+  path: '/api/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiEditionsRoute = ApiEditionsRouteImport.update({
+  id: '/api/editions',
+  path: '/api/editions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiEditionsDateRoute = ApiEditionsDateRouteImport.update({
+  id: '/$date',
+  path: '/$date',
+  getParentRoute: () => ApiEditionsRoute,
+} as any)
+const ApiEditionLatestRoute = ApiEditionLatestRouteImport.update({
+  id: '/api/edition/latest',
+  path: '/api/edition/latest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiArticlesIdRoute = ApiArticlesIdRouteImport.update({
+  id: '/api/articles/$id',
+  path: '/api/articles/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminRollbackRoute = ApiAdminRollbackRouteImport.update({
+  id: '/api/admin/rollback',
+  path: '/api/admin/rollback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminGenerateRoute = ApiAdminGenerateRouteImport.update({
+  id: '/api/admin/generate',
+  path: '/api/admin/generate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/business': typeof BusinessRoute
   '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
+  '/pretext-demo': typeof PretextDemoRoute
   '/saved': typeof SavedRoute
   '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
   '/world': typeof WorldRoute
+  '/api/editions': typeof ApiEditionsRouteWithChildren
+  '/api/health': typeof ApiHealthRoute
+  '/api/saved': typeof ApiSavedRoute
+  '/api/search': typeof ApiSearchRoute
+  '/api/settings': typeof ApiSettingsRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
+  '/api/admin/generate': typeof ApiAdminGenerateRoute
+  '/api/admin/rollback': typeof ApiAdminRollbackRoute
+  '/api/articles/$id': typeof ApiArticlesIdRoute
+  '/api/edition/latest': typeof ApiEditionLatestRoute
+  '/api/editions/$date': typeof ApiEditionsDateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/business': typeof BusinessRoute
   '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
+  '/pretext-demo': typeof PretextDemoRoute
   '/saved': typeof SavedRoute
   '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
   '/world': typeof WorldRoute
+  '/api/editions': typeof ApiEditionsRouteWithChildren
+  '/api/health': typeof ApiHealthRoute
+  '/api/saved': typeof ApiSavedRoute
+  '/api/search': typeof ApiSearchRoute
+  '/api/settings': typeof ApiSettingsRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
+  '/api/admin/generate': typeof ApiAdminGenerateRoute
+  '/api/admin/rollback': typeof ApiAdminRollbackRoute
+  '/api/articles/$id': typeof ApiArticlesIdRoute
+  '/api/edition/latest': typeof ApiEditionLatestRoute
+  '/api/editions/$date': typeof ApiEditionsDateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -125,15 +213,26 @@ export interface FileRoutesById {
   '/business': typeof BusinessRoute
   '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
+  '/pretext-demo': typeof PretextDemoRoute
   '/saved': typeof SavedRoute
   '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
   '/world': typeof WorldRoute
+  '/api/editions': typeof ApiEditionsRouteWithChildren
+  '/api/health': typeof ApiHealthRoute
+  '/api/saved': typeof ApiSavedRoute
+  '/api/search': typeof ApiSearchRoute
+  '/api/settings': typeof ApiSettingsRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
+  '/api/admin/generate': typeof ApiAdminGenerateRoute
+  '/api/admin/rollback': typeof ApiAdminRollbackRoute
+  '/api/articles/$id': typeof ApiArticlesIdRoute
+  '/api/edition/latest': typeof ApiEditionLatestRoute
+  '/api/editions/$date': typeof ApiEditionsDateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -142,45 +241,78 @@ export interface FileRouteTypes {
     | '/business'
     | '/culture'
     | '/editions'
+    | '/pretext-demo'
     | '/saved'
     | '/science'
     | '/search'
     | '/settings'
     | '/technology'
     | '/world'
+    | '/api/editions'
+    | '/api/health'
+    | '/api/saved'
+    | '/api/search'
+    | '/api/settings'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
+    | '/api/admin/generate'
+    | '/api/admin/rollback'
+    | '/api/articles/$id'
+    | '/api/edition/latest'
+    | '/api/editions/$date'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/business'
     | '/culture'
     | '/editions'
+    | '/pretext-demo'
     | '/saved'
     | '/science'
     | '/search'
     | '/settings'
     | '/technology'
     | '/world'
+    | '/api/editions'
+    | '/api/health'
+    | '/api/saved'
+    | '/api/search'
+    | '/api/settings'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
+    | '/api/admin/generate'
+    | '/api/admin/rollback'
+    | '/api/articles/$id'
+    | '/api/edition/latest'
+    | '/api/editions/$date'
   id:
     | '__root__'
     | '/'
     | '/business'
     | '/culture'
     | '/editions'
+    | '/pretext-demo'
     | '/saved'
     | '/science'
     | '/search'
     | '/settings'
     | '/technology'
     | '/world'
+    | '/api/editions'
+    | '/api/health'
+    | '/api/saved'
+    | '/api/search'
+    | '/api/settings'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
+    | '/api/admin/generate'
+    | '/api/admin/rollback'
+    | '/api/articles/$id'
+    | '/api/edition/latest'
+    | '/api/editions/$date'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -188,14 +320,24 @@ export interface RootRouteChildren {
   BusinessRoute: typeof BusinessRoute
   CultureRoute: typeof CultureRoute
   EditionsRoute: typeof EditionsRouteWithChildren
+  PretextDemoRoute: typeof PretextDemoRoute
   SavedRoute: typeof SavedRoute
   ScienceRoute: typeof ScienceRoute
   SearchRoute: typeof SearchRoute
   SettingsRoute: typeof SettingsRoute
   TechnologyRoute: typeof TechnologyRoute
   WorldRoute: typeof WorldRoute
+  ApiEditionsRoute: typeof ApiEditionsRouteWithChildren
+  ApiHealthRoute: typeof ApiHealthRoute
+  ApiSavedRoute: typeof ApiSavedRoute
+  ApiSearchRoute: typeof ApiSearchRoute
+  ApiSettingsRoute: typeof ApiSettingsRoute
   ArticleSlugRoute: typeof ArticleSlugRoute
   SectionCategoryRoute: typeof SectionCategoryRoute
+  ApiAdminGenerateRoute: typeof ApiAdminGenerateRoute
+  ApiAdminRollbackRoute: typeof ApiAdminRollbackRoute
+  ApiArticlesIdRoute: typeof ApiArticlesIdRoute
+  ApiEditionLatestRoute: typeof ApiEditionLatestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -240,6 +382,13 @@ declare module '@tanstack/react-router' {
       path: '/saved'
       fullPath: '/saved'
       preLoaderRoute: typeof SavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pretext-demo': {
+      id: '/pretext-demo'
+      path: '/pretext-demo'
+      fullPath: '/pretext-demo'
+      preLoaderRoute: typeof PretextDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/editions': {
@@ -291,6 +440,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/settings': {
+      id: '/api/settings'
+      path: '/api/settings'
+      fullPath: '/api/settings'
+      preLoaderRoute: typeof ApiSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/search': {
+      id: '/api/search'
+      path: '/api/search'
+      fullPath: '/api/search'
+      preLoaderRoute: typeof ApiSearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/saved': {
+      id: '/api/saved'
+      path: '/api/saved'
+      fullPath: '/api/saved'
+      preLoaderRoute: typeof ApiSavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/editions': {
+      id: '/api/editions'
+      path: '/api/editions'
+      fullPath: '/api/editions'
+      preLoaderRoute: typeof ApiEditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/editions/$date': {
+      id: '/api/editions/$date'
+      path: '/$date'
+      fullPath: '/api/editions/$date'
+      preLoaderRoute: typeof ApiEditionsDateRouteImport
+      parentRoute: typeof ApiEditionsRoute
+    }
+    '/api/edition/latest': {
+      id: '/api/edition/latest'
+      path: '/api/edition/latest'
+      fullPath: '/api/edition/latest'
+      preLoaderRoute: typeof ApiEditionLatestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/articles/$id': {
+      id: '/api/articles/$id'
+      path: '/api/articles/$id'
+      fullPath: '/api/articles/$id'
+      preLoaderRoute: typeof ApiArticlesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/rollback': {
+      id: '/api/admin/rollback'
+      path: '/api/admin/rollback'
+      fullPath: '/api/admin/rollback'
+      preLoaderRoute: typeof ApiAdminRollbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/generate': {
+      id: '/api/admin/generate'
+      path: '/api/admin/generate'
+      fullPath: '/api/admin/generate'
+      preLoaderRoute: typeof ApiAdminGenerateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -306,20 +525,52 @@ const EditionsRouteWithChildren = EditionsRoute._addFileChildren(
   EditionsRouteChildren,
 )
 
+interface ApiEditionsRouteChildren {
+  ApiEditionsDateRoute: typeof ApiEditionsDateRoute
+}
+
+const ApiEditionsRouteChildren: ApiEditionsRouteChildren = {
+  ApiEditionsDateRoute: ApiEditionsDateRoute,
+}
+
+const ApiEditionsRouteWithChildren = ApiEditionsRoute._addFileChildren(
+  ApiEditionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BusinessRoute: BusinessRoute,
   CultureRoute: CultureRoute,
   EditionsRoute: EditionsRouteWithChildren,
+  PretextDemoRoute: PretextDemoRoute,
   SavedRoute: SavedRoute,
   ScienceRoute: ScienceRoute,
   SearchRoute: SearchRoute,
   SettingsRoute: SettingsRoute,
   TechnologyRoute: TechnologyRoute,
   WorldRoute: WorldRoute,
+  ApiEditionsRoute: ApiEditionsRouteWithChildren,
+  ApiHealthRoute: ApiHealthRoute,
+  ApiSavedRoute: ApiSavedRoute,
+  ApiSearchRoute: ApiSearchRoute,
+  ApiSettingsRoute: ApiSettingsRoute,
   ArticleSlugRoute: ArticleSlugRoute,
   SectionCategoryRoute: SectionCategoryRoute,
+  ApiAdminGenerateRoute: ApiAdminGenerateRoute,
+  ApiAdminRollbackRoute: ApiAdminRollbackRoute,
+  ApiArticlesIdRoute: ApiArticlesIdRoute,
+  ApiEditionLatestRoute: ApiEditionLatestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

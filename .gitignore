@@ -20,6 +20,10 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Local SQLite database populated by aggregation scripts
+backend/db/*.db
+backend/db/*.db-*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

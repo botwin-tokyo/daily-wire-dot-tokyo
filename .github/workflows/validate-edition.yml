@@ -1,0 +1,37 @@
+name: Validate Edition JSON
+
+on:
+  push:
+    paths:
+      - "public/data/**"
+      - "examples/*.json"
+      - "schemas/**"
+      - "src/lib/schema.ts"
+      - "scripts/validate-edition.ts"
+      - ".github/workflows/validate-edition.yml"
+  pull_request:
+    paths:
+      - "public/data/**"
+      - "examples/*.json"
+      - "schemas/**"
+      - "src/lib/schema.ts"
+      - "scripts/validate-edition.ts"
+      - ".github/workflows/validate-edition.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Validate edition files
+        run: bun run validate:edition -- public/data/current-edition.json public/data/editions/*.json examples/example-edition.json

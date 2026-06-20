@@ -11,6 +11,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { newspaperEditionQuery } from "../lib/api";
+import type { NewspaperEdition } from "../lib/types";
 
 function NotFoundComponent() {
   return (
@@ -73,28 +75,45 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "The Morning Wire — Your Personal Daily Intelligence" },
-      { name: "description", content: "A personal AI-curated daily newspaper. Every morning, a fresh edition of the world's most important stories — summarized, contextualized, and ready to read." },
-      { name: "author", content: "The Morning Wire" },
-      { property: "og:title", content: "The Morning Wire" },
-      { property: "og:description", content: "Your personal daily intelligence, delivered before sunrise." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
-      },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const edition = loaderData as NewspaperEdition | undefined;
+    const title = edition?.masthead?.title ?? "The Morning Wire";
+    const tagline = edition?.masthead?.tagline ?? "Your Personal Daily Intelligence";
+    return {
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { title: `${title} — ${tagline}` },
+        {
+          name: "description",
+          content:
+            edition?.editorsNote?.text ??
+            "A personal AI-curated daily newspaper. Every morning, a fresh edition of the world's most important stories — summarized, contextualized, and ready to read.",
+        },
+        { name: "author", content: title },
+        { property: "og:title", content: title },
+        { property: "og:description", content: tagline },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
+      ],
+      links: [
+        { rel: "stylesheet", href: appCss },
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
+        },
+      ],
+    };
+  },
+  loader: async ({ context }) => {
+    try {
+      return await context.queryClient.ensureQueryData(newspaperEditionQuery);
+    } catch {
+      return undefined;
+    }
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,

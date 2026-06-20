@@ -1,29 +1,29 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Search, Bookmark, Archive } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState } from "react";
+import type { NewspaperNavigation } from "@/lib/types";
 
-const SECTIONS = [
-  { label: "Top Stories", to: "/" },
-  { label: "World", to: "/world" },
-  { label: "Technology", to: "/technology" },
-  { label: "Business", to: "/business" },
-  { label: "Science", to: "/science" },
-  { label: "Culture", to: "/culture" },
-] as const;
-
-export function SectionNav() {
+export function SectionNav({ data }: { data: NewspaperNavigation }) {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
+
+  const items = data.items ?? [];
+  const moreLinks = data.moreLinks ?? [];
+
   return (
     <nav className="sticky top-0 z-40 border-b border-[var(--ink)] bg-[var(--paper)]">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-6 h-[42px]">
         <ul className="flex items-center gap-0 overflow-x-auto">
-          {SECTIONS.map((s, i) => {
-            const active = s.to === "/" ? pathname === "/" : pathname.startsWith(s.to);
+          {items.map((s, i) => {
+            const active = s.path === "/" ? pathname === "/" : pathname.startsWith(s.path);
             return (
-              <li key={s.to} className="flex items-center">
-                {i > 0 && <span className="px-3 text-[var(--rule)]" aria-hidden>|</span>}
-                <Link to={s.to} className={`nav-link ${active ? "active" : ""}`}>
+              <li key={s.id} className="flex items-center">
+                {i > 0 && (
+                  <span className="px-3 text-[var(--rule)]" aria-hidden>
+                    |
+                  </span>
+                )}
+                <Link to={s.path} className={`nav-link ${active ? "active" : ""}`}>
                   {s.label}
                 </Link>
               </li>
@@ -31,8 +31,15 @@ export function SectionNav() {
           })}
         </ul>
         <div className="flex items-center gap-4">
-          <Link to="/saved" className="hidden md:inline-flex nav-link items-center gap-1.5"><Bookmark className="h-3.5 w-3.5" strokeWidth={1.5} />Saved</Link>
-          <Link to="/editions" className="hidden md:inline-flex nav-link items-center gap-1.5"><Archive className="h-3.5 w-3.5" strokeWidth={1.5} />Archive</Link>
+          {moreLinks.map((link) => (
+            <Link
+              key={link.id}
+              to={link.path}
+              className="hidden md:inline-flex nav-link items-center gap-1.5"
+            >
+              {link.label}
+            </Link>
+          ))}
           <button
             onClick={() => setOpen((v) => !v)}
             className="nav-link inline-flex items-center gap-1.5"
@@ -54,7 +61,9 @@ export function SectionNav() {
               placeholder="Search headlines, sources, tags…"
               className="w-full bg-transparent border-b border-[var(--ink)] py-1 font-sans text-sm outline-none placeholder:text-[var(--ink-faint)]"
             />
-            <button type="submit" className="read-more">Go</button>
+            <button type="submit" className="read-more">
+              Go
+            </button>
           </form>
         </div>
       )}

@@ -1,0 +1,5 @@
+# Copy this file to .dev.vars and fill in local secrets.
+# .dev.vars is gitignored and never reaches the client bundle.
+
+ADMIN_TOKEN=your-local-admin-token
+LOVABLE_API_KEY=your-local-ai-gateway-key

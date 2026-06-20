@@ -1,0 +1,225 @@
+{
+  "schemaVersion": "1.0.0",
+  "editionId": "ed-2025-01-01-global",
+  "editionDate": "2025-01-01",
+  "editionNumber": 999,
+  "editionTitle": "Global Edition",
+  "status": "draft",
+  "generatedAt": "2025-01-01T05:00:00Z",
+  "publishedAt": "2025-01-01T05:30:00Z",
+  "updatedAt": "2025-01-01T05:30:00Z",
+  "timezone": "Europe/Berlin",
+  "locale": "en-US",
+  "masthead": {
+    "title": "The Morning Wire",
+    "tagline": "Your Personal Daily Intelligence"
+  },
+  "utilityBar": {
+    "dateLabel": "January 1, 2025",
+    "weather": {
+      "tempC": 18,
+      "condition": "Partly Cloudy",
+      "icon": "partly"
+    },
+    "editionLabel": "Global",
+    "updatedByAiAt": "05:30",
+    "nextEditionText": "Next edition scheduled"
+  },
+  "navigation": {
+    "items": [
+      { "id": "top", "label": "Top Stories", "path": "/" },
+      { "id": "world", "label": "World", "path": "/world", "category": "world" },
+      {
+        "id": "technology",
+        "label": "Technology",
+        "path": "/technology",
+        "category": "technology"
+      },
+      { "id": "business", "label": "Business", "path": "/business", "category": "business" },
+      { "id": "science", "label": "Science", "path": "/science", "category": "science" },
+      { "id": "culture", "label": "Culture", "path": "/culture", "category": "culture" }
+    ],
+    "moreLinks": [
+      { "id": "saved", "label": "Saved", "path": "/saved" },
+      { "id": "archive", "label": "Archive", "path": "/editions" }
+    ]
+  },
+  "leadStoryId": "a1",
+  "articles": [
+    {
+      "id": "a1",
+      "slug": "lead-story-slug",
+      "displayPosition": "lead",
+      "headline": "Lead story headline goes here",
+      "deck": "Optional sub-headline or deck.",
+      "summary": "A plain-text summary of the lead story. No HTML or JavaScript.",
+      "category": "world",
+      "tags": ["tag-one", "tag-two"],
+      "author": "Author Name",
+      "source": {
+        "name": "Publisher Name",
+        "url": "https://example.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://example.com/article",
+      "canonicalUrl": "https://example.com/article",
+      "publishedAt": "2025-01-01T04:00:00Z",
+      "retrievedAt": "2025-01-01T05:00:00Z",
+      "readingTimeMin": 5,
+      "image": {
+        "url": "/images/placeholder.jpg",
+        "alt": "Describe the image",
+        "caption": "Optional caption",
+        "attribution": "Optional attribution"
+      },
+      "keyPoints": ["First key point.", "Second key point."],
+      "whyItMatters": "Explain why this story matters.",
+      "relatedArticleIds": [],
+      "relevanceScore": 0.95,
+      "confidenceScore": 0.9,
+      "editorialProminence": 1.0,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "lovable-ai/gemini-3-flash"
+      }
+    },
+    {
+      "id": "a2",
+      "slug": "sidebar-story-slug",
+      "displayPosition": "sidebar",
+      "headline": "Sidebar story headline",
+      "summary": "A shorter plain-text summary for the left column.",
+      "category": "business",
+      "tags": ["markets"],
+      "source": {
+        "name": "Publisher Name",
+        "url": "https://example.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://example.com/article2",
+      "publishedAt": "2025-01-01T04:00:00Z",
+      "retrievedAt": "2025-01-01T05:00:00Z",
+      "readingTimeMin": 3,
+      "keyPoints": ["Sidebar point."],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.8,
+      "confidenceScore": 0.85,
+      "editorialProminence": 0.7,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "lovable-ai/gemini-3-flash"
+      }
+    },
+    {
+      "id": "a3",
+      "slug": "feature-story-slug",
+      "displayPosition": "imageFeature",
+      "headline": "Image feature headline",
+      "summary": "A plain-text summary for the right-column image feature.",
+      "category": "technology",
+      "tags": ["ai"],
+      "source": {
+        "name": "Publisher Name",
+        "url": "https://example.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://example.com/article3",
+      "publishedAt": "2025-01-01T04:00:00Z",
+      "retrievedAt": "2025-01-01T05:00:00Z",
+      "readingTimeMin": 4,
+      "image": {
+        "url": "/images/placeholder.jpg",
+        "alt": "Describe the image"
+      },
+      "keyPoints": ["Feature point."],
+      "relatedArticleIds": ["a1"],
+      "relevanceScore": 0.85,
+      "confidenceScore": 0.88,
+      "editorialProminence": 0.75,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "lovable-ai/gemini-3-flash"
+      }
+    }
+  ],
+  "sections": [
+    {
+      "id": "world",
+      "label": "World",
+      "eyebrow": "The World Desk",
+      "dek": "Section dek goes here.",
+      "order": 1,
+      "visible": true,
+      "articleIds": ["a1"]
+    },
+    {
+      "id": "business",
+      "label": "Business",
+      "eyebrow": "The Business Desk",
+      "dek": "Section dek goes here.",
+      "order": 2,
+      "visible": true,
+      "articleIds": ["a2"]
+    },
+    {
+      "id": "technology",
+      "label": "Technology",
+      "eyebrow": "The Technology Desk",
+      "dek": "Section dek goes here.",
+      "order": 3,
+      "visible": true,
+      "articleIds": ["a3"]
+    }
+  ],
+  "morningBriefing": [
+    {
+      "topic": "Topic",
+      "text": "Briefing item text.",
+      "sourceName": "Publisher Name",
+      "articleId": "a1",
+      "icon": "globe"
+    }
+  ],
+  "editorsNote": {
+    "text": "Editor's note text.",
+    "whyItMatters": "Why today's edition matters.",
+    "model": "lovable-ai/gemini-3-flash",
+    "generatedAt": "2025-01-01T05:10:00Z",
+    "sourcesConsidered": 10
+  },
+  "marketSnapshot": {
+    "updatedAt": "2025-01-01T05:15:00Z",
+    "sourceName": "Bloomberg",
+    "sourceUrl": "https://bloomberg.com",
+    "tickers": [{ "symbol": "S&P 500", "value": "0.00", "changePct": 0 }],
+    "commodities": [{ "symbol": "Brent Oil", "value": "$0.00", "changePct": 0 }]
+  },
+  "weather": {
+    "sourceName": "AccuWeather",
+    "sourceUrl": "https://accuweather.com",
+    "cities": [{ "city": "New York", "tempC": 20, "condition": "Sunny", "icon": "sun" }]
+  },
+  "sources": [
+    {
+      "name": "Publisher Name",
+      "url": "https://example.com",
+      "articles": 3
+    }
+  ],
+  "generationMetadata": {
+    "model": "lovable-ai/gemini-3-flash",
+    "sourcesCount": 10,
+    "storiesAnalyzed": 50,
+    "readingTimeMin": 5,
+    "collectionStartedAt": "2025-01-01T05:00:00Z",
+    "collectionFinishedAt": "2025-01-01T05:25:00Z"
+  },
+  "footer": {
+    "copyright": "© 2025 The Morning Wire. All rights reserved.",
+    "links": [
+      { "label": "Privacy Policy", "path": "/settings" },
+      { "label": "Terms of Service", "path": "/settings" },
+      { "label": "Contact", "path": "/settings" }
+    ]
+  }
+}

@@ -2,10 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { PageShell } from "@/components/newspaper/PageShell";
 import { SidebarStory, hoursAgo } from "@/components/newspaper/SidebarStory";
+import { FitText } from "@/components/pretext";
 import { getLatestEdition } from "@/lib/api";
-import { CategorySchema, type Category, type Article } from "@/lib/types";
 
-export const editionQuery = queryOptions({ queryKey: ["edition", "latest"], queryFn: () => getLatestEdition() });
+import { CategorySchema, type Category, type Article, type Edition } from "@/lib/types";
+
+export const editionQuery = queryOptions({
+  queryKey: ["edition", "latest"],
+  queryFn: () => getLatestEdition(),
+});
 
 export const CATEGORY_COPY: Record<Category, { eyebrow: string; title: string; dek: string }> = {
   world: {
@@ -35,10 +40,21 @@ export const CATEGORY_COPY: Record<Category, { eyebrow: string; title: string; d
   },
 };
 
+export function getSectionCopy(
+  edition: Edition | undefined,
+  category: string,
+): { eyebrow: string; title: string; dek: string } | undefined {
+  const section = edition?.sections.find((s) => s.id === category && s.visible);
+  if (!section) return undefined;
+  return { eyebrow: section.eyebrow, title: section.label, dek: section.dek };
+}
+
 export const Route = createFileRoute("/section/$category")({
-  head: ({ params }) => {
+  head: ({ params, loaderData }) => {
     const cat = CategorySchema.safeParse(params.category);
-    const copy = cat.success ? CATEGORY_COPY[cat.data] : null;
+    const sectionCopy = getSectionCopy(loaderData, params.category);
+    const fallback = cat.success ? CATEGORY_COPY[cat.data] : undefined;
+    const copy = sectionCopy ?? fallback ?? null;
     return {
       meta: [
         { title: `${copy?.title ?? params.category} — The Morning Wire` },
@@ -62,13 +78,25 @@ export function SectionPageContent({ category }: { category: string }) {
     return (
       <PageShell>
         <div className="py-20 text-center">
-          <h1 className="font-serif text-3xl">Unknown section</h1>
-          <Link to="/" className="mt-4 inline-block read-more">← Today's edition</Link>
+          <h1 className="font-serif">
+            <FitText
+              text="Unknown section"
+              minFontSize={24}
+              maxFontSize={36}
+              maxLines={1}
+              lineHeightRatio={1}
+              fontFamily='"Playfair Display", Georgia, serif'
+              fontWeight={900}
+            />
+          </h1>
+          <Link to="/" className="mt-4 inline-block read-more">
+            ← Today's edition
+          </Link>
         </div>
       </PageShell>
     );
   }
-  const copy = CATEGORY_COPY[cat.data];
+  const copy = getSectionCopy(edition, cat.data) ?? CATEGORY_COPY[cat.data];
   const articles = edition.articles
     .filter((a) => a.category === cat.data)
     .sort((a, b) => b.relevanceScore - a.relevanceScore);
@@ -82,22 +110,51 @@ export function SectionPageContent({ category }: { category: string }) {
     <PageShell>
       {/* Section masthead */}
       <header className="border-b border-[var(--ink)] py-10">
-        <p className="eyebrow eyebrow-red">{copy.eyebrow}</p>
-        <h1 className="mt-3 font-serif font-black tracking-tight leading-[0.95]" style={{ fontSize: "clamp(56px, 9vw, 120px)" }}>
-          {copy.title}
+        <p className="eyebrow eyebrow-red">
+          <FitText
+            text={copy.eyebrow}
+            minFontSize={9}
+            maxFontSize={11}
+            maxLines={1}
+            lineHeightRatio={1}
+            fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+            fontWeight={700}
+          />
+        </p>
+        <h1 className="mt-3 font-serif font-black tracking-tight leading-[0.95]">
+          <FitText
+            text={copy.title}
+            minFontSize={48}
+            maxFontSize={120}
+            maxLines={1}
+            lineHeightRatio={0.95}
+            fontFamily='"Playfair Display", Georgia, serif'
+            fontWeight={900}
+          />
         </h1>
         <div className="mt-4 flex flex-wrap items-baseline justify-between gap-4">
-          <p className="max-w-2xl font-serif italic text-[var(--ink-mid)]" style={{ fontSize: "clamp(16px, 1.4vw, 19px)" }}>
+          <p
+            className="max-w-2xl font-serif italic text-[var(--ink-mid)]"
+            style={{ fontSize: "clamp(16px, 1.4vw, 19px)" }}
+          >
             {copy.dek}
           </p>
           <p className="meta">
-            {articles.length} {articles.length === 1 ? "story" : "stories"} · Edition of {edition.editionDate} · Curated by AI at {new Date(edition.updatedByAiAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            {articles.length} {articles.length === 1 ? "story" : "stories"} · Edition of{" "}
+            {edition.editionDate} · Curated by AI at{" "}
+            {new Date(edition.updatedByAiAt).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
           </p>
         </div>
       </header>
 
       {articles.length === 0 ? (
-        <p className="py-20 text-center meta italic">No stories filed for this section today. The next edition is scheduled for {new Date(edition.nextScheduledAt).toLocaleString()}.</p>
+        <p className="py-20 text-center meta italic">
+          No stories filed for this section today. The next edition is scheduled for{" "}
+          {new Date(edition.nextScheduledAt).toLocaleString()}.
+        </p>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-0">
           {/* Main column */}
@@ -108,7 +165,9 @@ export function SectionPageContent({ category }: { category: string }) {
             {/* Grid of the rest */}
             {rest.length > 0 && (
               <div className="mt-2 grid gap-x-8 md:grid-cols-2 border-t border-[var(--ink)]">
-                {rest.map((a) => <SidebarStory key={a.id} article={a} />)}
+                {rest.map((a) => (
+                  <SidebarStory key={a.id} article={a} />
+                ))}
               </div>
             )}
           </div>
@@ -116,14 +175,30 @@ export function SectionPageContent({ category }: { category: string }) {
           {/* Sidebar rail */}
           <aside className="lg:pl-8 py-5 space-y-8">
             <div>
-              <p className="eyebrow">In this section</p>
+              <h3 className="eyebrow">
+                <FitText
+                  text="In this section"
+                  minFontSize={10}
+                  maxFontSize={12}
+                  maxLines={1}
+                  lineHeightRatio={1}
+                  fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+                  fontWeight={700}
+                />
+              </h3>
               <ul className="mt-3 divide-y divide-[var(--rule)] border-y border-[var(--rule)]">
                 {articles.map((a) => (
                   <li key={a.id} className="py-2">
-                    <Link to="/article/$slug" params={{ slug: a.slug }} className="font-serif text-[15px] leading-snug hover:underline">
+                    <Link
+                      to="/article/$slug"
+                      params={{ slug: a.slug }}
+                      className="font-serif text-[15px] leading-snug hover:underline"
+                    >
                       {a.headline}
                     </Link>
-                    <p className="meta">{hoursAgo(a.publishedAt)} · {a.source.name}</p>
+                    <p className="meta">
+                      {hoursAgo(a.publishedAt)} · {a.source.name}
+                    </p>
                   </li>
                 ))}
               </ul>
@@ -131,7 +206,17 @@ export function SectionPageContent({ category }: { category: string }) {
 
             {topTags.length > 0 && (
               <div>
-                <p className="eyebrow">Topics</p>
+                <h3 className="eyebrow">
+                  <FitText
+                    text="Topics"
+                    minFontSize={10}
+                    maxFontSize={12}
+                    maxLines={1}
+                    lineHeightRatio={1}
+                    fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+                    fontWeight={700}
+                  />
+                </h3>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {topTags.map(([tag, n]) => (
                     <Link
@@ -148,22 +233,51 @@ export function SectionPageContent({ category }: { category: string }) {
             )}
 
             <div>
-              <p className="eyebrow">Sources used</p>
+              <h3 className="eyebrow">
+                <FitText
+                  text="Sources used"
+                  minFontSize={10}
+                  maxFontSize={12}
+                  maxLines={1}
+                  lineHeightRatio={1}
+                  fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+                  fontWeight={700}
+                />
+              </h3>
               <ul className="mt-3 space-y-1 font-sans text-[13px] text-[var(--ink-mid)]">
-                {sources.map((s) => <li key={s}>· {s}</li>)}
+                {sources.map((s) => (
+                  <li key={s}>· {s}</li>
+                ))}
               </ul>
             </div>
 
             <div className="border-t border-[var(--ink)] pt-4">
-              <p className="eyebrow">Other sections</p>
+              <h3 className="eyebrow">
+                <FitText
+                  text="Other sections"
+                  minFontSize={10}
+                  maxFontSize={12}
+                  maxLines={1}
+                  lineHeightRatio={1}
+                  fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+                  fontWeight={700}
+                />
+              </h3>
               <ul className="mt-3 space-y-1">
-                {(Object.keys(CATEGORY_COPY) as Category[]).filter((c) => c !== cat.data).map((c) => (
-                  <li key={c}>
-                    <Link to="/section/$category" params={{ category: c }} className="font-serif text-[15px] hover:underline">
-                      {CATEGORY_COPY[c].title}
-                    </Link>
-                  </li>
-                ))}
+                {edition.sections
+                  .filter((s) => s.id !== cat.data && s.visible)
+                  .sort((a, b) => a.order - b.order)
+                  .map((s) => (
+                    <li key={s.id}>
+                      <Link
+                        to="/section/$category"
+                        params={{ category: s.id }}
+                        className="font-serif text-[15px] hover:underline"
+                      >
+                        {s.label}
+                      </Link>
+                    </li>
+                  ))}
               </ul>
             </div>
           </aside>
@@ -175,40 +289,99 @@ export function SectionPageContent({ category }: { category: string }) {
 
 function SectionLead({ article }: { article: Article }) {
   return (
-    <article className="py-6">
-      {article.eyebrow && <p className="eyebrow eyebrow-red">{article.eyebrow}</p>}
+    <article className="py-6 flow-root">
+      {article.image && (
+        <Link
+          to="/article/$slug"
+          params={{ slug: article.slug }}
+          className="float-right ml-5 mb-5 w-[300px]"
+        >
+          <figure>
+            <img
+              src={article.image.url}
+              alt={article.image.caption ?? article.headline}
+              width={300}
+              height={190}
+              className="w-full h-[190px] object-cover border border-[var(--rule)]"
+            />
+            {article.image.caption && (
+              <figcaption className="mt-2 meta italic">{article.image.caption}</figcaption>
+            )}
+          </figure>
+        </Link>
+      )}
+
+      {article.eyebrow && (
+        <p className="eyebrow eyebrow-red">
+          <FitText
+            text={article.eyebrow}
+            minFontSize={9}
+            maxFontSize={11}
+            maxLines={1}
+            lineHeightRatio={1}
+            fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+            fontWeight={700}
+          />
+        </p>
+      )}
       <Link to="/article/$slug" params={{ slug: article.slug }}>
-        <h2 className="mt-2 font-serif font-black leading-[1.02]" style={{ fontSize: "clamp(36px, 5vw, 64px)" }}>
-          {article.headline}
+        <h2 className="mt-2 font-serif font-black leading-[1.02]">
+          <FitText
+            text={article.headline}
+            minFontSize={24}
+            maxFontSize={64}
+            maxLines={3}
+            lineHeightRatio={1.02}
+            fontFamily='"Playfair Display", Georgia, serif'
+            fontWeight={900}
+          />
         </h2>
       </Link>
       {article.deck && (
-        <p className="mt-3 font-serif italic text-[var(--ink-mid)]" style={{ fontSize: "clamp(17px, 1.6vw, 22px)" }}>
+        <p
+          className="mt-3 font-serif italic text-[var(--ink-mid)]"
+          style={{ fontSize: "clamp(17px, 1.6vw, 22px)" }}
+        >
           {article.deck}
         </p>
       )}
       <p className="mt-3 meta">
-        {article.author ? <><strong className="font-semibold not-italic">By {article.author}</strong> · </> : null}
-        {hoursAgo(article.publishedAt)} · <span className="italic">Source: {article.source.name}</span> · {article.readingTimeMin} min read
+        {article.author ? (
+          <>
+            <strong className="font-semibold not-italic">By {article.author}</strong> ·{" "}
+          </>
+        ) : null}
+        {hoursAgo(article.publishedAt)} ·{" "}
+        <span className="italic">Source: {article.source.name}</span> · {article.readingTimeMin} min
+        read
       </p>
-      {article.image && (
-        <figure className="mt-5">
-          <img src={article.image.url} alt={article.image.caption ?? article.headline} className="w-full aspect-[16/9] object-cover" />
-          {article.image.caption && <figcaption className="mt-2 meta italic">{article.image.caption}</figcaption>}
-        </figure>
-      )}
-      <p className="mt-5 font-serif text-[17px] leading-relaxed first-letter:font-black first-letter:text-[54px] first-letter:float-left first-letter:mr-2 first-letter:leading-[0.9]">
-        {article.summary}
-      </p>
+      <p className="mt-5 font-serif text-[17px] leading-relaxed">{article.summary}</p>
+
       {article.keyPoints.length > 0 && (
         <div className="mt-5 border-l-2 border-[var(--ink)] pl-4">
-          <p className="eyebrow">Key points</p>
+          <h3 className="eyebrow">
+            <FitText
+              text="Key points"
+              minFontSize={10}
+              maxFontSize={12}
+              maxLines={1}
+              lineHeightRatio={1}
+              fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+              fontWeight={700}
+            />
+          </h3>
           <ul className="mt-2 space-y-1 font-serif text-[15px] leading-snug">
-            {article.keyPoints.map((k, i) => <li key={i}>— {k}</li>)}
+            {article.keyPoints.map((k, i) => (
+              <li key={i}>— {k}</li>
+            ))}
           </ul>
         </div>
       )}
-      <Link to="/article/$slug" params={{ slug: article.slug }} className="read-more mt-5 inline-block">
+      <Link
+        to="/article/$slug"
+        params={{ slug: article.slug }}
+        className="read-more mt-5 inline-block"
+      >
         Continue reading →
       </Link>
     </article>

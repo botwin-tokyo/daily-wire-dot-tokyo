@@ -1,12 +1,7 @@
 import { z } from "zod";
+import { SectionSchema } from "./schema";
 
-export const CategorySchema = z.enum([
-  "world",
-  "technology",
-  "business",
-  "science",
-  "culture",
-]);
+export const CategorySchema = z.enum(["world", "technology", "business", "science", "culture"]);
 export type Category = z.infer<typeof CategorySchema>;
 
 export const ArticleSchema = z.object({
@@ -101,6 +96,7 @@ export const EditionSchema = z.object({
   markets: z.array(MarketTickerSchema),
   commodities: z.array(MarketTickerSchema),
   weather: z.array(WeatherCellSchema),
+  sections: z.array(SectionSchema).default([]),
 });
 export type Edition = z.infer<typeof EditionSchema>;
 
@@ -155,3 +151,33 @@ export type Feed = {
   lastError?: string;
   health: "healthy" | "degraded" | "down";
 };
+
+/**
+ * Canonical content-layer types derived from src/lib/schema.ts.
+ * These describe the exact shape of public/data/current-edition.json.
+ * Existing components continue to use the legacy `Edition`/`Article` types
+ * above while the adapter layer is being built out.
+ */
+export type {
+  NewspaperEdition,
+  Article as NewspaperArticle,
+  Section as NewspaperSection,
+  BriefingItem as NewspaperBriefingItem,
+  MarketTicker as NewspaperMarketTicker,
+  MarketSnapshot as NewspaperMarketSnapshot,
+  WeatherCell as NewspaperWeatherCell,
+  WeatherSnapshot as NewspaperWeatherSnapshot,
+  Source as NewspaperSource,
+  Image as NewspaperImage,
+  EditorsNote as NewspaperEditorsNote,
+  TransparencySource as NewspaperTransparencySource,
+  GenerationMetadata as NewspaperGenerationMetadata,
+  Footer as NewspaperFooter,
+  FooterLink as NewspaperFooterLink,
+  Banner as NewspaperBanner,
+  Navigation as NewspaperNavigation,
+  NavItem as NewspaperNavItem,
+  Masthead as NewspaperMasthead,
+  UtilityBar as NewspaperUtilityBar,
+  DisplayPosition,
+} from "./schema";

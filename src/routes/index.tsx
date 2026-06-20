@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { queryOptions } from "@tanstack/react-query";
+import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { PageShell } from "@/components/newspaper/PageShell";
 import { LeadStory } from "@/components/newspaper/LeadStory";
@@ -10,23 +9,32 @@ import { MarketTable } from "@/components/newspaper/MarketTable";
 import { MorningBriefing } from "@/components/newspaper/MorningBriefing";
 import { AIEditorsNote } from "@/components/newspaper/AIEditorsNote";
 import { WeatherStrip } from "@/components/newspaper/WeatherStrip";
-import { getLatestEdition } from "@/lib/api";
+import { getLatestNewspaperEdition } from "@/lib/api";
+import { newspaperEditionToEdition } from "@/lib/edition-loader";
+import { deriveFrontPageLayout } from "@/lib/layout";
 
-const editionQuery = queryOptions({
-  queryKey: ["edition", "latest"],
-  queryFn: () => getLatestEdition(),
+const newspaperEditionQuery = queryOptions({
+  queryKey: ["edition", "newspaper", "latest"],
+  queryFn: () => getLatestNewspaperEdition(),
 });
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "The Morning Wire — Today's Edition" },
-      { name: "description", content: "A personal AI-curated newspaper. Today's lead stories, morning briefing, and editor's note — refreshed before sunrise." },
+      {
+        name: "description",
+        content:
+          "A personal AI-curated newspaper. Today's lead stories, morning briefing, and editor's note — refreshed before sunrise.",
+      },
       { property: "og:title", content: "The Morning Wire — Today's Edition" },
-      { property: "og:description", content: "Your personal daily intelligence, delivered before sunrise." },
+      {
+        property: "og:description",
+        content: "Your personal daily intelligence, delivered before sunrise.",
+      },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(editionQuery),
+  loader: ({ context }) => context.queryClient.ensureQueryData(newspaperEditionQuery),
   component: Index,
 });
 
@@ -41,10 +49,17 @@ function Index() {
 }
 
 function EditionView() {
-  const { data: edition } = useSuspenseQuery(editionQuery);
-  const lead = edition.articles.find((a) => a.id === edition.leadArticleId)!;
-  const left = edition.articles.filter((a) => ["a2", "a3"].includes(a.id));
-  const right = edition.articles.filter((a) => ["a4", "a5"].includes(a.id));
+  const { data: newspaper } = useSuspenseQuery(newspaperEditionQuery);
+  const layout = deriveFrontPageLayout(newspaper);
+  const edition = newspaperEditionToEdition(newspaper);
+
+  const lead = edition.articles.find((a) => a.id === layout.lead.id)!;
+  const left = layout.left
+    .map((a) => edition.articles.find((ea) => ea.id === a.id))
+    .filter((a): a is NonNullable<typeof a> => a != null);
+  const right = layout.right
+    .map((a) => edition.articles.find((ea) => ea.id === a.id))
+    .filter((a): a is NonNullable<typeof a> => a != null);
 
   return (
     <>
@@ -52,8 +67,10 @@ function EditionView() {
       <div className="grid grid-cols-1 lg:grid-cols-[22fr_44fr_34fr] gap-0">
         {/* LEFT COL */}
         <div className="lg:border-r lg:border-[var(--rule)] lg:pr-5">
-          {left.map((a) => <SidebarStory key={a.id} article={a} />)}
-          <MarketTable edition={edition} />
+          {left.map((a) => (
+            <SidebarStory key={a.id} article={a} />
+          ))}
+          <MarketTable marketSnapshot={newspaper.marketSnapshot} />
         </div>
 
         {/* CENTER COL */}
@@ -63,7 +80,9 @@ function EditionView() {
 
         {/* RIGHT COL */}
         <div className="lg:pl-5">
-          {right.map((a) => <RightStory key={a.id} article={a} />)}
+          {right.map((a) => (
+            <RightStory key={a.id} article={a} />
+          ))}
           <div className="mt-4 grid gap-4">
             <MorningBriefing edition={edition} />
             <AIEditorsNote edition={edition} />
@@ -71,7 +90,10 @@ function EditionView() {
         </div>
       </div>
 
-      <WeatherStrip edition={edition} />
+      <WeatherStrip
+        weather={newspaper.weather}
+        commodities={newspaper.marketSnapshot.commodities}
+      />
     </>
   );
 }
