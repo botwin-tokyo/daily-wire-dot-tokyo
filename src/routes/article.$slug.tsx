@@ -22,7 +22,7 @@ export const Route = createFileRoute("/article/$slug")({
   head: ({ loaderData }) => ({
     meta: [
       { title: `${loaderData?.headline ?? "Article"} — The Morning Wire` },
-      { name: "description", content: loaderData?.summary?.slice(0, 160) ?? "" },
+      { name: "description", content: (loaderData?.content ?? loaderData?.summary ?? "").slice(0, 160) },
     ],
   }),
   component: ArticlePage,
@@ -121,7 +121,7 @@ function ArticlePage() {
         <section className="mt-8">
           <h2 className="eyebrow">
             <FitText
-              text="AI-generated summary"
+              text="Full article"
               minFontSize={10}
               maxFontSize={12}
               maxLines={1}
@@ -130,7 +130,11 @@ function ArticlePage() {
               fontWeight={700}
             />
           </h2>
-          <p className="mt-2 text-[17px] leading-relaxed">{article.summary}</p>
+          <div className="mt-4 space-y-5 font-serif text-[17px] leading-relaxed">
+            {(article.content ?? article.summary ?? "").split(/\n\s*\n/).map((paragraph, i) =>
+              paragraph.trim() ? <p key={i}>{paragraph.trim()}</p> : null
+            )}
+          </div>
         </section>
 
         {article.keyPoints.length > 0 && (
@@ -243,8 +247,8 @@ function ArticlePage() {
         </section>
 
         <p className="meta mt-8 italic">
-          The Morning Wire shows AI-generated summaries and metadata. We do not reproduce original
-          article text. Please visit the publisher for full reporting.
+          The Morning Wire publishes the full source article for reading convenience. Please visit
+          the publisher for the original presentation and any updates.
         </p>
       </article>
     </PageShell>

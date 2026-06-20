@@ -87,7 +87,11 @@
       "summary": "City leaders from more than 40 countries gathered in Singapore this week for the Global Resilient Cities Summit, sharing strategies to tackle climate threats ranging from extreme heat to rising seas. Funding, innovation, and cross-border collaboration took center stage as mayors emphasized that adaptation is no longer optional.",
       "whyItMatters": "Two thirds of the world will live in urban areas by 2050. The decisions made by city halls this decade will determine where billions of people can safely live and work.",
       "category": "world",
-      "tags": ["climate", "cities", "policy"],
+      "tags": [
+        "climate",
+        "cities",
+        "policy"
+      ],
       "author": "Olivia Grant",
       "source": {
         "name": "Associated Press",
@@ -109,14 +113,18 @@
         "Singapore unveiled a $4B coastal protection program.",
         "New cross-city data-sharing platform launches in Q3."
       ],
-      "relatedArticleIds": ["a4", "a5"],
+      "relatedArticleIds": [
+        "a4",
+        "a5"
+      ],
       "relevanceScore": 0.97,
       "confidenceScore": 0.92,
       "editorialProminence": 1,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "City leaders from more than 40 countries gathered in Singapore this week for the Global Resilient Cities Summit, sharing strategies to tackle climate threats ranging from extreme heat to rising seas. Funding, innovation, and cross-border collaboration took center stage as mayors emphasized that adaptation is no longer optional."
     },
     {
       "id": "a2",
@@ -125,7 +133,10 @@
       "headline": "European leaders push for unified defense strategy",
       "summary": "EU leaders met in Brussels to advance a joint defense initiative aimed at strengthening capabilities and reducing dependence on external allies.",
       "category": "world",
-      "tags": ["europe", "defense"],
+      "tags": [
+        "europe",
+        "defense"
+      ],
       "author": "Claire Donovan",
       "source": {
         "name": "DW",
@@ -147,7 +158,8 @@
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "EU leaders met in Brussels to advance a joint defense initiative aimed at strengthening capabilities and reducing dependence on external allies."
     },
     {
       "id": "a3",
@@ -156,7 +168,10 @@
       "headline": "Markets rise as inflation cools in key regions",
       "summary": "Global markets opened higher after new data showed inflation easing in the U.S. and Europe, boosting investor confidence.",
       "category": "business",
-      "tags": ["markets", "inflation"],
+      "tags": [
+        "markets",
+        "inflation"
+      ],
       "author": "Marcus Lee",
       "source": {
         "name": "Reuters",
@@ -178,7 +193,8 @@
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "Global markets opened higher after new data showed inflation easing in the U.S. and Europe, boosting investor confidence."
     },
     {
       "id": "a4",
@@ -187,7 +203,11 @@
       "headline": "AI regulation frameworks take shape worldwide",
       "summary": "New policies in the EU and Asia aim to balance innovation with transparency and safety as generative AI tools become more powerful.",
       "category": "technology",
-      "tags": ["ai", "policy", "regulation"],
+      "tags": [
+        "ai",
+        "policy",
+        "regulation"
+      ],
       "author": "Daniel Chen",
       "source": {
         "name": "The Verge",
@@ -209,14 +229,17 @@
         "Japan publishes voluntary safety standard.",
         "U.S. agencies adopt model evaluation guidelines."
       ],
-      "relatedArticleIds": ["a1"],
+      "relatedArticleIds": [
+        "a1"
+      ],
       "relevanceScore": 0.86,
       "confidenceScore": 0.89,
       "editorialProminence": 0.75,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "New policies in the EU and Asia aim to balance innovation with transparency and safety as generative AI tools become more powerful."
     },
     {
       "id": "a5",
@@ -225,7 +248,11 @@
       "headline": "Breakthrough in battery tech could power the next generation",
       "summary": "Researchers develop a solid-state battery with higher capacity and faster charging, bringing long-range EV vehicles closer to reality.",
       "category": "science",
-      "tags": ["energy", "ev", "research"],
+      "tags": [
+        "energy",
+        "ev",
+        "research"
+      ],
       "author": "Maya Patel",
       "source": {
         "name": "Nature",
@@ -247,14 +274,17 @@
         "Charging from 10% to 80% in under 12 minutes.",
         "Commercial production targeted for 2027."
       ],
-      "relatedArticleIds": ["a1"],
+      "relatedArticleIds": [
+        "a1"
+      ],
       "relevanceScore": 0.84,
       "confidenceScore": 0.93,
       "editorialProminence": 0.7,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "Researchers develop a solid-state battery with higher capacity and faster charging, bringing long-range EV vehicles closer to reality."
     },
     {
       "id": "a6",
@@ -263,7 +293,9 @@
       "headline": "Ceasefire talks resume in the Middle East with cautious optimism",
       "summary": "Mediators report incremental progress as parties return to the negotiating table after a month-long pause.",
       "category": "world",
-      "tags": ["geopolitics"],
+      "tags": [
+        "geopolitics"
+      ],
       "source": {
         "name": "Al Jazeera",
         "url": "https://aljazeera.com",
@@ -273,7 +305,10 @@
       "publishedAt": "2025-05-20T01:55:00Z",
       "retrievedAt": "2025-05-20T05:25:00Z",
       "readingTimeMin": 4,
-      "keyPoints": ["Humanitarian corridors discussed.", "Phased exchange proposed."],
+      "keyPoints": [
+        "Humanitarian corridors discussed.",
+        "Phased exchange proposed."
+      ],
       "relatedArticleIds": [],
       "relevanceScore": 0.78,
       "confidenceScore": 0.84,
@@ -281,7 +316,8 @@
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "Mediators report incremental progress as parties return to the negotiating table after a month-long pause."
     },
     {
       "id": "a8",
@@ -290,7 +326,10 @@
       "headline": "New study highlights the benefits of early screening for Alzheimer's disease",
       "summary": "Early detection improved long-term outcomes in a multi-country cohort, researchers report.",
       "category": "science",
-      "tags": ["health", "research"],
+      "tags": [
+        "health",
+        "research"
+      ],
       "source": {
         "name": "The Guardian",
         "url": "https://theguardian.com",
@@ -300,7 +339,10 @@
       "publishedAt": "2025-05-20T02:20:00Z",
       "retrievedAt": "2025-05-20T05:25:00Z",
       "readingTimeMin": 4,
-      "keyPoints": ["Cohort of 12,000 across 8 countries.", "Five-year improvement signal."],
+      "keyPoints": [
+        "Cohort of 12,000 across 8 countries.",
+        "Five-year improvement signal."
+      ],
       "relatedArticleIds": [],
       "relevanceScore": 0.74,
       "confidenceScore": 0.86,
@@ -308,7 +350,8 @@
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "Early detection improved long-term outcomes in a multi-country cohort, researchers report."
     },
     {
       "id": "a9",
@@ -317,7 +360,10 @@
       "headline": "Venice Biennale opens with focus on memory and migration",
       "summary": "This year's curation centers on artists exploring identity across shifting borders.",
       "category": "culture",
-      "tags": ["art", "culture"],
+      "tags": [
+        "art",
+        "culture"
+      ],
       "source": {
         "name": "ARTnews",
         "url": "https://artnews.com",
@@ -327,7 +373,10 @@
       "publishedAt": "2025-05-19T22:10:00Z",
       "retrievedAt": "2025-05-20T05:25:00Z",
       "readingTimeMin": 5,
-      "keyPoints": ["89 national pavilions.", "Themes of memory, displacement, and home."],
+      "keyPoints": [
+        "89 national pavilions.",
+        "Themes of memory, displacement, and home."
+      ],
       "relatedArticleIds": [],
       "relevanceScore": 0.7,
       "confidenceScore": 0.82,
@@ -335,7 +384,8 @@
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "This year's curation centers on artists exploring identity across shifting borders."
     },
     {
       "id": "a10",
@@ -344,7 +394,10 @@
       "headline": "Pacific nations sign expanded trade pact after years of stalled talks",
       "summary": "Twelve economies finalized tariff reductions on digital goods and agricultural exports, signaling a pivot toward regional integration.",
       "category": "world",
-      "tags": ["trade", "asia-pacific"],
+      "tags": [
+        "trade",
+        "asia-pacific"
+      ],
       "author": "Hana Sato",
       "source": {
         "name": "Reuters",
@@ -366,7 +419,8 @@
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "Twelve economies finalized tariff reductions on digital goods and agricultural exports, signaling a pivot toward regional integration."
     },
     {
       "id": "a11",
@@ -375,7 +429,11 @@
       "headline": "Chip export controls tighten as supply chains reroute through Southeast Asia",
       "summary": "New licensing rules from Washington and Brussels are pushing fabricators to diversify packaging and assembly outside their traditional hubs.",
       "category": "technology",
-      "tags": ["semiconductors", "trade", "supply-chain"],
+      "tags": [
+        "semiconductors",
+        "trade",
+        "supply-chain"
+      ],
       "author": "Priya Raman",
       "source": {
         "name": "Bloomberg",
@@ -390,14 +448,17 @@
         "Vietnam and Malaysia gain new fab investment.",
         "License approvals slow to 90+ days."
       ],
-      "relatedArticleIds": ["a4"],
+      "relatedArticleIds": [
+        "a4"
+      ],
       "relevanceScore": 0.83,
       "confidenceScore": 0.87,
       "editorialProminence": 0.6,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "New licensing rules from Washington and Brussels are pushing fabricators to diversify packaging and assembly outside their traditional hubs."
     },
     {
       "id": "a12",
@@ -406,7 +467,10 @@
       "headline": "A new open-weights model challenges closed labs on reasoning benchmarks",
       "summary": "A consortium released a 70B-parameter model with permissive licensing that matches leading proprietary systems on math and code tasks.",
       "category": "technology",
-      "tags": ["ai", "open-source"],
+      "tags": [
+        "ai",
+        "open-source"
+      ],
       "source": {
         "name": "Ars Technica",
         "url": "https://arstechnica.com",
@@ -416,15 +480,21 @@
       "publishedAt": "2025-05-20T01:05:00Z",
       "retrievedAt": "2025-05-20T05:25:00Z",
       "readingTimeMin": 4,
-      "keyPoints": ["Apache-2.0 license.", "Tops three public reasoning benchmarks."],
-      "relatedArticleIds": ["a4"],
+      "keyPoints": [
+        "Apache-2.0 license.",
+        "Tops three public reasoning benchmarks."
+      ],
+      "relatedArticleIds": [
+        "a4"
+      ],
       "relevanceScore": 0.79,
       "confidenceScore": 0.86,
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "A consortium released a 70B-parameter model with permissive licensing that matches leading proprietary systems on math and code tasks."
     },
     {
       "id": "a14",
@@ -433,7 +503,10 @@
       "headline": "Retail earnings split the market as consumers trade down",
       "summary": "Discount chains beat expectations while mid-tier department stores warned on margins, sharpening the K-shaped consumer story.",
       "category": "business",
-      "tags": ["retail", "consumer"],
+      "tags": [
+        "retail",
+        "consumer"
+      ],
       "source": {
         "name": "CNBC",
         "url": "https://cnbc.com",
@@ -443,7 +516,10 @@
       "publishedAt": "2025-05-20T02:25:00Z",
       "retrievedAt": "2025-05-20T05:25:00Z",
       "readingTimeMin": 3,
-      "keyPoints": ["Discounter comps up 6.4%.", "Two majors cut full-year guidance."],
+      "keyPoints": [
+        "Discounter comps up 6.4%.",
+        "Two majors cut full-year guidance."
+      ],
       "relatedArticleIds": [],
       "relevanceScore": 0.74,
       "confidenceScore": 0.85,
@@ -451,7 +527,8 @@
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "Discount chains beat expectations while mid-tier department stores warned on margins, sharpening the K-shaped consumer story."
     },
     {
       "id": "a15",
@@ -460,7 +537,10 @@
       "headline": "Telescope detects water vapor in atmosphere of a temperate exoplanet",
       "summary": "Spectral readings from a planet 41 light-years away reveal conditions astronomers say warrant deeper follow-up campaigns.",
       "category": "science",
-      "tags": ["astronomy", "exoplanets"],
+      "tags": [
+        "astronomy",
+        "exoplanets"
+      ],
       "author": "Lin Wei",
       "source": {
         "name": "NASA",
@@ -471,7 +551,10 @@
       "publishedAt": "2025-05-20T00:20:00Z",
       "retrievedAt": "2025-05-20T05:25:00Z",
       "readingTimeMin": 5,
-      "keyPoints": ["Planet sits in the habitable zone.", "Follow-up time approved for 2026."],
+      "keyPoints": [
+        "Planet sits in the habitable zone.",
+        "Follow-up time approved for 2026."
+      ],
       "relatedArticleIds": [],
       "relevanceScore": 0.77,
       "confidenceScore": 0.88,
@@ -479,7 +562,8 @@
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "Spectral readings from a planet 41 light-years away reveal conditions astronomers say warrant deeper follow-up campaigns."
     },
     {
       "id": "a16",
@@ -488,7 +572,10 @@
       "headline": "Private fusion startup reports sustained plasma at record duration",
       "summary": "The 22-minute run clears a key engineering hurdle, though commercial power remains years away, independent reviewers say.",
       "category": "science",
-      "tags": ["energy", "fusion"],
+      "tags": [
+        "energy",
+        "fusion"
+      ],
       "source": {
         "name": "MIT Technology Review",
         "url": "https://technologyreview.com",
@@ -498,15 +585,21 @@
       "publishedAt": "2025-05-19T23:40:00Z",
       "retrievedAt": "2025-05-20T05:25:00Z",
       "readingTimeMin": 5,
-      "keyPoints": ["22-minute plasma confinement.", "Independent review pending."],
-      "relatedArticleIds": ["a5"],
+      "keyPoints": [
+        "22-minute plasma confinement.",
+        "Independent review pending."
+      ],
+      "relatedArticleIds": [
+        "a5"
+      ],
       "relevanceScore": 0.76,
       "confidenceScore": 0.84,
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "The 22-minute run clears a key engineering hurdle, though commercial power remains years away, independent reviewers say."
     },
     {
       "id": "a17",
@@ -515,7 +608,10 @@
       "headline": "International literary prize shortlist spans five continents",
       "summary": "Judges praised a slate that foregrounds translation and debut novelists, with a record number of small-press titles in contention.",
       "category": "culture",
-      "tags": ["literature", "prize"],
+      "tags": [
+        "literature",
+        "prize"
+      ],
       "source": {
         "name": "The Guardian",
         "url": "https://theguardian.com",
@@ -525,7 +621,10 @@
       "publishedAt": "2025-05-19T21:30:00Z",
       "retrievedAt": "2025-05-20T05:25:00Z",
       "readingTimeMin": 4,
-      "keyPoints": ["Six novels, five languages.", "Three debut authors shortlisted."],
+      "keyPoints": [
+        "Six novels, five languages.",
+        "Three debut authors shortlisted."
+      ],
       "relatedArticleIds": [],
       "relevanceScore": 0.68,
       "confidenceScore": 0.83,
@@ -533,7 +632,8 @@
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "Judges praised a slate that foregrounds translation and debut novelists, with a record number of small-press titles in contention."
     },
     {
       "id": "a18",
@@ -542,7 +642,10 @@
       "headline": "Cannes lineup leans into hybrid documentary and emerging directors",
       "summary": "Festival programmers say the slate reflects a generational shift toward genre-blurring nonfiction.",
       "category": "culture",
-      "tags": ["film", "festivals"],
+      "tags": [
+        "film",
+        "festivals"
+      ],
       "source": {
         "name": "Variety",
         "url": "https://variety.com",
@@ -552,7 +655,10 @@
       "publishedAt": "2025-05-19T20:00:00Z",
       "retrievedAt": "2025-05-20T05:25:00Z",
       "readingTimeMin": 4,
-      "keyPoints": ["21 films in competition.", "Seven first-time directors."],
+      "keyPoints": [
+        "21 films in competition.",
+        "Seven first-time directors."
+      ],
       "relatedArticleIds": [],
       "relevanceScore": 0.66,
       "confidenceScore": 0.82,
@@ -560,7 +666,8 @@
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
         "model": "lovable-ai/gemini-3-flash"
-      }
+      },
+      "content": "Festival programmers say the slate reflects a generational shift toward genre-blurring nonfiction."
     }
   ],
   "sections": [
@@ -571,7 +678,11 @@
       "dek": "Geopolitics, diplomacy, and the stories shaping nations before sunrise.",
       "order": 1,
       "visible": true,
-      "articleIds": ["a2", "a6", "a10"]
+      "articleIds": [
+        "a2",
+        "a6",
+        "a10"
+      ]
     },
     {
       "id": "business",
@@ -580,7 +691,10 @@
       "dek": "Macro signals, central banks, earnings, and the deals moving capital today.",
       "order": 2,
       "visible": true,
-      "articleIds": ["a3", "a14"]
+      "articleIds": [
+        "a3",
+        "a14"
+      ]
     },
     {
       "id": "technology",
@@ -589,7 +703,11 @@
       "dek": "Models, chips, platforms, and the policy lines being drawn around them.",
       "order": 3,
       "visible": true,
-      "articleIds": ["a4", "a11", "a12"]
+      "articleIds": [
+        "a4",
+        "a11",
+        "a12"
+      ]
     },
     {
       "id": "science",
@@ -598,7 +716,12 @@
       "dek": "Breakthroughs from labs, observatories, and clinical trials worth your attention.",
       "order": 4,
       "visible": true,
-      "articleIds": ["a5", "a8", "a15", "a16"]
+      "articleIds": [
+        "a5",
+        "a8",
+        "a15",
+        "a16"
+      ]
     },
     {
       "id": "culture",
@@ -607,7 +730,11 @@
       "dek": "Art, books, film, and the conversations defining the week.",
       "order": 5,
       "visible": true,
-      "articleIds": ["a9", "a17", "a18"]
+      "articleIds": [
+        "a9",
+        "a17",
+        "a18"
+      ]
     }
   ],
   "morningBriefing": [

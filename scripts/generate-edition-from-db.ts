@@ -18,6 +18,7 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { openDb, initSchema, getLatestArticles, getRunStats } from "../backend/scripts/lib/db";
+import { plainText } from "../backend/scripts/lib/extract";
 import { validateNewspaperEdition } from "../src/lib/schema";
 import type { NewspaperEdition, Article, Section, NavItem } from "../src/lib/schema";
 
@@ -96,7 +97,7 @@ function sourceUrl(name: string): string {
   if (lower.includes("polygon")) return "https://www.polygon.com";
   if (lower.includes("france24")) return "https://www.france24.com";
   if (lower.includes("aljazeera")) return "https://www.aljazeera.com";
-  if (lower.includes("hackernews")) return "https://news.ycombinator.com";
+  if (lower.includes("hackernews") || lower.includes("hacker news")) return "https://news.ycombinator.com";
   if (lower.includes("9to5mac")) return "https://9to5mac.com";
   if (lower.includes("macrumors")) return "https://www.macrumors.com";
   if (lower.includes("techcrunch")) return "https://techcrunch.com";
@@ -114,7 +115,8 @@ function sourceUrl(name: string): string {
 function buildArticle(row: ReturnType<typeof getLatestArticles>[number], index: number): Article {
   const slug = slugify(row.title);
   const id = idFromUrl(row.url, index);
-  const content = row.content ?? row.summary ?? "";
+  const rawContent = row.content ?? row.summary ?? "";
+  const content = plainText(rawContent).trim();
   const summary = (row.summary ?? content.slice(0, 500)).slice(0, 1997).trim();
 
   return {
@@ -124,6 +126,7 @@ function buildArticle(row: ReturnType<typeof getLatestArticles>[number], index: 
     headline: row.title,
     deck: deriveDeck(content),
     summary: summary.length > 0 ? summary : "No summary available.",
+    content: content.length > 0 ? content : "No article content available.",
     category: row.category,
     tags: [],
     author: row.author ?? undefined,

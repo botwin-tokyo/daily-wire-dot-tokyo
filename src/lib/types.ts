@@ -20,6 +20,7 @@ export const ArticleSchema = z.object({
   headline: z.string(),
   deck: z.string().optional(),
   summary: z.string(),
+  content: z.string().optional(),
   whyItMatters: z.string().optional(),
   keyPoints: z.array(z.string()).default([]),
   source: z.object({

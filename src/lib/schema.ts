@@ -46,6 +46,16 @@ function plainText(maxLength?: number) {
   );
 }
 
+function articleContent(maxLength = 100000) {
+  return z
+    .string()
+    .max(maxLength)
+    .refine(
+      (val) => !/javascript:|on\w+\s*=|style\s*=/i.test(val),
+      "Content must not contain event handlers, javascript: URLs, or inline styles",
+    );
+}
+
 const FORBIDDEN_PROTOCOLS = /^(javascript|data|vbscript|file):/i;
 
 function safeUrl() {
@@ -98,6 +108,7 @@ export const ArticleSchema = z.object({
   headline: plainText(200),
   deck: plainText(300).optional(),
   summary: plainText(2000),
+  content: articleContent(),
   category: CategorySchema,
   tags: z.array(plainText(50)).default([]),
   author: plainText(100).optional(),

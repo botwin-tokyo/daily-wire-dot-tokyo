@@ -54,6 +54,7 @@ export function adaptArticle(article: NewspaperArticle): Article {
     headline: article.headline,
     deck: article.deck,
     summary: article.summary,
+    content: article.content ?? article.summary,
     whyItMatters: article.whyItMatters,
     keyPoints: article.keyPoints,
     source: article.source,
