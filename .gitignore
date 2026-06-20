@@ -19,6 +19,7 @@ dist-ssr
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
+.env
 
 # Local SQLite database populated by aggregation scripts
 backend/db/*.db
