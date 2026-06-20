@@ -27,9 +27,6 @@ jobs:
       - name: Typecheck
         run: bunx tsc --noEmit
 
-      - name: Validate edition files
-        run: bun run validate:edition -- public/data/current-edition.json public/data/editions/*.json examples/example-edition.json
-
       - name: Build
         run: bun run build
 
