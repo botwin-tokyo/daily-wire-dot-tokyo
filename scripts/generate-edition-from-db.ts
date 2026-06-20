@@ -74,6 +74,13 @@ function toIsoUtc(value: string | undefined | null): string {
   return date.toISOString();
 }
 
+function isWithinLast24Hours(value: string | undefined | null): boolean {
+  if (!value) return false;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return false;
+  return Date.now() - date.getTime() <= 24 * 60 * 60 * 1000;
+}
+
 function isValidImageUrl(value: string): boolean {
   if (value.startsWith("/")) return true;
   try {
@@ -185,9 +192,11 @@ function main(): void {
   const stats = getRunStats(db);
   console.error(`Generating edition from ${stats.articleCount} aggregated articles...`);
 
-  const allRows = getLatestArticles(db, 1000);
+  const allRows = getLatestArticles(db, 1000).filter((row) =>
+    isWithinLast24Hours(row.publishedAt ?? row.fetchedAt),
+  );
   if (allRows.length === 0) {
-    throw new Error("No articles found in database. Run npm run ingest:articles first.");
+    throw new Error("No articles from the last 24 hours found. Run npm run ingest:articles first.");
   }
 
   const articles: Article[] = allRows.map((row, index) => buildArticle(row, index));
