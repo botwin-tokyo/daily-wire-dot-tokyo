@@ -167,7 +167,7 @@ export function SectionPageContent({ category }: { category: string }) {
           {new Date(edition.nextScheduledAt).toLocaleString()}.
         </p>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-0">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-0 items-start">
           {/* Main column */}
           <div className="lg:border-r lg:border-[var(--rule)] lg:pr-8">
             {/* Lead */}
@@ -175,10 +175,17 @@ export function SectionPageContent({ category }: { category: string }) {
 
             {/* Grid of the rest */}
             {rest.length > 0 && (
-              <div className="mt-2 grid gap-x-8 md:grid-cols-2 border-t border-[var(--ink)]">
-                {rest.map((a) => (
-                  <SidebarStory key={a.id} article={a} />
-                ))}
+              <div className="mt-2 grid gap-x-8 md:grid-cols-2 border-t border-[var(--ink)] items-start">
+                <div className="flex flex-col">
+                  {rest.filter((_, i) => i % 2 === 0).map((a) => (
+                    <SidebarStory key={a.id} article={a} />
+                  ))}
+                </div>
+                <div className="flex flex-col lg:border-l lg:border-[var(--rule)] lg:pl-8">
+                  {rest.filter((_, i) => i % 2 === 1).map((a) => (
+                    <SidebarStory key={a.id} article={a} />
+                  ))}
+                </div>
               </div>
             )}
           </div>

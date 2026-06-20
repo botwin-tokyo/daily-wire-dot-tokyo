@@ -64,7 +64,7 @@ function EditionView() {
   return (
     <>
       {/* Editorial grid: 22 / 44 / 34 */}
-      <div className="grid grid-cols-1 lg:grid-cols-[22fr_44fr_34fr] gap-0">
+      <div className="grid grid-cols-1 lg:grid-cols-[22fr_44fr_34fr] gap-0 items-start">
         {/* LEFT COL */}
         <div className="lg:border-r lg:border-[var(--rule)] lg:pr-5">
           {left.map((a) => (
