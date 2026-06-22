@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { PageShell } from "@/components/newspaper/PageShell";
 import { SidebarStory, hoursAgo } from "@/components/newspaper/SidebarStory";
+import { RightStory } from "@/components/newspaper/RightStory";
 import { ArticleBody } from "@/components/newspaper/ArticleBody";
 import { FitText } from "@/components/pretext";
 import { getLatestEdition } from "@/lib/api";
@@ -117,6 +118,13 @@ export function SectionPageContent({ category }: { category: string }) {
     .filter((a) => a.category === cat.data)
     .sort((a, b) => b.relevanceScore - a.relevanceScore);
   const [lead, ...rest] = articles;
+
+  // Spread the remaining stories across all three columns so no column is
+  // reduced to a link list while another holds all the full articles.
+  const leftArticles = rest.filter((_, i) => i % 3 === 0);
+  const centerArticles = rest.filter((_, i) => i % 3 === 1);
+  const rightArticles = rest.filter((_, i) => i % 3 === 2);
+
   const tagCounts = new Map<string, number>();
   articles.forEach((a) => a.tags.forEach((t) => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1)));
   const topTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8);
@@ -172,70 +180,62 @@ export function SectionPageContent({ category }: { category: string }) {
           {new Date(edition.nextScheduledAt).toLocaleString()}.
         </p>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-0 items-start">
-          {/* Main column */}
-          <div className="lg:border-r lg:border-[var(--rule)] lg:pr-8">
-            {/* Lead */}
-            <SectionLead article={lead} />
-
-            {/* Grid of the rest */}
-            {rest.length > 0 && (
-              <div className="mt-2 grid gap-x-8 md:grid-cols-2 border-t border-[var(--ink)] items-start">
-                <div className="flex flex-col">
-                  {rest
-                    .filter((_, i) => i % 2 === 0)
-                    .map((a) => (
-                      <SidebarStory key={a.id} article={a} />
-                    ))}
-                </div>
-                <div className="flex flex-col lg:border-l lg:border-[var(--rule)] lg:pl-8">
-                  {rest
-                    .filter((_, i) => i % 2 === 1)
-                    .map((a) => (
-                      <SidebarStory key={a.id} article={a} />
-                    ))}
-                </div>
-              </div>
-            )}
+        <div className="grid grid-cols-1 lg:grid-cols-[30fr_44fr_26fr] gap-0 items-start">
+          {/* LEFT COLUMN */}
+          <div className="lg:border-r lg:border-[var(--rule)] lg:pr-5">
+            {leftArticles.map((a) => (
+              <SidebarStory key={a.id} article={a} />
+            ))}
           </div>
 
-          {/* Sidebar rail */}
-          <aside className="lg:pl-8 py-5 space-y-8">
-            <div>
-              <h3 className="eyebrow">
-                <FitText
-                  text="In this section"
-                  minFontSize={10}
-                  maxFontSize={12}
-                  maxLines={1}
-                  lineHeightRatio={1}
-                  fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
-                  fontWeight={700}
-                />
-              </h3>
-              <ul className="mt-3 divide-y divide-[var(--rule)] border-y border-[var(--rule)]">
-                {articles.map((a) => (
-                  <li key={a.id} className="py-2">
-                    <Link
-                      to="/article/$slug"
-                      params={{ slug: a.slug }}
-                      className="font-serif text-[15px] leading-snug hover:underline"
-                    >
-                      {a.headline}
-                    </Link>
-                    <p className="meta">
-                      {hoursAgo(a.publishedAt)} · {a.source.name}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* CENTER COLUMN */}
+          <div className="lg:border-r lg:border-[var(--rule)] lg:px-5 py-5">
+            <SectionLead article={lead} />
+            {centerArticles.map((a) => (
+              <SidebarStory key={a.id} article={a} />
+            ))}
+          </div>
 
-            {topTags.length > 0 && (
+          {/* RIGHT COLUMN */}
+          <div className="lg:pl-5">
+            {rightArticles.map((a) => (
+              <RightStory key={a.id} article={a} />
+            ))}
+
+            {/* Section meta rail */}
+            <aside className="py-5 space-y-6">
+              {topTags.length > 0 && (
+                <div>
+                  <h3 className="eyebrow">
+                    <FitText
+                      text="Topics"
+                      minFontSize={10}
+                      maxFontSize={12}
+                      maxLines={1}
+                      lineHeightRatio={1}
+                      fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+                      fontWeight={700}
+                    />
+                  </h3>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {topTags.map(([tag, n]) => (
+                      <Link
+                        key={tag}
+                        to="/search"
+                        search={{ q: tag } as never}
+                        className="border border-[var(--rule)] px-2 py-0.5 font-sans text-[11px] uppercase tracking-wider text-[var(--ink-mid)] hover:bg-[var(--ink)] hover:text-[var(--paper)]"
+                      >
+                        {tag} <span className="text-[var(--ink-faint)]">{n}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div>
                 <h3 className="eyebrow">
                   <FitText
-                    text="Topics"
+                    text="Sources used"
                     minFontSize={10}
                     maxFontSize={12}
                     maxLines={1}
@@ -244,70 +244,44 @@ export function SectionPageContent({ category }: { category: string }) {
                     fontWeight={700}
                   />
                 </h3>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {topTags.map(([tag, n]) => (
-                    <Link
-                      key={tag}
-                      to="/search"
-                      search={{ q: tag } as never}
-                      className="border border-[var(--rule)] px-2 py-0.5 font-sans text-[11px] uppercase tracking-wider text-[var(--ink-mid)] hover:bg-[var(--ink)] hover:text-[var(--paper)]"
-                    >
-                      {tag} <span className="text-[var(--ink-faint)]">{n}</span>
-                    </Link>
+                <ul className="mt-3 space-y-1 font-sans text-[13px] text-[var(--ink-mid)]">
+                  {sources.map((s) => (
+                    <li key={s}>· {s}</li>
                   ))}
-                </div>
+                </ul>
               </div>
-            )}
 
-            <div>
-              <h3 className="eyebrow">
-                <FitText
-                  text="Sources used"
-                  minFontSize={10}
-                  maxFontSize={12}
-                  maxLines={1}
-                  lineHeightRatio={1}
-                  fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
-                  fontWeight={700}
-                />
-              </h3>
-              <ul className="mt-3 space-y-1 font-sans text-[13px] text-[var(--ink-mid)]">
-                {sources.map((s) => (
-                  <li key={s}>· {s}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="border-t border-[var(--ink)] pt-4">
-              <h3 className="eyebrow">
-                <FitText
-                  text="Other sections"
-                  minFontSize={10}
-                  maxFontSize={12}
-                  maxLines={1}
-                  lineHeightRatio={1}
-                  fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
-                  fontWeight={700}
-                />
-              </h3>
-              <ul className="mt-3 space-y-1">
-                {edition.sections
-                  .filter((s) => s.id !== cat.data && s.visible)
-                  .sort((a, b) => a.order - b.order)
-                  .map((s) => (
-                    <li key={s.id}>
-                      <Link
-                        to="/section/$category"
-                        params={{ category: s.id }}
-                        className="font-serif text-[15px] hover:underline"
-                      >
-                        {s.label}
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          </aside>
+              <div className="border-t border-[var(--ink)] pt-4">
+                <h3 className="eyebrow">
+                  <FitText
+                    text="Other sections"
+                    minFontSize={10}
+                    maxFontSize={12}
+                    maxLines={1}
+                    lineHeightRatio={1}
+                    fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+                    fontWeight={700}
+                  />
+                </h3>
+                <ul className="mt-3 space-y-1">
+                  {edition.sections
+                    .filter((s) => s.id !== cat.data && s.visible)
+                    .sort((a, b) => a.order - b.order)
+                    .map((s) => (
+                      <li key={s.id}>
+                        <Link
+                          to="/section/$category"
+                          params={{ category: s.id }}
+                          className="font-serif text-[15px] hover:underline"
+                        >
+                          {s.label}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </aside>
+          </div>
         </div>
       )}
     </PageShell>
