@@ -12,7 +12,7 @@
 import { JSDOM } from "jsdom";
 import { extractArticleFromHtml } from "./extract";
 import { fetchViaLadder, isLadderConfigured } from "./ladder";
-import { fetchViaFirecrawl, isFirecrawlConfigured } from "./firecrawl";
+import { fetchViaFirecrawl, isFirecrawlConfigured, isFirecrawlQuotaExhausted } from "./firecrawl";
 import { collectFromRssFeeds } from "./rss-source";
 import { buildResult, printResult } from "./fetch";
 import type { NormalizedArticle } from "./types";
@@ -92,7 +92,12 @@ function extractLinks(
   return links;
 }
 
-async function tryScrape(config: ScrapeConfig, source: string, category: string, max: number): Promise<NormalizedArticle[]> {
+async function tryScrape(
+  config: ScrapeConfig,
+  source: string,
+  category: string,
+  max: number,
+): Promise<NormalizedArticle[]> {
   if (!isLadderConfigured()) return [];
   const articles: NormalizedArticle[] = [];
 
@@ -137,7 +142,12 @@ async function tryScrape(config: ScrapeConfig, source: string, category: string,
   return articles;
 }
 
-async function tryRss(rss: RssConfig, source: string, category: string, max: number): Promise<NormalizedArticle[]> {
+async function tryRss(
+  rss: RssConfig,
+  source: string,
+  category: string,
+  max: number,
+): Promise<NormalizedArticle[]> {
   return collectFromRssFeeds(
     source,
     [
@@ -158,7 +168,7 @@ async function tryFirecrawl(
   category: string,
   max: number,
 ): Promise<NormalizedArticle[]> {
-  if (!isFirecrawlConfigured()) return [];
+  if (!isFirecrawlConfigured() || isFirecrawlQuotaExhausted()) return [];
   const articles: NormalizedArticle[] = [];
 
   try {
@@ -224,7 +234,12 @@ export async function aggregateWithFallbacks(config: MultiStrategyConfig): Promi
   }
 
   if (articles.length === 0 && config.scrape) {
-    const firecrawlArticles = await tryFirecrawl(config.scrape, config.source, config.category, max);
+    const firecrawlArticles = await tryFirecrawl(
+      config.scrape,
+      config.source,
+      config.category,
+      max,
+    );
     if (firecrawlArticles.length > 0) {
       articles = firecrawlArticles;
       strategy = "firecrawl";

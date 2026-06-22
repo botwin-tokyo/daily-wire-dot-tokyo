@@ -24,6 +24,23 @@ export function isFirecrawlQuotaExhausted(): boolean {
   return firecrawlQuotaExhausted;
 }
 
+export function markFirecrawlQuotaExhausted(): void {
+  firecrawlQuotaExhausted = true;
+}
+
+function isQuotaError(status: number, body: string, message: string): boolean {
+  if (status === 429) return true;
+  const text = `${body} ${message}`.toLowerCase();
+  return (
+    text.includes("credit") ||
+    text.includes("quota") ||
+    text.includes("exhausted") ||
+    text.includes("limit reached") ||
+    text.includes("rate limit") ||
+    text.includes("insufficient credits")
+  );
+}
+
 interface FirecrawlMetadata {
   title?: string;
   description?: string;
@@ -141,13 +158,23 @@ export async function fetchViaFirecrawl(
       signal: controller.signal,
     });
 
+    const responseText = await response.text();
+
     if (!response.ok) {
-      throw new Error(`Firecrawl returned ${response.status}: ${await response.text()}`);
+      if (isQuotaError(response.status, responseText, "")) {
+        firecrawlQuotaExhausted = true;
+        throw new Error(`Firecrawl quota exhausted (HTTP ${response.status})`);
+      }
+      throw new Error(`Firecrawl returned ${response.status}: ${responseText}`);
     }
 
-    const result = (await response.json()) as FirecrawlResponse;
+    const result = JSON.parse(responseText) as FirecrawlResponse;
 
     if (!result.success) {
+      if (isQuotaError(0, "", result.error ?? "")) {
+        firecrawlQuotaExhausted = true;
+        throw new Error(`Firecrawl quota exhausted: ${result.error}`);
+      }
       throw new Error(`Firecrawl failed: ${result.error ?? "unknown error"}`);
     }
 

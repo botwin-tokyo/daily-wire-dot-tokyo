@@ -10,7 +10,11 @@
 
 import { JSDOM } from "jsdom";
 import { extractArticleFromHtml } from "./lib/extract";
-import { fetchViaFirecrawl } from "./lib/firecrawl";
+import {
+  fetchViaFirecrawl,
+  isFirecrawlQuotaExhausted,
+  markFirecrawlQuotaExhausted,
+} from "./lib/firecrawl";
 import { buildResult, printResult } from "./lib/fetch";
 import type { NormalizedArticle } from "./lib/types";
 
@@ -52,8 +56,27 @@ function extractLinks(html: string, baseUrl: string, max: number): string[] {
 }
 
 async function main(): Promise<void> {
+  if (isFirecrawlQuotaExhausted()) {
+    printResult(buildResult(SOURCE, CATEGORY, []));
+    return;
+  }
+
   const max = 8;
-  const indexHtml = await fetchViaFirecrawl(INDEX_URL);
+  let indexHtml: string;
+  try {
+    indexHtml = await fetchViaFirecrawl(INDEX_URL);
+  } catch (err) {
+    if (
+      err instanceof Error &&
+      (err.message.includes("quota exhausted") || err.message.includes("Firecrawl disabled"))
+    ) {
+      markFirecrawlQuotaExhausted();
+      printResult(buildResult(SOURCE, CATEGORY, []));
+      return;
+    }
+    throw err;
+  }
+
   const links = extractLinks(indexHtml, INDEX_URL, max);
   const articles: NormalizedArticle[] = [];
 
@@ -74,6 +97,13 @@ async function main(): Promise<void> {
         language: extracted.language ?? "en",
       });
     } catch (err) {
+      if (
+        err instanceof Error &&
+        (err.message.includes("quota exhausted") || err.message.includes("Firecrawl disabled"))
+      ) {
+        markFirecrawlQuotaExhausted();
+        break;
+      }
       console.error(
         `[${SOURCE}] Failed article ${link}: ${err instanceof Error ? err.message : String(err)}`,
       );

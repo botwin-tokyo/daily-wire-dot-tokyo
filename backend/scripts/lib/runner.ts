@@ -21,7 +21,7 @@ export interface ScriptOkResult extends ScriptResultBase {
 }
 
 export interface ScriptFailedResult extends ScriptResultBase {
-  status: "missing-key" | "error";
+  status: "missing-key" | "skipped" | "error";
   error?: string;
 }
 
@@ -127,11 +127,12 @@ export function runScript(file: string): Promise<ScriptResult> {
 
       const errorText = (stderr || stdout).trim();
       const isMissingKey = errorText.includes("Missing environment variable");
+      const isSkipped = errorText.includes("Firecrawl quota exhausted");
       finish({
         script: basename,
         source: source ?? "unknown",
         category: category ?? "unknown",
-        status: isMissingKey ? "missing-key" : "error",
+        status: isMissingKey ? "missing-key" : isSkipped ? "skipped" : "error",
         error: errorText.slice(0, 300),
         durationMs,
       });

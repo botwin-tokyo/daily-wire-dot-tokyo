@@ -31,6 +31,7 @@ async function main(): Promise<void> {
 
   let ok = 0;
   let missingKey = 0;
+  let skipped = 0;
   let error = 0;
   let totalInserted = 0;
 
@@ -62,6 +63,9 @@ async function main(): Promise<void> {
     } else if (result.status === "missing-key") {
       missingKey++;
       console.log(`⏸️ ${label}: missing API key — ${result.durationMs}ms`);
+    } else if (result.status === "skipped") {
+      skipped++;
+      console.log(`⏭️ ${label}: skipped — ${result.durationMs}ms`);
     } else {
       error++;
       const message = result.status !== "ok" ? (result.error ?? "unknown error") : "unknown error";
@@ -69,11 +73,13 @@ async function main(): Promise<void> {
     }
   }
 
-  finishRun(db, runId, { total: files.length, ok, missingKey, error });
+  finishRun(db, runId, { total: files.length, ok, missingKey, skipped, error });
   const stats = getRunStats(db);
 
   console.log("\n--- Ingest complete ---");
-  console.log(`Run #${runId}: ${ok} ok, ${missingKey} missing key, ${error} error`);
+  console.log(
+    `Run #${runId}: ${ok} ok, ${missingKey} missing key, ${skipped} skipped, ${error} error`,
+  );
   console.log(`Articles inserted this run: ${totalInserted}`);
   console.log(`Database totals: ${stats.runCount} runs, ${stats.articleCount} articles`);
 }

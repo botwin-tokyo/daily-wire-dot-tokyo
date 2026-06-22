@@ -33,6 +33,7 @@ export interface RunSummary {
   total: number;
   ok: number;
   missingKey: number;
+  skipped: number;
   error: number;
 }
 
@@ -52,6 +53,7 @@ export function initSchema(db: DatabaseSync): void {
       totalScripts INTEGER,
       okScripts INTEGER,
       missingKeyScripts INTEGER,
+      skippedScripts INTEGER,
       errorScripts INTEGER
     );
 
@@ -87,6 +89,12 @@ export function initSchema(db: DatabaseSync): void {
     // Column already exists; ignore.
   }
 
+  // Migrate existing databases that were created before the skippedScripts column.
+  try {
+    db.exec("ALTER TABLE runs ADD COLUMN skippedScripts INTEGER;");
+  } catch {
+    // Column already exists; ignore.
+  }
 }
 
 export function startRun(db: DatabaseSync): number {
@@ -99,10 +107,10 @@ export function finishRun(db: DatabaseSync, runId: number, summary: RunSummary):
   const stmt = db.prepare(`
     UPDATE runs
     SET finishedAt = datetime('now'),
-        totalScripts = ?, okScripts = ?, missingKeyScripts = ?, errorScripts = ?
+        totalScripts = ?, okScripts = ?, missingKeyScripts = ?, skippedScripts = ?, errorScripts = ?
     WHERE id = ?
   `);
-  stmt.run(summary.total, summary.ok, summary.missingKey, summary.error, runId);
+  stmt.run(summary.total, summary.ok, summary.missingKey, summary.skipped, summary.error, runId);
 }
 
 export function insertArticles(
