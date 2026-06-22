@@ -9,19 +9,26 @@ describe("deriveFrontPageLayout", () => {
     expect(layout.lead.id).toBe("lead-1");
   });
 
-  it("places sidebar and brief articles in the left full column", () => {
+  it("spreads non-lead articles across the three columns", () => {
     const layout = deriveFrontPageLayout(minimalValidEdition);
-    expect(layout.leftFull.map((a) => a.id)).toContain("sidebar-1");
-  });
-
-  it("places imageFeature and major articles in the right column", () => {
-    const layout = deriveFrontPageLayout(minimalValidEdition);
-    expect(layout.right.map((a) => a.id)).toContain("feature-1");
+    const all = [
+      ...layout.leftCompact,
+      ...layout.leftFull,
+      ...layout.centerFull,
+      ...layout.rightFull,
+    ];
+    expect(all.map((a) => a.id)).toContain("sidebar-1");
+    expect(all.map((a) => a.id)).toContain("feature-1");
   });
 
   it("excludes the lead article from all front-page columns", () => {
     const layout = deriveFrontPageLayout(minimalValidEdition);
-    const all = [...layout.leftCompact, ...layout.leftFull, ...layout.right];
+    const all = [
+      ...layout.leftCompact,
+      ...layout.leftFull,
+      ...layout.centerFull,
+      ...layout.rightFull,
+    ];
     expect(all.some((a) => a.id === layout.lead.id)).toBe(false);
   });
 

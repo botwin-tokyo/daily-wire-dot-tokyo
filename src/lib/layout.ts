@@ -22,7 +22,8 @@ export type FrontPageLayout = {
   lead: NewspaperArticle;
   leftCompact: NewspaperArticle[];
   leftFull: NewspaperArticle[];
-  right: NewspaperArticle[];
+  centerFull: NewspaperArticle[];
+  rightFull: NewspaperArticle[];
 };
 
 function byProminenceDesc(a: NewspaperArticle, b: NewspaperArticle): number {
@@ -47,40 +48,20 @@ export function deriveFrontPageLayout(edition: NewspaperEdition): FrontPageLayou
 
   const candidates = edition.articles.filter((a) => a.id !== lead.id).sort(byProminenceThenRecency);
 
-  // Respect explicitly assigned positions first.
-  const leftAssigned = candidates
-    .filter((a) => a.displayPosition === "sidebar" || a.displayPosition === "brief")
-    .sort(byProminenceThenRecency);
-
-  const rightAssigned = candidates
-    .filter((a) => a.displayPosition === "imageFeature" || a.displayPosition === "major")
-    .sort(byProminenceThenRecency);
-
-  const assignedIds = new Set([
-    ...leftAssigned.map((a) => a.id),
-    ...rightAssigned.map((a) => a.id),
-  ]);
-
-  const filler = candidates.filter((a) => !assignedIds.has(a.id));
-
-  // Spread the top stories across all three columns. Compact thumbnails at the
-  // top of the left column, full article teasers below them, and full teasers
-  // in the right column. Counts are tuned so no single column dominates.
+  // The front page is a three-column broadsheet. The lead sits at the top of
+  // the center column, and the next best stories are spread evenly across all
+  // three columns so no column is empty while another is stacked.
   const compactCount = 4;
-  const leftFullCount = 3;
-  const rightCount = 4;
+  const fullPerColumn = 3;
+  const totalFull = fullPerColumn * 3;
 
-  const leftCompact = filler.slice(0, compactCount);
+  const leftCompact = candidates.slice(0, compactCount);
   const usedCompactIds = new Set(leftCompact.map((a) => a.id));
-  const leftFull = [
-    ...leftAssigned,
-    ...filler.filter((a) => !usedCompactIds.has(a.id)).slice(0, leftFullCount),
-  ];
-  const usedLeftFullIds = new Set(leftFull.map((a) => a.id));
-  const rightFiller = filler
-    .filter((a) => !usedCompactIds.has(a.id) && !usedLeftFullIds.has(a.id))
-    .sort((a, b) => Number(!!b.imageUrl) - Number(!!a.imageUrl) || byProminenceThenRecency(a, b));
-  const right = [...rightAssigned, ...rightFiller].slice(0, rightCount);
+  const remaining = candidates.filter((a) => !usedCompactIds.has(a.id));
 
-  return { lead, leftCompact, leftFull, right };
+  const leftFull = remaining.slice(0, fullPerColumn);
+  const centerFull = remaining.slice(fullPerColumn, fullPerColumn * 2);
+  const rightFull = remaining.slice(fullPerColumn * 2, totalFull);
+
+  return { lead, leftCompact, leftFull, centerFull, rightFull };
 }

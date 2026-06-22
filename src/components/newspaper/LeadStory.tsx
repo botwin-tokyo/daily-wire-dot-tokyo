@@ -75,11 +75,7 @@ export function LeadStory({ article }: { article: Article }) {
           · {hoursAgo(article.publishedAt)} · <em>Source: {article.source.name}</em>
         </span>
       </p>
-      <ArticleBody
-        content={article.content ?? article.summary}
-        className="mt-4"
-        maxParagraphs={5}
-      />
+      <ArticleBody content={article.content ?? article.summary} className="mt-4" />
     </article>
   );
 }

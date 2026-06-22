@@ -61,15 +61,18 @@ function EditionView() {
   const leftFull = layout.leftFull
     .map((a) => edition.articles.find((ea) => ea.id === a.id))
     .filter((a): a is NonNullable<typeof a> => a != null);
-  const right = layout.right
+  const centerFull = layout.centerFull
+    .map((a) => edition.articles.find((ea) => ea.id === a.id))
+    .filter((a): a is NonNullable<typeof a> => a != null);
+  const rightFull = layout.rightFull
     .map((a) => edition.articles.find((ea) => ea.id === a.id))
     .filter((a): a is NonNullable<typeof a> => a != null);
 
   return (
     <>
-      {/* Editorial grid: left compact + full / center lead / right full */}
+      {/* Editorial grid: full articles spread across all three columns */}
       <div className="grid grid-cols-1 lg:grid-cols-[30fr_44fr_26fr] gap-0 items-start">
-        {/* LEFT COL — compact list + full article teasers */}
+        {/* LEFT COL — compact list + full articles */}
         <div className="lg:border-r lg:border-[var(--rule)] lg:pr-5">
           <h2 className="py-4 border-b border-[var(--ink)] font-sans text-[11px] font-bold uppercase tracking-wider text-[var(--ink-mid)]">
             More Top Stories
@@ -83,14 +86,17 @@ function EditionView() {
           <MarketTable marketSnapshot={newspaper.marketSnapshot} />
         </div>
 
-        {/* CENTER COL */}
+        {/* CENTER COL — lead + full articles */}
         <div className="lg:border-r lg:border-[var(--rule)] lg:px-5 py-5">
           <LeadStory article={lead} />
+          {centerFull.map((a) => (
+            <SidebarStory key={a.id} article={a} />
+          ))}
         </div>
 
-        {/* RIGHT COL */}
+        {/* RIGHT COL — full articles + briefing/editor note */}
         <div className="lg:pl-5">
-          {right.map((a) => (
+          {rightFull.map((a) => (
             <RightStory key={a.id} article={a} />
           ))}
           <div className="mt-4 grid gap-4">
