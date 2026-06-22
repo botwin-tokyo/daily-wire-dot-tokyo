@@ -13,10 +13,23 @@ Extract the last 24 hours of articles from `backend/db/news.db`, rewrite each
 one as neutral, Pulitzer-grade wire copy, and save the result to
 `drafts/daily.md`. This file is temporary and overwritten every day.
 
-**Deploy subagents to get this task done.** Make sure you provide each one of
-them a copy of `STYLE.md` so they know the required writing style. Break the
-news into batches for the subagents to complete asynchronously before you
-assemble the final `drafts/daily.md` file.
+## How to tackle this
+
+Use subagents to parallelize the rewriting work:
+
+1. **Split the articles into batches.** Group them by category, by source, or
+   into fixed-size chunks — whichever keeps each batch coherent and manageable.
+2. **Spawn one subagent per batch.** Give each subagent:
+   - Its batch of raw articles (title, summary, content, URL, source, category).
+   - A full copy of `agentskills/rewrite-articles/STYLE.md`.
+   - The instruction to return every article rewritten in the daily.md format.
+3. **Collect the subagent outputs.** Verify each rewritten batch follows the
+   style guide and the daily.md format.
+4. **Assemble the final file.** Merge the batches into a single `drafts/daily.md`,
+   grouped by category, and overwrite any previous version.
+
+The parent agent is responsible for coordination and final assembly. The
+subagents are responsible for executing the rewrites.
 
 ## When to use
 
