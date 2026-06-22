@@ -31,6 +31,9 @@ drafts/daily.md
 # Subagent rewrite batches and temporary outputs
 drafts/rewrite_*/
 
+# Tooling metadata
+.lovable/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

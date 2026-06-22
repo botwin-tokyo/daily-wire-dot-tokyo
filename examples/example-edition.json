@@ -115,7 +115,7 @@
       "editorialProminence": 1,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -146,7 +146,7 @@
       "editorialProminence": 0.7,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -177,7 +177,7 @@
       "editorialProminence": 0.65,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -215,7 +215,7 @@
       "editorialProminence": 0.75,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -253,7 +253,7 @@
       "editorialProminence": 0.7,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -280,7 +280,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -307,7 +307,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -334,7 +334,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -365,7 +365,7 @@
       "editorialProminence": 0.6,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -396,7 +396,7 @@
       "editorialProminence": 0.6,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -423,7 +423,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -450,7 +450,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -478,7 +478,7 @@
       "editorialProminence": 0.6,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -505,7 +505,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -532,7 +532,7 @@
       "editorialProminence": 0.6,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -559,7 +559,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     }
   ],
@@ -636,7 +636,7 @@
   "editorsNote": {
     "text": "Today's top stories highlight how cities, policies, and technologies are shaping our future in the face of climate, economic, and technological change.",
     "whyItMatters": "Climate adaptation, smart regulation, and clean energy breakthroughs dominate the global agenda — each with long-term impact on communities and economies.",
-    "model": "lovable-ai/gemini-3-flash",
+    "model": "publish-dailywire",
     "generatedAt": "2025-05-20T05:29:00Z",
     "sourcesConsidered": 42
   },
@@ -805,7 +805,7 @@
     }
   ],
   "generationMetadata": {
-    "model": "lovable-ai/gemini-3-flash",
+    "model": "publish-dailywire",
     "sourcesCount": 42,
     "storiesAnalyzed": 318,
     "readingTimeMin": 12,

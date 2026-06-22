@@ -115,7 +115,7 @@
       "editorialProminence": 1,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "City leaders from more than 40 countries gathered in Singapore this week for the Global Resilient Cities Summit, sharing strategies to tackle climate threats ranging from extreme heat to rising seas. Funding, innovation, and cross-border collaboration took center stage as mayors emphasized that adaptation is no longer optional."
     },
@@ -147,7 +147,7 @@
       "editorialProminence": 0.7,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "EU leaders met in Brussels to advance a joint defense initiative aimed at strengthening capabilities and reducing dependence on external allies."
     },
@@ -179,7 +179,7 @@
       "editorialProminence": 0.65,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "Global markets opened higher after new data showed inflation easing in the U.S. and Europe, boosting investor confidence."
     },
@@ -218,7 +218,7 @@
       "editorialProminence": 0.75,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "New policies in the EU and Asia aim to balance innovation with transparency and safety as generative AI tools become more powerful."
     },
@@ -257,7 +257,7 @@
       "editorialProminence": 0.7,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "Researchers develop a solid-state battery with higher capacity and faster charging, bringing long-range EV vehicles closer to reality."
     },
@@ -285,7 +285,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "Mediators report incremental progress as parties return to the negotiating table after a month-long pause."
     },
@@ -313,7 +313,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "Early detection improved long-term outcomes in a multi-country cohort, researchers report."
     },
@@ -341,7 +341,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "This year's curation centers on artists exploring identity across shifting borders."
     },
@@ -373,7 +373,7 @@
       "editorialProminence": 0.6,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "Twelve economies finalized tariff reductions on digital goods and agricultural exports, signaling a pivot toward regional integration."
     },
@@ -405,7 +405,7 @@
       "editorialProminence": 0.6,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "New licensing rules from Washington and Brussels are pushing fabricators to diversify packaging and assembly outside their traditional hubs."
     },
@@ -433,7 +433,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "A consortium released a 70B-parameter model with permissive licensing that matches leading proprietary systems on math and code tasks."
     },
@@ -461,7 +461,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "Discount chains beat expectations while mid-tier department stores warned on margins, sharpening the K-shaped consumer story."
     },
@@ -490,7 +490,7 @@
       "editorialProminence": 0.6,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "Spectral readings from a planet 41 light-years away reveal conditions astronomers say warrant deeper follow-up campaigns."
     },
@@ -518,7 +518,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "The 22-minute run clears a key engineering hurdle, though commercial power remains years away, independent reviewers say."
     },
@@ -546,7 +546,7 @@
       "editorialProminence": 0.6,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "Judges praised a slate that foregrounds translation and debut novelists, with a record number of small-press titles in contention."
     },
@@ -574,7 +574,7 @@
       "editorialProminence": 0.5,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       },
       "content": "Festival programmers say the slate reflects a generational shift toward genre-blurring nonfiction."
     }
@@ -652,7 +652,7 @@
   "editorsNote": {
     "text": "Today's top stories highlight how cities, policies, and technologies are shaping our future in the face of climate, economic, and technological change.",
     "whyItMatters": "Climate adaptation, smart regulation, and clean energy breakthroughs dominate the global agenda — each with long-term impact on communities and economies.",
-    "model": "lovable-ai/gemini-3-flash",
+    "model": "publish-dailywire",
     "generatedAt": "2025-05-20T05:29:00Z",
     "sourcesConsidered": 42
   },
@@ -821,7 +821,7 @@
     }
   ],
   "generationMetadata": {
-    "model": "lovable-ai/gemini-3-flash",
+    "model": "publish-dailywire",
     "sourcesCount": 42,
     "storiesAnalyzed": 318,
     "readingTimeMin": 12,

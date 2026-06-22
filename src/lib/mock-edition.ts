@@ -424,7 +424,7 @@ export const MOCK_EDITION: Edition = {
     text: "Today's top stories highlight how cities, policies, and technologies are shaping our future in the face of climate, economic, and technological change.",
     whyItMatters:
       "Climate adaptation, smart regulation, and clean energy breakthroughs dominate the global agenda — each with long-term impact on communities and economies.",
-    model: "lovable-ai/gemini-3-flash",
+    model: "publish-dailywire",
     generatedAt: "2025-05-20T05:29:00Z",
     sourcesConsidered: 42,
   },
@@ -609,7 +609,7 @@ export const MOCK_SETTINGS: Settings = {
   },
   ai: {
     providerConfigured: true,
-    provider: "Lovable AI Gateway",
+    provider: "Google AI",
     model: "google/gemini-3-flash-preview",
     summaryLength: "medium",
     tone: "analytical",

@@ -33,7 +33,7 @@ The frontend remains the presentation layer. The JSON becomes the content layer.
 | Package manager | bun                                                             | `the-daily-ledger/bun.lock`, `bunfig.toml`       |
 | UI framework    | React 19 + TypeScript                                           | `the-daily-ledger/package.json`                  |
 | Routing / SSR   | TanStack Start (file-based)                                     | `the-daily-ledger/src/router.tsx`, `src/routes/` |
-| Build tool      | Vite 8 + `@lovable.dev/vite-tanstack-config`                    | `the-daily-ledger/vite.config.ts`                |
+| Build tool      | Vite 8 + `@tanstack/start-plugin`                               | `the-daily-ledger/vite.config.ts`                |
 | Styling         | Tailwind CSS v4 + custom tokens                                 | `the-daily-ledger/src/styles.css`                |
 | Validation      | Zod                                                             | `the-daily-ledger/src/lib/types.ts`              |
 | Server state    | TanStack Query                                                  | routes in `src/routes/`                          |
@@ -103,7 +103,7 @@ These types are a strong starting point but are **not yet the canonical JSON con
 
 - `.gitignore` excludes `.wrangler/` and `.dev.vars`, indicating Wrangler is expected but no config is committed.
 - `README.md` contains a sample `wrangler.toml` and describes the Cloudflare Pages, D1, KV, and R2 setup.
-- `vite.config.ts` uses `@lovable.dev/vite-tanstack-config`, which already targets Cloudflare Workers / nitro by default.
+- `vite.config.ts` uses `@tanstack/start-plugin` with the nitro Cloudflare preset.
 - `src/server.ts` is the SSR entry point that wraps TanStack Start’s server entry.
 - **No actual `wrangler.toml`, Pages Functions, or Worker code exists.**
 
@@ -135,12 +135,12 @@ These types are a strong starting point but are **not yet the canonical JSON con
 
 | Risk                                                                        | Impact                                          | Mitigation                                                                   |
 | --------------------------------------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------- |
-| `@lovable.dev/vite-tanstack-config` is opinionated and auto-injects plugins | Custom Vite changes may conflict                | Use the config’s documented extension points; avoid adding duplicate plugins |
+| TanStack Start plugin is opinionated and auto-injects plugins               | Custom Vite changes may conflict                | Use the plugin’s documented extension points; avoid adding duplicate plugins |
 | TanStack Start + Cloudflare Pages integration is newer and less documented  | Build / deploy surprises                        | Verify with preview deployments in every phase                               |
 | Local image imports in mock data (`hero-city.jpg`) will not work with JSON  | Need image URL strategy                         | JSON uses absolute/relative URLs; build includes fallback placeholder        |
 | Hard-coded story IDs in layout routes                                       | Any agent-generated edition will break visually | Move layout selection into JSON `displayPositions`                           |
 | No tests                                                                    | Regressions likely                              | Add schema and component tests in early phases                               |
-| Lovable-connected branch (see `AGENTS.md`)                                  | Force pushes / rebases are prohibited           | Use normal merge commits; never rewrite pushed history                       |
+| Protected deployment branch (see `AGENTS.md`)                               | Force pushes / rebases are prohibited           | Use normal merge commits; never rewrite pushed history                       |
 
 ---
 
@@ -568,7 +568,7 @@ interface Banner {
   "editorsNote": {
     "text": "Today's top stories highlight how cities, policies, and technologies are shaping our future.",
     "whyItMatters": "Climate adaptation, smart regulation, and clean energy breakthroughs dominate the global agenda.",
-    "model": "lovable-ai/gemini-3-flash",
+    "model": "publish-dailywire",
     "generatedAt": "2025-05-20T05:29:00Z",
     "sourcesConsidered": 42
   },
@@ -589,7 +589,7 @@ interface Banner {
     { "name": "Reuters", "url": "https://reuters.com", "articles": 3 }
   ],
   "generationMetadata": {
-    "model": "lovable-ai/gemini-3-flash",
+    "model": "publish-dailywire",
     "sourcesCount": 42,
     "storiesAnalyzed": 318,
     "readingTimeMin": 12,
@@ -741,7 +741,7 @@ SITE_URL = "https://morning-wire.pages.dev"
 
 # Secrets (set via wrangler secret put):
 # - ADMIN_TOKEN
-# - LOVABLE_API_KEY (or other AI gateway key)
+# - ADMIN_TOKEN (protects /api/admin/* endpoints)
 ```
 
 ### Build commands
@@ -957,7 +957,7 @@ bun preview
 
 **Risks:**
 
-- Lovable config may behave differently in CI. Mitigation: use the same bun version locally and in CI.
+- Vite / TanStack Start config may behave differently in CI. Mitigation: use the same Node/bun version locally and in CI.
 
 **Rollback:**
 
@@ -1887,7 +1887,7 @@ The backend and content pipeline are production-ready when all of the following 
 
 **Consequences:**
 
-- If the Lovable-connected branch is not `main`, update all scripts and workflows to match.
+- If the protected deployment branch is not `main`, update all scripts and workflows to match.
 
 ---
 

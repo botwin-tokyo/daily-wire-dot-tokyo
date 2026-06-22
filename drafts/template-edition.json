@@ -80,7 +80,7 @@
       "editorialProminence": 1.0,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -107,7 +107,7 @@
       "editorialProminence": 0.7,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     },
     {
@@ -138,7 +138,7 @@
       "editorialProminence": 0.75,
       "aiDisclosure": {
         "summaryIsAiGenerated": true,
-        "model": "lovable-ai/gemini-3-flash"
+        "model": "publish-dailywire"
       }
     }
   ],
@@ -183,7 +183,7 @@
   "editorsNote": {
     "text": "Editor's note text.",
     "whyItMatters": "Why today's edition matters.",
-    "model": "lovable-ai/gemini-3-flash",
+    "model": "publish-dailywire",
     "generatedAt": "2025-01-01T05:10:00Z",
     "sourcesConsidered": 10
   },
@@ -207,7 +207,7 @@
     }
   ],
   "generationMetadata": {
-    "model": "lovable-ai/gemini-3-flash",
+    "model": "publish-dailywire",
     "sourcesCount": 10,
     "storiesAnalyzed": 50,
     "readingTimeMin": 5,

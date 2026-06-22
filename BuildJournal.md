@@ -686,7 +686,7 @@ Phase 10: create `wrangler.toml`, configure Cloudflare Pages bindings, and enabl
 
 - **Placeholder IDs:** `wrangler.toml` contains `REPLACE_WITH_KV_NAMESPACE_ID` and `REPLACE_WITH_D1_DATABASE_ID`. The config is valid and ready to use once the real IDs are filled in from the Cloudflare dashboard.
 - **`.output/public` build output:** Matches the planned TanStack Start / nitro output directory for Cloudflare Pages. Local Vite builds still output to `dist/` for static preview.
-- **Secrets via `wrangler secret put`:** `ADMIN_TOKEN` and `LOVABLE_API_KEY` are not committed; they are set through Wrangler or the dashboard.
+- **Secrets via `wrangler secret put`:** `ADMIN_TOKEN` is not committed; it is set through Wrangler or the dashboard.
 - **GitHub Actions secrets:** The deploy job expects `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets.
 
 ### Validation results

@@ -4,8 +4,8 @@
 name = "morning-wire"
 compatibility_date = "2025-06-19"
 
-# TanStack Start / nitro build output used by Cloudflare Pages.
-pages_build_output_dir = ".output/public"
+# Cloudflare Pages build output is produced by Nitro at `.output`.
+# Deploy with: wrangler pages deploy .output
 
 [[kv_namespaces]]
 binding = "KV"
@@ -22,4 +22,3 @@ SITE_URL = "https://morning-wire.pages.dev"
 
 # Secrets (set via `wrangler secret put` or Cloudflare dashboard):
 #   ADMIN_TOKEN
-#   LOVABLE_API_KEY
