@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { PageShell } from "@/components/newspaper/PageShell";
 import { LeadStory } from "@/components/newspaper/LeadStory";
 import { TopStoryListItem } from "@/components/newspaper/TopStoryListItem";
+import { SidebarStory } from "@/components/newspaper/SidebarStory";
 import { RightStory } from "@/components/newspaper/RightStory";
 import { MarketTable } from "@/components/newspaper/MarketTable";
 import { MorningBriefing } from "@/components/newspaper/MorningBriefing";
@@ -54,7 +55,10 @@ function EditionView() {
   const edition = newspaperEditionToEdition(newspaper);
 
   const lead = edition.articles.find((a) => a.id === layout.lead.id)!;
-  const left = layout.left
+  const leftCompact = layout.leftCompact
+    .map((a) => edition.articles.find((ea) => ea.id === a.id))
+    .filter((a): a is NonNullable<typeof a> => a != null);
+  const leftFull = layout.leftFull
     .map((a) => edition.articles.find((ea) => ea.id === a.id))
     .filter((a): a is NonNullable<typeof a> => a != null);
   const right = layout.right
@@ -63,15 +67,18 @@ function EditionView() {
 
   return (
     <>
-      {/* Editorial grid: left top stories / center lead / right features */}
+      {/* Editorial grid: left compact + full / center lead / right full */}
       <div className="grid grid-cols-1 lg:grid-cols-[30fr_44fr_26fr] gap-0 items-start">
-        {/* LEFT COL — Top Stories */}
+        {/* LEFT COL — compact list + full article teasers */}
         <div className="lg:border-r lg:border-[var(--rule)] lg:pr-5">
           <h2 className="py-4 border-b border-[var(--ink)] font-sans text-[11px] font-bold uppercase tracking-wider text-[var(--ink-mid)]">
             More Top Stories
           </h2>
-          {left.map((a) => (
+          {leftCompact.map((a) => (
             <TopStoryListItem key={a.id} article={a} />
+          ))}
+          {leftFull.map((a) => (
+            <SidebarStory key={a.id} article={a} />
           ))}
           <MarketTable marketSnapshot={newspaper.marketSnapshot} />
         </div>

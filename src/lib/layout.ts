@@ -20,7 +20,8 @@ import type { NewspaperEdition, NewspaperArticle } from "./types";
 
 export type FrontPageLayout = {
   lead: NewspaperArticle;
-  left: NewspaperArticle[];
+  leftCompact: NewspaperArticle[];
+  leftFull: NewspaperArticle[];
   right: NewspaperArticle[];
 };
 
@@ -44,12 +45,9 @@ export function deriveFrontPageLayout(edition: NewspaperEdition): FrontPageLayou
     edition.articles.find((a) => a.displayPosition === "lead") ??
     edition.articles[0];
 
-  const candidates = edition.articles
-    .filter((a) => a.id !== lead.id)
-    .sort(byProminenceThenRecency);
+  const candidates = edition.articles.filter((a) => a.id !== lead.id).sort(byProminenceThenRecency);
 
-  // Respect explicitly assigned positions first, then fill remaining slots
-  // with the most prominent recent standard stories.
+  // Respect explicitly assigned positions first.
   const leftAssigned = candidates
     .filter((a) => a.displayPosition === "sidebar" || a.displayPosition === "brief")
     .sort(byProminenceThenRecency);
@@ -64,17 +62,25 @@ export function deriveFrontPageLayout(edition: NewspaperEdition): FrontPageLayou
   ]);
 
   const filler = candidates.filter((a) => !assignedIds.has(a.id));
-  const leftFiller = filler.slice(0, Math.max(0, 10 - leftAssigned.length));
-  const usedFillerIds = new Set(leftFiller.map((a) => a.id));
+
+  // Spread the top stories across all three columns. Compact thumbnails at the
+  // top of the left column, full article teasers below them, and full teasers
+  // in the right column. Counts are tuned so no single column dominates.
+  const compactCount = 4;
+  const leftFullCount = 3;
+  const rightCount = 4;
+
+  const leftCompact = filler.slice(0, compactCount);
+  const usedCompactIds = new Set(leftCompact.map((a) => a.id));
+  const leftFull = [
+    ...leftAssigned,
+    ...filler.filter((a) => !usedCompactIds.has(a.id)).slice(0, leftFullCount),
+  ];
+  const usedLeftFullIds = new Set(leftFull.map((a) => a.id));
   const rightFiller = filler
-    .filter((a) => !usedFillerIds.has(a.id))
-    .sort(
-      (a, b) => Number(!!b.imageUrl) - Number(!!a.imageUrl) || byProminenceThenRecency(a, b),
-    )
-    .slice(0, Math.max(0, 6 - rightAssigned.length));
+    .filter((a) => !usedCompactIds.has(a.id) && !usedLeftFullIds.has(a.id))
+    .sort((a, b) => Number(!!b.imageUrl) - Number(!!a.imageUrl) || byProminenceThenRecency(a, b));
+  const right = [...rightAssigned, ...rightFiller].slice(0, rightCount);
 
-  const left = [...leftAssigned, ...leftFiller];
-  const right = [...rightAssigned, ...rightFiller];
-
-  return { lead, left, right };
+  return { lead, leftCompact, leftFull, right };
 }

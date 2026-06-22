@@ -9,9 +9,9 @@ describe("deriveFrontPageLayout", () => {
     expect(layout.lead.id).toBe("lead-1");
   });
 
-  it("places sidebar and brief articles in the left column", () => {
+  it("places sidebar and brief articles in the left full column", () => {
     const layout = deriveFrontPageLayout(minimalValidEdition);
-    expect(layout.left.map((a) => a.id)).toContain("sidebar-1");
+    expect(layout.leftFull.map((a) => a.id)).toContain("sidebar-1");
   });
 
   it("places imageFeature and major articles in the right column", () => {
@@ -19,10 +19,10 @@ describe("deriveFrontPageLayout", () => {
     expect(layout.right.map((a) => a.id)).toContain("feature-1");
   });
 
-  it("excludes the lead article from left and right columns", () => {
+  it("excludes the lead article from all front-page columns", () => {
     const layout = deriveFrontPageLayout(minimalValidEdition);
-    expect(layout.left.some((a) => a.id === layout.lead.id)).toBe(false);
-    expect(layout.right.some((a) => a.id === layout.lead.id)).toBe(false);
+    const all = [...layout.leftCompact, ...layout.leftFull, ...layout.right];
+    expect(all.some((a) => a.id === layout.lead.id)).toBe(false);
   });
 
   it("falls back to the first article when leadStoryId is missing", () => {
