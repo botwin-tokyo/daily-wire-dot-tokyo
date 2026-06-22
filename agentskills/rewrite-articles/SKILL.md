@@ -4,7 +4,7 @@ description: Extract recent articles from the local SQLite news library, rewrite
 license: Proprietary
 metadata:
   author: Botwin's Daily Wire
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Rewrite Articles
@@ -26,166 +26,68 @@ rewrite each into neutral, Pulitzer-grade wire copy, and save the results to
 2. `backend/db/news.db` exists and contains recent articles.
 3. `backend/db/deprop.db` will be created automatically from
    `backend/db/deprop.db.template` if it is missing.
+4. `OPENAI_API_KEY` is set in the environment (used by the bundled script).
 
 ## Read this first
 
-Before writing or rewriting anything, read the style guide:
+Before running the script, read the style guide:
 
 ```text
 agentskills/rewrite-articles/STYLE.md
 ```
 
-The rewrite must follow every rule in that file.
+Every rewrite follows that guide.
 
-## What to extract
+## Run the rewrite
 
-Query `backend/db/news.db` for articles with `publishedAt` within the last 24
-hours. Use a query like:
-
-```sql
-SELECT *
-FROM articles
-WHERE datetime(publishedAt) > datetime('now', '-1 day')
-ORDER BY publishedAt DESC;
+```bash
+npx tsx agentskills/rewrite-articles/rewrite-articles.ts
 ```
 
-If `publishedAt` is unreliable for a source, fall back to `fetchedAt`:
+The script will:
 
-```sql
-SELECT *
-FROM articles
-WHERE datetime(fetchedAt) > datetime('now', '-1 day')
-ORDER BY fetchedAt DESC;
-```
+1. Query `backend/db/news.db` for articles with `publishedAt` in the last 24 hours.
+2. Skip any article whose `url` is already in `backend/db/deprop.db`.
+3. Rewrite the headline, summary, and content using the LLM and `STYLE.md`.
+4. Insert the neutralized articles into `deprop.db` under a new run.
+5. Print a completion summary.
 
-Deduplicate by `url` before rewriting.
+## Configuration
 
-## How to rewrite each article
+| Environment variable | Default | Description |
+| -------------------- | ------- | ----------- |
+| `OPENAI_API_KEY` | — | Required. API key for the LLM. |
+| `OPENAI_API_URL` | `https://api.openai.com/v1/chat/completions` | Chat completions endpoint. |
+| `OPENAI_MODEL` | `gpt-4o-mini` | Model to use. |
+| `REWRITE_BATCH_SIZE` | `50` | Maximum articles to process per run. |
+
+Any OpenAI-compatible API will work if you set `OPENAI_API_URL`.
+
+## What the rewrite does
 
 For each article:
 
-1. Read the original `title`, `summary`, and `content`.
-2. Rewrite the headline and body using the style guide.
-3. Strip loaded language, partisan framing, and propaganda.
-4. Keep every verifiable fact, number, date, location, and named actor.
-5. Attribute contested claims. Use inverted-pyramid structure.
-6. Preserve the original `category`, `source`, `url`, `publishedAt`,
-   `imageUrl`, `author`, and `language`.
-7. Set `fetchedAt` to the current ISO timestamp.
-
-The rewritten article must stand on its own as a factual news item.
-
-## How to populate deprop.db
-
-The deprop database shares the same schema as the main news database:
-
-- `runs`
-- `articles`
-
-Use the helper modules in `backend/scripts/lib/`:
-
-- `openDepropDb()` opens (and auto-creates from template) `backend/db/deprop.db`.
-- `initSchema()` ensures the schema is current.
-- `startRun()` and `finishRun()` track the rewrite batch in the `runs` table.
-- `insertArticles()` inserts the rewritten rows.
-
-### Example script
-
-Create or run a script like `backend/scripts/rewrite-articles.ts`:
-
-```ts
-import { DatabaseSync } from "node:sqlite";
-import { openDb, initSchema, startRun, finishRun, insertArticles } from "./lib/db";
-import { openDepropDb } from "./lib/deprop-db";
-
-async function main() {
-  const sourceDb = openDb();
-  initSchema(sourceDb);
-
-  const rows = sourceDb
-    .prepare(`
-      SELECT DISTINCT *
-      FROM articles
-      WHERE datetime(publishedAt) > datetime('now', '-1 day')
-      ORDER BY publishedAt DESC
-    `)
-    .all() as any[];
-
-  const depropDb = openDepropDb();
-  initSchema(depropDb);
-  const runId = startRun(depropDb);
-
-  const rewrites = [];
-  for (const row of rows) {
-    const rewrittenTitle = await neutralizeHeadline(row.title, row);
-    const rewrittenSummary = await neutralizeText(row.summary ?? "", row);
-    const rewrittenContent = await neutralizeText(row.content ?? "", row);
-
-    rewrites.push({
-      source: row.source,
-      category: row.category,
-      title: rewrittenTitle,
-      url: row.url,
-      summary: rewrittenSummary,
-      content: rewrittenContent,
-      publishedAt: row.publishedAt,
-      imageUrl: row.imageUrl,
-      author: row.author,
-      language: row.language,
-      fetchedAt: new Date().toISOString(),
-    });
-  }
-
-  const { inserted, duplicates } = insertArticles(depropDb, runId, rewrites);
-  finishRun(depropDb, runId, {
-    total: rows.length,
-    ok: inserted,
-    missingKey: 0,
-    skipped: duplicates,
-    error: rows.length - inserted - duplicates,
-  });
-
-  console.log(`Rewrote ${inserted} articles into deprop.db (${duplicates} duplicates skipped).`);
-  sourceDb.close();
-  depropDb.close();
-}
-
-async function neutralizeHeadline(title: string, article: any): Promise<string> {
-  // Rewrite the headline according to STYLE.md.
-  return title; // replace with LLM call or agentic rewrite
-}
-
-async function neutralizeText(text: string, article: any): Promise<string> {
-  // Rewrite the text according to STYLE.md.
-  return text; // replace with LLM call or agentic rewrite
-}
-
-main();
-```
-
-Run it with:
-
-```bash
-npx tsx backend/scripts/rewrite-articles.ts
-```
-
-If you prefer, you can do the rewrites manually with your own model and insert
-the rows through a short SQL script instead.
+- Removes loaded language, partisan framing, and propaganda.
+- Keeps every verifiable fact, number, date, location, and named actor.
+- Attributes contested claims and uses inverted-pyramid structure.
+- Preserves `category`, `source`, `url`, `publishedAt`, `imageUrl`, `author`,
+  and `language`.
+- Updates `fetchedAt` to the current ISO timestamp.
 
 ## Idempotency
 
-`insertArticles` uses `INSERT OR IGNORE` keyed by `(runId, url)`. To avoid
-duplicate rewrites across runs, query `deprop.db` first and skip any article
-whose `url` already exists there.
+The script skips articles already present in `deprop.db`, so it is safe to run
+multiple times without creating duplicate rewrites.
 
 ## Expected output
 
-- A new run row in `deprop.db`.
-- One rewritten article row per original article.
-- Console summary like:
-
 ```text
-Rewrote 42 articles into deprop.db (3 duplicates skipped).
+Rewriting 42 articles (3 already in deprop.db)...
+✅ [1/42] source/category: Original Headline
+...
+--- Rewrite complete ---
+Run #N: 42 rewritten, 0 errors, 3 pre-existing duplicates
+Inserted into deprop.db: 42
 ```
 
 ## Next step
@@ -195,5 +97,3 @@ After populating `deprop.db`, generate a site edition:
 ```bash
 npm run generate:edition
 ```
-
-This writes `public/data/current-edition.json` from the latest articles.
