@@ -83,11 +83,10 @@ describe("Masthead", () => {
 });
 
 describe("UtilityBar", () => {
-  it("renders date, weather, edition label, and next edition text", () => {
+  it("renders date, weather, update time, and next edition text", () => {
     render(<UtilityBar data={utilityBar} />);
     expect(screen.getByText("May 21, 2025")).toBeInTheDocument();
     expect(screen.getByText("Sunny")).toBeInTheDocument();
-    expect(screen.getByText(/Test/)).toBeInTheDocument();
     expect(screen.getByText("Next edition scheduled")).toBeInTheDocument();
     expect(screen.getByText("Updated by AI at 06:00")).toBeInTheDocument();
   });

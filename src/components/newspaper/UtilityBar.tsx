@@ -1,5 +1,4 @@
-import { Calendar, Cloud, CloudRain, CloudSun, Globe, Settings, Sun } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Calendar, Cloud, CloudRain, CloudSun, Sun } from "lucide-react";
 import type { NewspaperUtilityBar } from "@/lib/types";
 
 const iconMap = {
@@ -29,29 +28,17 @@ export function UtilityBar({ data }: { data: NewspaperUtilityBar }) {
               {data.weather.condition}
             </span>
           </span>
-          <span className="text-[var(--rule)]">|</span>
-          <span className="inline-flex items-center gap-1.5">
-            <Globe className="h-3.5 w-3.5" strokeWidth={1.5} />
-            Edition: {data.editionLabel} ▾
-          </span>
         </div>
         <div className="hidden md:block font-mono text-[12px]">
           Updated by AI at {data.updatedByAiAt}
         </div>
-        <div className="flex items-center gap-4">
-          <span className="inline-flex items-center gap-2">
-            <span
-              className="pulse-dot inline-block h-2 w-2 rounded-full"
-              style={{ background: "var(--live-dot)" }}
-              aria-hidden
-            />
-            <span>{data.nextEditionText}</span>
-          </span>
-          <span className="text-[var(--rule)]">|</span>
-          <Link to="/settings" className="inline-flex items-center gap-1.5 hover:text-[var(--ink)]">
-            <Settings className="h-3.5 w-3.5" strokeWidth={1.5} />
-            Edition Settings ▾
-          </Link>
+        <div className="flex items-center gap-2">
+          <span
+            className="pulse-dot inline-block h-2 w-2 rounded-full"
+            style={{ background: "var(--live-dot)" }}
+            aria-hidden
+          />
+          <span>{data.nextEditionText}</span>
         </div>
       </div>
     </div>
