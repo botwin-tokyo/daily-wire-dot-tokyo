@@ -70,6 +70,28 @@ WHERE datetime(fetchedAt) > datetime('now', '-1 day')
 ORDER BY category, fetchedAt DESC;
 ```
 
+## Step 1b — Skip already-rewritten articles
+
+Before rewriting, check `backend/db/deprop.db` for URLs that have already been
+rewritten. The simplest way is to query both databases in one go by attaching
+`deprop.db`:
+
+```sql
+ATTACH DATABASE 'backend/db/deprop.db' AS deprop;
+
+SELECT n.*
+FROM articles n
+LEFT JOIN deprop.articles d ON n.url = d.url
+WHERE datetime(n.publishedAt) > datetime('now', '-1 day')
+  AND d.url IS NULL
+ORDER BY n.category, n.publishedAt DESC;
+```
+
+If `publishedAt` is unreliable, replace the date filter with `n.fetchedAt`.
+
+Drop any article whose URL is already in `deprop.articles`. Only the remaining
+articles go into the rewrite batches.
+
 ## Step 2 — Rewrite every article
 
 For each article:
