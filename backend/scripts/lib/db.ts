@@ -6,7 +6,7 @@
  */
 
 import { DatabaseSync } from "node:sqlite";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, copyFileSync, existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
 export interface ArticleInput {
@@ -38,9 +38,17 @@ export interface RunSummary {
 }
 
 const DEFAULT_DB_PATH = resolve(process.cwd(), "backend/db/news.db");
+const DEFAULT_TEMPLATE_PATH = resolve(process.cwd(), "backend/db/news.db.template");
+
+export function ensureDbFromTemplate(path: string, templatePath: string): void {
+  mkdirSync(dirname(path), { recursive: true });
+  if (!existsSync(path) && existsSync(templatePath)) {
+    copyFileSync(templatePath, path);
+  }
+}
 
 export function openDb(path = DEFAULT_DB_PATH): DatabaseSync {
-  mkdirSync(dirname(path), { recursive: true });
+  ensureDbFromTemplate(path, DEFAULT_TEMPLATE_PATH);
   return new DatabaseSync(path);
 }
 
