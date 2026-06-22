@@ -9,6 +9,7 @@ export const CategorySchema = z.enum([
   "culture",
   "crypto",
   "politics",
+  "war",
 ]);
 export type Category = z.infer<typeof CategorySchema>;
 
@@ -52,7 +53,9 @@ export const BriefingItemSchema = z.object({
   text: z.string(),
   sourceName: z.string(),
   articleId: z.string().optional(),
-  icon: z.enum(["globe", "chart", "health", "tech", "culture", "crypto", "politics"]).default("globe"),
+  icon: z
+    .enum(["globe", "chart", "health", "tech", "culture", "crypto", "politics", "war"])
+    .default("globe"),
 });
 export type BriefingItem = z.infer<typeof BriefingItemSchema>;
 

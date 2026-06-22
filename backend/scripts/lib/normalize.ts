@@ -15,6 +15,7 @@ export const CANONICAL_CATEGORIES = [
   "culture",
   "crypto",
   "politics",
+  "war",
 ] as const;
 
 export type CanonicalCategory = (typeof CANONICAL_CATEGORIES)[number];
@@ -24,14 +25,32 @@ const CATEGORY_ALIASES: Record<string, CanonicalCategory> = {
   world: "world",
   international: "world",
   foreign: "world",
-  defense: "world",
-  military: "world",
   geopolitics: "world",
   "middle-east": "world",
   europe: "world",
   "asia-pacific": "world",
   africa: "world",
   americas: "world",
+
+  // War
+  war: "war",
+  defense: "war",
+  military: "war",
+  warfare: "war",
+  conflict: "war",
+  conflicts: "war",
+  security: "war",
+  "national-security": "war",
+  "armed-forces": "war",
+  army: "war",
+  navy: "war",
+  air: "war",
+  land: "war",
+  sea: "war",
+  "news-features": "war",
+  "foreign-forces": "war",
+  "surface-forces": "war",
+  "news-analysis": "war",
 
   // Technology
   technology: "technology",
@@ -108,7 +127,7 @@ const CATEGORY_ALIASES: Record<string, CanonicalCategory> = {
   blockchain: "crypto",
   defi: "crypto",
   nft: "crypto",
-  "web3": "crypto",
+  web3: "crypto",
 
   // Politics
   politics: "politics",

@@ -23,6 +23,8 @@ export interface RssFeed {
   linkPattern?: RegExp;
   /** Fetch the full article HTML via Ladder and extract body text (default: false). */
   fetchFullContent?: boolean;
+  /** Optional CSS selector for the article body when fetching full content. */
+  contentSelector?: string;
 }
 
 function stripHtml(html: string | null | undefined): string | undefined {
@@ -85,11 +87,14 @@ function extractSummary(item: Element): string | undefined {
   return undefined;
 }
 
-async function fetchFullContent(url: string): Promise<string | undefined> {
+async function fetchFullContent(
+  url: string,
+  contentSelector?: string,
+): Promise<string | undefined> {
   if (!isLadderConfigured()) return undefined;
   try {
     const html = await fetchViaLadder(url);
-    const extracted = extractArticleFromHtml(html, url);
+    const extracted = extractArticleFromHtml(html, url, undefined, contentSelector);
     return extracted.content;
   } catch {
     return undefined;
@@ -151,7 +156,9 @@ export async function collectFromRssFeeds(
 
         accepted++;
         const rssContent = extractRssContent(item);
-        const fullContent = feed.fetchFullContent ? await fetchFullContent(link) : undefined;
+        const fullContent = feed.fetchFullContent
+          ? await fetchFullContent(link, feed.contentSelector)
+          : undefined;
         articles.push({
           source,
           category: feed.category,

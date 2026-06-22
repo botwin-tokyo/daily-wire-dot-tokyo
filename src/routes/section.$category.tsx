@@ -49,6 +49,11 @@ export const CATEGORY_COPY: Record<Category, { eyebrow: string; title: string; d
     title: "Politics",
     dek: "Congress, the White House, elections, and the policies shaping the country.",
   },
+  war: {
+    eyebrow: "The War Desk",
+    title: "War",
+    dek: "Conflict, defense, and military affairs shaping battlefields and strategy worldwide.",
+  },
 };
 
 export function getSectionCopy(
@@ -177,14 +182,18 @@ export function SectionPageContent({ category }: { category: string }) {
             {rest.length > 0 && (
               <div className="mt-2 grid gap-x-8 md:grid-cols-2 border-t border-[var(--ink)] items-start">
                 <div className="flex flex-col">
-                  {rest.filter((_, i) => i % 2 === 0).map((a) => (
-                    <SidebarStory key={a.id} article={a} />
-                  ))}
+                  {rest
+                    .filter((_, i) => i % 2 === 0)
+                    .map((a) => (
+                      <SidebarStory key={a.id} article={a} />
+                    ))}
                 </div>
                 <div className="flex flex-col lg:border-l lg:border-[var(--rule)] lg:pl-8">
-                  {rest.filter((_, i) => i % 2 === 1).map((a) => (
-                    <SidebarStory key={a.id} article={a} />
-                  ))}
+                  {rest
+                    .filter((_, i) => i % 2 === 1)
+                    .map((a) => (
+                      <SidebarStory key={a.id} article={a} />
+                    ))}
                 </div>
               </div>
             )}

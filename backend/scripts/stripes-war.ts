@@ -13,38 +13,38 @@ const ARTICLE_PATTERN =
 
 const PAGES = [
   {
-    category: "world",
+    category: "war",
     url: "https://www.stripes.com/theaters/middle_east/",
     linkPattern: ARTICLE_PATTERN,
     titleSelector: "h1",
   },
   {
-    category: "world",
+    category: "war",
     url: "https://www.stripes.com/theaters/europe/",
     linkPattern: ARTICLE_PATTERN,
     titleSelector: "h1",
   },
   {
-    category: "world",
+    category: "war",
     url: "https://www.stripes.com/theaters/asia_pacific/",
     linkPattern: ARTICLE_PATTERN,
     titleSelector: "h1",
   },
   {
-    category: "world",
+    category: "war",
     url: "https://www.stripes.com/theaters/africa/",
     linkPattern: ARTICLE_PATTERN,
     titleSelector: "h1",
   },
   {
-    category: "world",
+    category: "war",
     url: "https://www.stripes.com/theaters/americas/",
     linkPattern: ARTICLE_PATTERN,
     titleSelector: "h1",
   },
 ];
 
-aggregateFromLadderPages("stripes", "world", PAGES, 3).catch((err) => {
+aggregateFromLadderPages("stripes", "war", PAGES, 3).catch((err) => {
   console.error(err);
   process.exit(1);
 });

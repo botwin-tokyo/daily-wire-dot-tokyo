@@ -22,19 +22,69 @@ import { plainText } from "../backend/scripts/lib/extract";
 import { validateNewspaperEdition } from "../src/lib/schema";
 import type { NewspaperEdition, Article, Section, NavItem } from "../src/lib/schema";
 
-const CATEGORIES = ["world", "technology", "business", "science", "culture", "crypto", "politics"];
+const CATEGORIES = [
+  "world",
+  "war",
+  "technology",
+  "business",
+  "science",
+  "culture",
+  "crypto",
+  "politics",
+];
 
 const CATEGORY_COPY: Record<
   string,
   { label: string; eyebrow: string; dek: string; order: number }
 > = {
-  world: { label: "World", eyebrow: "The World Desk", dek: "Geopolitics, diplomacy, and the stories shaping nations.", order: 1 },
-  technology: { label: "Technology", eyebrow: "The Technology Desk", dek: "Models, chips, platforms, and the policy lines being drawn around them.", order: 2 },
-  business: { label: "Business", eyebrow: "Markets & Business", dek: "Macro signals, central banks, earnings, and the deals moving capital today.", order: 3 },
-  science: { label: "Science", eyebrow: "Science & Research", dek: "Breakthroughs from labs, observatories, and clinical trials worth your attention.", order: 4 },
-  culture: { label: "Culture", eyebrow: "Culture & Ideas", dek: "Art, books, film, gaming, and the conversations defining the week.", order: 5 },
-  crypto: { label: "Crypto", eyebrow: "The Crypto Desk", dek: "Bitcoin, Ethereum, regulation, and the forces moving digital assets.", order: 6 },
-  politics: { label: "Politics", eyebrow: "The Politics Desk", dek: "Congress, the White House, elections, and the policies shaping the country.", order: 7 },
+  world: {
+    label: "World",
+    eyebrow: "The World Desk",
+    dek: "Geopolitics, diplomacy, and the stories shaping nations.",
+    order: 1,
+  },
+  war: {
+    label: "War",
+    eyebrow: "The War Desk",
+    dek: "Conflict, defense, and military affairs shaping battlefields and strategy worldwide.",
+    order: 2,
+  },
+  technology: {
+    label: "Technology",
+    eyebrow: "The Technology Desk",
+    dek: "Models, chips, platforms, and the policy lines being drawn around them.",
+    order: 3,
+  },
+  business: {
+    label: "Business",
+    eyebrow: "Markets & Business",
+    dek: "Macro signals, central banks, earnings, and the deals moving capital today.",
+    order: 4,
+  },
+  science: {
+    label: "Science",
+    eyebrow: "Science & Research",
+    dek: "Breakthroughs from labs, observatories, and clinical trials worth your attention.",
+    order: 5,
+  },
+  culture: {
+    label: "Culture",
+    eyebrow: "Culture & Ideas",
+    dek: "Art, books, film, gaming, and the conversations defining the week.",
+    order: 6,
+  },
+  crypto: {
+    label: "Crypto",
+    eyebrow: "The Crypto Desk",
+    dek: "Bitcoin, Ethereum, regulation, and the forces moving digital assets.",
+    order: 7,
+  },
+  politics: {
+    label: "Politics",
+    eyebrow: "The Politics Desk",
+    dek: "Congress, the White House, elections, and the policies shaping the country.",
+    order: 8,
+  },
 };
 
 function slugify(title: string): string {
@@ -65,7 +115,6 @@ function deriveDeck(content: string | undefined | null): string | undefined {
   if (!firstSentence || firstSentence.length < 20) return undefined;
   return firstSentence.length > 180 ? `${firstSentence.slice(0, 177)}...` : `${firstSentence}.`;
 }
-
 
 function toIsoUtc(value: string | undefined | null): string {
   if (!value) return new Date().toISOString();
@@ -112,9 +161,7 @@ function removeGluedCaptionNames(text: string): string {
 function splitGluedSentences(text: string): string {
   // Insert a space when a sentence ends with .!? or a quote and the next
   // sentence/caption is glued on with no space (e.g. "...bill.\"Jennifer...").
-  return text
-    .replace(/([.!?""''’])([A-Z])/g, "$1 $2")
-    .replace(/\s{2,}/g, " ");
+  return text.replace(/([.!?""''’])([A-Z])/g, "$1 $2").replace(/\s{2,}/g, " ");
 }
 
 function stripLeadingNoise(text: string, sourceName: string): string {
@@ -203,7 +250,8 @@ function sourceUrl(name: string): string {
   if (lower.includes("polygon")) return "https://www.polygon.com";
   if (lower.includes("france24")) return "https://www.france24.com";
   if (lower.includes("aljazeera")) return "https://www.aljazeera.com";
-  if (lower.includes("hackernews") || lower.includes("hacker news")) return "https://news.ycombinator.com";
+  if (lower.includes("hackernews") || lower.includes("hacker news"))
+    return "https://news.ycombinator.com";
   if (lower.includes("9to5mac")) return "https://9to5mac.com";
   if (lower.includes("macrumors")) return "https://www.macrumors.com";
   if (lower.includes("techcrunch")) return "https://techcrunch.com";
@@ -395,7 +443,8 @@ function main(): void {
     morningBriefing: [],
     editorsNote: {
       text: "This test edition is populated directly from aggregated source articles to verify layout and navigation before AI rewriting.",
-      whyItMatters: "Layout validation ensures every section and article card renders correctly across devices.",
+      whyItMatters:
+        "Layout validation ensures every section and article card renders correctly across devices.",
       model: "aggregate-test",
       generatedAt: isoNow,
       sourcesConsidered: sources.length,

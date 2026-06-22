@@ -131,14 +131,19 @@ export function extractArticleFromHtml(
   html: string,
   url: string,
   titleSelector?: string,
+  contentSelector?: string,
 ): ExtractedArticle {
   return silenceCssWarnings(() => {
     const dom = new JSDOM(html, { url });
     const document = dom.window.document;
 
-    // Capture the requested headline before Readability mutates the DOM.
+    // Capture the requested headline and body element before Readability
+    // mutates the DOM.
     const selectedTitle = titleSelector
       ? document.querySelector(titleSelector)?.textContent?.trim() || null
+      : null;
+    const selectedContent = contentSelector
+      ? document.querySelector(contentSelector)?.innerHTML
       : null;
 
     const reader = new Readability(document, { charThreshold: 0 });
@@ -148,7 +153,12 @@ export function extractArticleFromHtml(
       throw new Error(`Readability could not parse article content for ${url}`);
     }
 
-    const content = plainText(article.textContent ?? article.content ?? "");
+    // Some publishers (e.g. Anime News Network) mix the article body with a
+    // noisy sidebar inside the same container Readability selects. An optional
+    // content selector lets callers target the real article text directly.
+    const rawContent = selectedContent ?? article.textContent ?? article.content ?? "";
+
+    const content = plainText(rawContent);
     const summary = content.slice(0, 1200);
 
     let title = selectedTitle || article.title || metaTitle(document) || null;
@@ -169,7 +179,7 @@ export function extractArticleFromHtml(
       imageUrl: metaImage(document, url), // Readability does not expose a hero image, fall back to OpenGraph/Twitter meta
       publishedAt: metaDate(document),
       siteName: article.siteName || null,
-      language: document.documentElement.lang || null,
+      language: document.documentElement?.lang || null,
     };
   });
 }

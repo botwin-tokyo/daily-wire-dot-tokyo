@@ -10,7 +10,7 @@ import { aggregateFromLadderPages } from "./lib/ladder-source";
 
 const PAGES = [
   {
-    category: "world",
+    category: "war",
     url: "https://warontherocks.com/",
     linkPattern:
       /^https?:\/\/warontherocks\.com\/(?!membership\/|author\/|category\/)[a-z0-9-]+\/$/,
@@ -18,7 +18,7 @@ const PAGES = [
   },
 ];
 
-aggregateFromLadderPages("warontherocks", "world", PAGES, 5).catch((err) => {
+aggregateFromLadderPages("warontherocks", "war", PAGES, 5).catch((err) => {
   console.error(err);
   process.exit(1);
 });

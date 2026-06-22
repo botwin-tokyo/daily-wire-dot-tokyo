@@ -23,6 +23,7 @@ const defaultNavigation = {
   items: [
     { id: "top", label: "Top Stories", path: "/" },
     { id: "world", label: "World", path: "/world" },
+    { id: "war", label: "War", path: "/war" },
     { id: "technology", label: "Technology", path: "/technology" },
     { id: "business", label: "Business", path: "/business" },
     { id: "science", label: "Science", path: "/science" },

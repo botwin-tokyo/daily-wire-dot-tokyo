@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorldRouteImport } from './routes/world'
+import { Route as WarRouteImport } from './routes/war'
 import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SearchRouteImport } from './routes/search'
@@ -39,6 +40,11 @@ import { Route as ApiAdminGenerateRouteImport } from './routes/api/admin/generat
 const WorldRoute = WorldRouteImport.update({
   id: '/world',
   path: '/world',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WarRoute = WarRouteImport.update({
+  id: '/war',
+  path: '/war',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TechnologyRoute = TechnologyRouteImport.update({
@@ -180,6 +186,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
+  '/war': typeof WarRoute
   '/world': typeof WorldRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
   '/api/health': typeof ApiHealthRoute
@@ -208,6 +215,7 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
+  '/war': typeof WarRoute
   '/world': typeof WorldRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
   '/api/health': typeof ApiHealthRoute
@@ -237,6 +245,7 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
+  '/war': typeof WarRoute
   '/world': typeof WorldRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
   '/api/health': typeof ApiHealthRoute
@@ -267,6 +276,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/technology'
+    | '/war'
     | '/world'
     | '/api/editions'
     | '/api/health'
@@ -295,6 +305,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/technology'
+    | '/war'
     | '/world'
     | '/api/editions'
     | '/api/health'
@@ -323,6 +334,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/technology'
+    | '/war'
     | '/world'
     | '/api/editions'
     | '/api/health'
@@ -352,6 +364,7 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   SettingsRoute: typeof SettingsRoute
   TechnologyRoute: typeof TechnologyRoute
+  WarRoute: typeof WarRoute
   WorldRoute: typeof WorldRoute
   ApiEditionsRoute: typeof ApiEditionsRouteWithChildren
   ApiHealthRoute: typeof ApiHealthRoute
@@ -373,6 +386,13 @@ declare module '@tanstack/react-router' {
       path: '/world'
       fullPath: '/world'
       preLoaderRoute: typeof WorldRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/war': {
+      id: '/war'
+      path: '/war'
+      fullPath: '/war'
+      preLoaderRoute: typeof WarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/technology': {
@@ -590,6 +610,7 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   SettingsRoute: SettingsRoute,
   TechnologyRoute: TechnologyRoute,
+  WarRoute: WarRoute,
   WorldRoute: WorldRoute,
   ApiEditionsRoute: ApiEditionsRouteWithChildren,
   ApiHealthRoute: ApiHealthRoute,

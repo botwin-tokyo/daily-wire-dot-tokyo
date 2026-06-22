@@ -1,4 +1,4 @@
-import { Globe, BarChart3, HeartPulse, Cpu, Sparkles, Coins, Landmark } from "lucide-react";
+import { Globe, BarChart3, HeartPulse, Cpu, Sparkles, Coins, Landmark, Swords } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { FitText } from "@/components/pretext";
 import type { Edition } from "@/lib/types";
@@ -11,6 +11,7 @@ const iconMap = {
   culture: Sparkles,
   crypto: Coins,
   politics: Landmark,
+  war: Swords,
 };
 
 export function MorningBriefing({ edition }: { edition: Edition }) {
