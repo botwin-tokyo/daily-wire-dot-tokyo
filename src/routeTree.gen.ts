@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorldRouteImport } from './routes/world'
+import { Route as WeatherRouteImport } from './routes/weather'
 import { Route as WarRouteImport } from './routes/war'
 import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as SettingsRouteImport } from './routes/settings'
@@ -43,6 +44,11 @@ import { Route as ApiAdminGenerateRouteImport } from './routes/api/admin/generat
 const WorldRoute = WorldRouteImport.update({
   id: '/world',
   path: '/world',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeatherRoute = WeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WarRoute = WarRouteImport.update({
@@ -205,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
   '/war': typeof WarRoute
+  '/weather': typeof WeatherRoute
   '/world': typeof WorldRoute
   '/api/crypto-ticker': typeof ApiCryptoTickerRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
@@ -237,6 +244,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
   '/war': typeof WarRoute
+  '/weather': typeof WeatherRoute
   '/world': typeof WorldRoute
   '/api/crypto-ticker': typeof ApiCryptoTickerRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
@@ -270,6 +278,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
   '/war': typeof WarRoute
+  '/weather': typeof WeatherRoute
   '/world': typeof WorldRoute
   '/api/crypto-ticker': typeof ApiCryptoTickerRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
@@ -304,6 +313,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/technology'
     | '/war'
+    | '/weather'
     | '/world'
     | '/api/crypto-ticker'
     | '/api/editions'
@@ -336,6 +346,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/technology'
     | '/war'
+    | '/weather'
     | '/world'
     | '/api/crypto-ticker'
     | '/api/editions'
@@ -368,6 +379,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/technology'
     | '/war'
+    | '/weather'
     | '/world'
     | '/api/crypto-ticker'
     | '/api/editions'
@@ -401,6 +413,7 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   TechnologyRoute: typeof TechnologyRoute
   WarRoute: typeof WarRoute
+  WeatherRoute: typeof WeatherRoute
   WorldRoute: typeof WorldRoute
   ApiCryptoTickerRoute: typeof ApiCryptoTickerRoute
   ApiEditionsRoute: typeof ApiEditionsRouteWithChildren
@@ -425,6 +438,13 @@ declare module '@tanstack/react-router' {
       path: '/world'
       fullPath: '/world'
       preLoaderRoute: typeof WorldRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weather': {
+      id: '/weather'
+      path: '/weather'
+      fullPath: '/weather'
+      preLoaderRoute: typeof WeatherRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/war': {
@@ -671,6 +691,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   TechnologyRoute: TechnologyRoute,
   WarRoute: WarRoute,
+  WeatherRoute: WeatherRoute,
   WorldRoute: WorldRoute,
   ApiCryptoTickerRoute: ApiCryptoTickerRoute,
   ApiEditionsRoute: ApiEditionsRouteWithChildren,

@@ -388,6 +388,7 @@ function main(): void {
       path: `/${s.id}`,
       category: s.id,
     })),
+    { id: "weather", label: "Weather", path: "/weather" },
   ];
 
   const sourcesMap = new Map<string, number>();

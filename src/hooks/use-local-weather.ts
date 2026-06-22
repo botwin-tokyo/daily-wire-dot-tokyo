@@ -7,6 +7,8 @@ export interface LocalWeather {
   tempC: number;
   condition: string;
   icon: WeatherIcon;
+  latitude: number;
+  longitude: number;
 }
 
 export type GeolocationPermission = "granted" | "denied" | "prompt" | null;
@@ -137,7 +139,7 @@ export function useLocalWeather(): UseLocalWeatherResult {
             fetchWeather(latitude, longitude),
             fetchCityName(latitude, longitude),
           ]);
-          setData({ city: city ?? "Local", ...weather });
+          setData({ city: city ?? "Local", ...weather, latitude, longitude });
           setPermission("granted");
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);

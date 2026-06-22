@@ -28,6 +28,7 @@ const defaultNavigation = {
     { id: "business", label: "Business", path: "/business" },
     { id: "science", label: "Science", path: "/science" },
     { id: "culture", label: "Culture", path: "/culture" },
+    { id: "weather", label: "Weather", path: "/weather" },
   ],
   moreLinks: [
     { id: "saved", label: "Saved", path: "/saved" },

@@ -107,7 +107,14 @@ describe("UtilityBar", () => {
 
   it("shows local weather when available", () => {
     vi.mocked(useLocalWeather).mockReturnValue({
-      data: { city: "London", tempC: 18, condition: "Overcast", icon: "cloud" },
+      data: {
+        city: "London",
+        tempC: 18,
+        condition: "Overcast",
+        icon: "cloud",
+        latitude: 51.5074,
+        longitude: -0.1278,
+      },
       loading: false,
       error: null,
       permission: "granted",
@@ -167,7 +174,14 @@ describe("WeatherStrip", () => {
 
   it("renders local weather first when available", () => {
     vi.mocked(useLocalWeather).mockReturnValue({
-      data: { city: "Paris", tempC: 20, condition: "Mainly clear", icon: "partly" },
+      data: {
+        city: "Paris",
+        tempC: 20,
+        condition: "Mainly clear",
+        icon: "partly",
+        latitude: 48.8566,
+        longitude: 2.3522,
+      },
       loading: false,
       error: null,
       permission: "granted",
