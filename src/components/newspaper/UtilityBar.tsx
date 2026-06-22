@@ -11,7 +11,7 @@ const iconMap = {
 } as const;
 
 export function UtilityBar({ data }: { data: NewspaperUtilityBar }) {
-  const { data: local, loading } = useLocalWeather();
+  const { data: local, loading, error } = useLocalWeather();
 
   const weather = local ?? data.weather;
   const WeatherIcon = iconMap[weather.icon] ?? Cloud;
@@ -25,7 +25,7 @@ export function UtilityBar({ data }: { data: NewspaperUtilityBar }) {
             {data.dateLabel}
           </span>
           <span className="text-[var(--rule)]">|</span>
-          <span className="inline-flex items-center gap-1.5">
+          <span className="inline-flex items-center gap-1.5" title={error ?? weather.condition}>
             {loading ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" strokeWidth={1.5} />
             ) : (

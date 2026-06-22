@@ -37,25 +37,31 @@ function isBrowser(): boolean {
   return typeof window !== "undefined" && typeof navigator !== "undefined";
 }
 
-async function fetchCityName(latitude: number, longitude: number): Promise<string> {
+async function fetchCityName(latitude: number, longitude: number): Promise<string | null> {
   const url = new URL("https://api.bigdatacloud.net/data/reverse-geocode-client");
   url.searchParams.set("latitude", String(latitude));
   url.searchParams.set("longitude", String(longitude));
   url.searchParams.set("localityLanguage", "en");
 
-  const response = await fetch(url.toString());
-  if (!response.ok) {
-    throw new Error(`Reverse geocoding failed: ${response.status}`);
+  try {
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+      console.error(`[useLocalWeather] Reverse geocoding failed: ${response.status}`);
+      return null;
+    }
+
+    const json = (await response.json()) as {
+      city?: string;
+      locality?: string;
+      principalSubdivision?: string;
+      countryName?: string;
+    };
+
+    return json.city || json.locality || json.principalSubdivision || json.countryName || null;
+  } catch (err) {
+    console.error("[useLocalWeather] Failed to fetch city name:", err);
+    return null;
   }
-
-  const json = (await response.json()) as {
-    city?: string;
-    locality?: string;
-    principalSubdivision?: string;
-    countryName?: string;
-  };
-
-  return json.city || json.locality || json.principalSubdivision || json.countryName || "Local";
 }
 
 async function fetchWeather(
@@ -109,7 +115,6 @@ export function useLocalWeather(): UseLocalWeatherResult {
 
     setLoading(true);
 
-    // Query permission state when available for a smoother UX.
     if (navigator.permissions) {
       navigator.permissions
         .query({ name: "geolocation" })
@@ -128,14 +133,16 @@ export function useLocalWeather(): UseLocalWeatherResult {
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          const [city, weather] = await Promise.all([
-            fetchCityName(latitude, longitude),
+          const [weather, city] = await Promise.all([
             fetchWeather(latitude, longitude),
+            fetchCityName(latitude, longitude),
           ]);
-          setData({ city, ...weather });
+          setData({ city: city ?? "Local", ...weather });
           setPermission("granted");
         } catch (err) {
-          setError(err instanceof Error ? err.message : String(err));
+          const message = err instanceof Error ? err.message : String(err);
+          console.error("[useLocalWeather] Failed to load local weather:", message);
+          setError(message);
         } finally {
           setLoading(false);
         }
