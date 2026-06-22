@@ -26,6 +26,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectionCategoryRouteImport } from './routes/section.$category'
 import { Route as EditionsDateRouteImport } from './routes/editions.$date'
 import { Route as ArticleSlugRouteImport } from './routes/article.$slug'
+import { Route as ApiStockTickerRouteImport } from './routes/api/stock-ticker'
 import { Route as ApiSettingsRouteImport } from './routes/api/settings'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as ApiSavedRouteImport } from './routes/api/saved'
@@ -123,6 +124,11 @@ const ArticleSlugRoute = ArticleSlugRouteImport.update({
   path: '/article/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStockTickerRoute = ApiStockTickerRouteImport.update({
+  id: '/api/stock-ticker',
+  path: '/api/stock-ticker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSettingsRoute = ApiSettingsRouteImport.update({
   id: '/api/settings',
   path: '/api/settings',
@@ -200,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/api/saved': typeof ApiSavedRoute
   '/api/search': typeof ApiSearchRoute
   '/api/settings': typeof ApiSettingsRoute
+  '/api/stock-ticker': typeof ApiStockTickerRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
@@ -230,6 +237,7 @@ export interface FileRoutesByTo {
   '/api/saved': typeof ApiSavedRoute
   '/api/search': typeof ApiSearchRoute
   '/api/settings': typeof ApiSettingsRoute
+  '/api/stock-ticker': typeof ApiStockTickerRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
@@ -261,6 +269,7 @@ export interface FileRoutesById {
   '/api/saved': typeof ApiSavedRoute
   '/api/search': typeof ApiSearchRoute
   '/api/settings': typeof ApiSettingsRoute
+  '/api/stock-ticker': typeof ApiStockTickerRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
@@ -293,6 +302,7 @@ export interface FileRouteTypes {
     | '/api/saved'
     | '/api/search'
     | '/api/settings'
+    | '/api/stock-ticker'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
@@ -323,6 +333,7 @@ export interface FileRouteTypes {
     | '/api/saved'
     | '/api/search'
     | '/api/settings'
+    | '/api/stock-ticker'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
@@ -353,6 +364,7 @@ export interface FileRouteTypes {
     | '/api/saved'
     | '/api/search'
     | '/api/settings'
+    | '/api/stock-ticker'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
@@ -384,6 +396,7 @@ export interface RootRouteChildren {
   ApiSavedRoute: typeof ApiSavedRoute
   ApiSearchRoute: typeof ApiSearchRoute
   ApiSettingsRoute: typeof ApiSettingsRoute
+  ApiStockTickerRoute: typeof ApiStockTickerRoute
   ArticleSlugRoute: typeof ArticleSlugRoute
   SectionCategoryRoute: typeof SectionCategoryRoute
   ApiAdminGenerateRoute: typeof ApiAdminGenerateRoute
@@ -513,6 +526,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stock-ticker': {
+      id: '/api/stock-ticker'
+      path: '/api/stock-ticker'
+      fullPath: '/api/stock-ticker'
+      preLoaderRoute: typeof ApiStockTickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/settings': {
       id: '/api/settings'
       path: '/api/settings'
@@ -638,6 +658,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSavedRoute: ApiSavedRoute,
   ApiSearchRoute: ApiSearchRoute,
   ApiSettingsRoute: ApiSettingsRoute,
+  ApiStockTickerRoute: ApiStockTickerRoute,
   ArticleSlugRoute: ArticleSlugRoute,
   SectionCategoryRoute: SectionCategoryRoute,
   ApiAdminGenerateRoute: ApiAdminGenerateRoute,
