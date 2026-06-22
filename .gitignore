@@ -25,6 +25,9 @@ dist-ssr
 backend/db/*.db
 backend/db/*.db-*
 
+# Daily neutral rewrite scratch file (regenerated every day)
+drafts/daily.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
