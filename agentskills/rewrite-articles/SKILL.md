@@ -13,6 +13,11 @@ Extract the last 24 hours of articles from `backend/db/news.db`, rewrite each
 one as neutral, Pulitzer-grade wire copy, and save the result to
 `drafts/daily.md`. This file is temporary and overwritten every day.
 
+**Deploy subagents to get this task done.** Make sure you provide each one of
+them a copy of `STYLE.md` so they know the required writing style. Break the
+news into batches for the subagents to complete asynchronously before you
+assemble the final `drafts/daily.md` file.
+
 ## When to use
 
 - User asks for a daily rewrite, de-biased digest, or neutral news brief.
