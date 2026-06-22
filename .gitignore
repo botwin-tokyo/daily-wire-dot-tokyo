@@ -28,6 +28,9 @@ backend/db/*.db-*
 # Daily neutral rewrite scratch file (regenerated every day)
 drafts/daily.md
 
+# Subagent rewrite batches and temporary outputs
+drafts/rewrite_*/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

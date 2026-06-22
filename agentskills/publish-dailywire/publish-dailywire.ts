@@ -199,8 +199,8 @@ function formatContent(text: string): string {
 }
 
 function buildArticle(row: DepropRow, index: number): Article {
-  const slug = slugify(row.title);
   const id = idFromUrl(row.url, index);
+  const slug = `${slugify(row.title)}-${row.id}`;
   const rawContent = row.content ?? row.summary ?? "";
   const content = formatContent(plainText(rawContent));
   const plainSummary = plainText(row.summary ?? content.slice(0, 500));
