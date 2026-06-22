@@ -5,6 +5,7 @@ import {
   editionQuery,
   getSectionCopy,
 } from "./section.$category";
+import { StockTicker } from "@/components/business/StockTicker";
 
 export const Route = createFileRoute("/technology")({
   head: ({ loaderData }) => {
@@ -19,5 +20,5 @@ export const Route = createFileRoute("/technology")({
     };
   },
   loader: ({ context }) => context.queryClient.ensureQueryData(editionQuery),
-  component: () => <SectionPageContent category="technology" />,
+  component: () => <SectionPageContent category="technology" headerSlot={<StockTicker />} />,
 });
