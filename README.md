@@ -11,17 +11,19 @@ Cloudflare enters the picture only for hosting and long-term archive storage.
 
 ## What it does
 
-1. **Ingest** — `npm run ingest:articles` fetches the last 24 hours of news
-   from configured RSS, API, and HTML sources into a local SQLite database
-   (`backend/db/news.db`).
+1. **Ingest** — the `fetch-news` agent skill runs `npm run ingest:articles` to
+   fetch the last 24 hours of news from configured RSS, API, and HTML sources
+   into a local SQLite database (`backend/db/news.db`).
 2. **Rewrite** — the `rewrite-articles` agent skill reads the ingested articles,
    distributes them to subagents, and has each one rewrite stories in a neutral,
    Pulitzer-grade wire-service style. Output lands in `drafts/daily.md`.
 3. **Populate** — the `populate-depropdb` agent skill parses `drafts/daily.md`
    and inserts the rewritten articles into `backend/db/deprop.db`.
-4. **Publish** — the `publish-dailywire` agent skill builds a schema-valid
-   `NewspaperEdition` from `deprop.db`, writes `public/data/current-edition.json`,
-   and archives the edition in Cloudflare D1 when credentials are configured.
+4. **Publish** — the `publish-dailywire` agent skill runs
+   `npx tsx agentskills/publish-dailywire/publish-dailywire.ts` to build a
+   schema-valid `NewspaperEdition` from `deprop.db`, write
+   `public/data/current-edition.json`, and archive the edition in Cloudflare D1
+   when credentials are configured.
 
 The frontend then renders today's edition, section pages, article pages, search,
 and an archive view.
@@ -103,24 +105,25 @@ Cloudflare variables are only needed for deployment and D1 archiving.
 
 ## Running the daily pipeline
 
-A full cycle looks like this:
+A full cycle is driven by four agent skills. The agent should invoke each skill
+in order; each skill wraps the underlying script or judgement work:
 
 ```bash
-# 1. Fetch fresh articles
-npm run ingest:articles
+# 1. Fetch fresh articles — run the fetch-news agent skill
+#    Internally executes: npm run ingest:articles
 
-# 2. Rewrite (agentic — follow the rewrite-articles skill)
+# 2. Rewrite — run the rewrite-articles agent skill
 #    Produces drafts/daily.md
 
-# 3. Populate deprop.db (agentic — follow the populate-depropdb skill)
+# 3. Populate deprop.db — run the populate-depropdb agent skill
 
-# 4. Publish the edition
-npx tsx agentskills/publish-dailywire/publish-dailywire.ts
+# 4. Publish the edition — run the publish-dailywire agent skill
+#    Internally executes: npx tsx agentskills/publish-dailywire/publish-dailywire.ts
 ```
 
-Step 2 and 3 are intentionally agentic: the agent reads the source articles,
-applies the style guide, and saves output. Step 1 and 4 are deterministic
-scripts.
+All four steps are agent skills. Steps 2 and 3 are the most open-ended: the
+agent reads source material, applies the style guide, and saves output. Steps 1
+and 4 are primarily wrappers around deterministic scripts.
 
 ## Edition JSON
 
