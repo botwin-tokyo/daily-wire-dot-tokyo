@@ -26,6 +26,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectionCategoryRouteImport } from './routes/section.$category'
 import { Route as EditionsDateRouteImport } from './routes/editions.$date'
 import { Route as ArticleSlugRouteImport } from './routes/article.$slug'
+import { Route as ApiWorldMarketsTickerRouteImport } from './routes/api/world-markets-ticker'
 import { Route as ApiStockTickerRouteImport } from './routes/api/stock-ticker'
 import { Route as ApiSettingsRouteImport } from './routes/api/settings'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
@@ -124,6 +125,11 @@ const ArticleSlugRoute = ArticleSlugRouteImport.update({
   path: '/article/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiWorldMarketsTickerRoute = ApiWorldMarketsTickerRouteImport.update({
+  id: '/api/world-markets-ticker',
+  path: '/api/world-markets-ticker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStockTickerRoute = ApiStockTickerRouteImport.update({
   id: '/api/stock-ticker',
   path: '/api/stock-ticker',
@@ -207,6 +213,7 @@ export interface FileRoutesByFullPath {
   '/api/search': typeof ApiSearchRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stock-ticker': typeof ApiStockTickerRoute
+  '/api/world-markets-ticker': typeof ApiWorldMarketsTickerRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
@@ -238,6 +245,7 @@ export interface FileRoutesByTo {
   '/api/search': typeof ApiSearchRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stock-ticker': typeof ApiStockTickerRoute
+  '/api/world-markets-ticker': typeof ApiWorldMarketsTickerRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
@@ -270,6 +278,7 @@ export interface FileRoutesById {
   '/api/search': typeof ApiSearchRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stock-ticker': typeof ApiStockTickerRoute
+  '/api/world-markets-ticker': typeof ApiWorldMarketsTickerRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
@@ -303,6 +312,7 @@ export interface FileRouteTypes {
     | '/api/search'
     | '/api/settings'
     | '/api/stock-ticker'
+    | '/api/world-markets-ticker'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
@@ -334,6 +344,7 @@ export interface FileRouteTypes {
     | '/api/search'
     | '/api/settings'
     | '/api/stock-ticker'
+    | '/api/world-markets-ticker'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
@@ -365,6 +376,7 @@ export interface FileRouteTypes {
     | '/api/search'
     | '/api/settings'
     | '/api/stock-ticker'
+    | '/api/world-markets-ticker'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
@@ -397,6 +409,7 @@ export interface RootRouteChildren {
   ApiSearchRoute: typeof ApiSearchRoute
   ApiSettingsRoute: typeof ApiSettingsRoute
   ApiStockTickerRoute: typeof ApiStockTickerRoute
+  ApiWorldMarketsTickerRoute: typeof ApiWorldMarketsTickerRoute
   ArticleSlugRoute: typeof ArticleSlugRoute
   SectionCategoryRoute: typeof SectionCategoryRoute
   ApiAdminGenerateRoute: typeof ApiAdminGenerateRoute
@@ -524,6 +537,13 @@ declare module '@tanstack/react-router' {
       path: '/article/$slug'
       fullPath: '/article/$slug'
       preLoaderRoute: typeof ArticleSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/world-markets-ticker': {
+      id: '/api/world-markets-ticker'
+      path: '/api/world-markets-ticker'
+      fullPath: '/api/world-markets-ticker'
+      preLoaderRoute: typeof ApiWorldMarketsTickerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/stock-ticker': {
@@ -659,6 +679,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSearchRoute: ApiSearchRoute,
   ApiSettingsRoute: ApiSettingsRoute,
   ApiStockTickerRoute: ApiStockTickerRoute,
+  ApiWorldMarketsTickerRoute: ApiWorldMarketsTickerRoute,
   ArticleSlugRoute: ArticleSlugRoute,
   SectionCategoryRoute: SectionCategoryRoute,
   ApiAdminGenerateRoute: ApiAdminGenerateRoute,
