@@ -111,11 +111,3 @@ articles, omit it.
 - Keep the original URLs so a human can verify the source.
 - If the source material is already neutral, still review it against the style
 guide before including it.
-
-## Next step
-
-After `drafts/daily.md` is ready, generate the site edition:
-
-```bash
-npm run generate:edition
-```
