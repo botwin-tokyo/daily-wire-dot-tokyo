@@ -56,6 +56,11 @@ export const CATEGORY_COPY: Record<Category, { eyebrow: string; title: string; d
     title: "War",
     dek: "Conflict, defense, and military affairs shaping battlefields and strategy worldwide.",
   },
+  weather: {
+    eyebrow: "The Weather Desk",
+    title: "Weather",
+    dek: "Forecasts, climate developments, and the atmospheric stories shaping the day.",
+  },
 };
 
 export function getSectionCopy(

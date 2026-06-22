@@ -1,4 +1,4 @@
-import { Thermometer, CloudRain, Sun, Wind, ArrowRight } from "lucide-react";
+import { Thermometer, CloudRain, Sun, Wind } from "lucide-react";
 import { generateBriefing, type BriefingPoint } from "@/lib/weather-utils";
 import type { OpenMeteoDaily } from "@/lib/weather-api";
 
@@ -35,9 +35,6 @@ export function WeatherBriefing({
           );
         })}
       </ul>
-      <button className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-[var(--ink-mid)] hover:text-[var(--ink)]">
-        See full briefing <ArrowRight className="h-4 w-4" />
-      </button>
     </div>
   );
 }

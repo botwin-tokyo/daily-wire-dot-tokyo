@@ -4,6 +4,7 @@ import { Loader2, RefreshCw } from "lucide-react";
 import { useLocalWeather } from "@/hooks/use-local-weather";
 import { weatherQueryOptions } from "@/lib/weather-api";
 import { formatFullDate } from "@/lib/weather-utils";
+import { newspaperEditionQuery } from "@/lib/api";
 import { LocationSearch } from "./LocationSearch";
 import { CurrentConditions } from "./CurrentConditions";
 import { DailyForecast } from "./DailyForecast";
@@ -13,6 +14,9 @@ import { WeatherIndices } from "./WeatherIndices";
 import { PrecipitationChart } from "./PrecipitationChart";
 import { RegionalOutlook } from "./RegionalOutlook";
 import { MoonPhaseWidget } from "./MoonPhase";
+import { WeatherNewsSection } from "./WeatherNewsSection";
+import { WeatherNewsRail } from "./WeatherNewsRail";
+import { adaptArticle } from "./adapt-article";
 
 const LOCATION_KEY = "tmw.weather-location";
 
@@ -53,6 +57,19 @@ export function WeatherDashboard() {
   } = useQuery(
     weatherQueryOptions(activeLocation?.latitude ?? null, activeLocation?.longitude ?? null),
   );
+
+  const { data: edition } = useQuery(newspaperEditionQuery);
+
+  const weatherArticles =
+    edition?.articles
+      .filter((a) => a.category === "weather")
+      .sort((a, b) => b.relevanceScore - a.relevanceScore)
+      .map(adaptArticle) ?? [];
+
+  const rightCount = Math.round(weatherArticles.length * 0.3);
+  const leftCount = weatherArticles.length - rightCount;
+  const leftWeatherArticles = weatherArticles.slice(0, leftCount);
+  const rightWeatherArticles = weatherArticles.slice(leftCount);
 
   function handleSelectLocation(location: ResolvedLocation) {
     setManualLocation(location);
@@ -102,6 +119,14 @@ export function WeatherDashboard() {
     );
   }
 
+  if (!weather) {
+    return (
+      <div className="flex h-96 items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--ink-mid)]" />
+      </div>
+    );
+  }
+
   const forecast = weather.forecast;
   const locationLabel =
     activeLocation.city || `${forecast.latitude.toFixed(2)}, ${forecast.longitude.toFixed(2)}`;
@@ -132,6 +157,7 @@ export function WeatherDashboard() {
             <HourlyForecast hourly={forecast.hourly} />
             <PrecipitationChart daily={forecast.daily} />
           </div>
+          <WeatherNewsSection articles={leftWeatherArticles} />
         </div>
 
         <div className="space-y-6">
@@ -139,6 +165,7 @@ export function WeatherDashboard() {
           <WeatherIndices uv={forecast.daily.uv_index_max?.[0] ?? 5} />
           <RegionalOutlook forecast={forecast} />
           <MoonPhaseWidget />
+          <WeatherNewsRail articles={rightWeatherArticles} />
         </div>
       </div>
     </div>

@@ -16,6 +16,7 @@ export const CANONICAL_CATEGORIES = [
   "crypto",
   "politics",
   "war",
+  "weather",
 ] as const;
 
 export type CanonicalCategory = (typeof CANONICAL_CATEGORIES)[number];
@@ -39,7 +40,6 @@ const CATEGORY_ALIASES: Record<string, CanonicalCategory> = {
   warfare: "war",
   conflict: "war",
   conflicts: "war",
-  security: "war",
   "national-security": "war",
   "armed-forces": "war",
   army: "war",
@@ -138,6 +138,12 @@ const CATEGORY_ALIASES: Record<string, CanonicalCategory> = {
   elections: "politics",
   policy: "politics",
   government: "politics",
+
+  // Weather
+  weather: "weather",
+  climate: "weather",
+  meteorology: "weather",
+  forecasting: "weather",
 };
 
 /**

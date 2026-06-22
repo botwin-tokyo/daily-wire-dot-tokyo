@@ -263,6 +263,8 @@ function sourceUrl(name: string): string {
   if (lower.includes("warontherocks")) return "https://warontherocks.com";
   if (lower.includes("twz")) return "https://www.twz.com";
   if (lower.includes("space")) return "https://spacenews.com";
+  if (lower.includes("noaa")) return "https://www.noaa.gov";
+  if (lower.includes("wmo")) return "https://wmo.int";
   return "https://example.com";
 }
 

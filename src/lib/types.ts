@@ -10,6 +10,7 @@ export const CategorySchema = z.enum([
   "crypto",
   "politics",
   "war",
+  "weather",
 ]);
 export type Category = z.infer<typeof CategorySchema>;
 
