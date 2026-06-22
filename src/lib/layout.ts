@@ -28,21 +28,53 @@ function byProminenceDesc(a: NewspaperArticle, b: NewspaperArticle): number {
   return b.editorialProminence - a.editorialProminence;
 }
 
+function byRecencyDesc(a: NewspaperArticle, b: NewspaperArticle): number {
+  return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+}
+
+function byProminenceThenRecency(a: NewspaperArticle, b: NewspaperArticle): number {
+  const prom = byProminenceDesc(a, b);
+  if (prom !== 0) return prom;
+  return byRecencyDesc(a, b);
+}
+
 export function deriveFrontPageLayout(edition: NewspaperEdition): FrontPageLayout {
   const lead =
     edition.articles.find((a) => a.id === edition.leadStoryId) ??
     edition.articles.find((a) => a.displayPosition === "lead") ??
     edition.articles[0];
 
-  const left = edition.articles
-    .filter((a) => a.displayPosition === "sidebar" || a.displayPosition === "brief")
+  const candidates = edition.articles
     .filter((a) => a.id !== lead.id)
-    .sort(byProminenceDesc);
+    .sort(byProminenceThenRecency);
 
-  const right = edition.articles
+  // Respect explicitly assigned positions first, then fill remaining slots
+  // with the most prominent recent standard stories.
+  const leftAssigned = candidates
+    .filter((a) => a.displayPosition === "sidebar" || a.displayPosition === "brief")
+    .sort(byProminenceThenRecency);
+
+  const rightAssigned = candidates
     .filter((a) => a.displayPosition === "imageFeature" || a.displayPosition === "major")
-    .filter((a) => a.id !== lead.id)
-    .sort(byProminenceDesc);
+    .sort(byProminenceThenRecency);
+
+  const assignedIds = new Set([
+    ...leftAssigned.map((a) => a.id),
+    ...rightAssigned.map((a) => a.id),
+  ]);
+
+  const filler = candidates.filter((a) => !assignedIds.has(a.id));
+  const leftFiller = filler.slice(0, Math.max(0, 10 - leftAssigned.length));
+  const usedFillerIds = new Set(leftFiller.map((a) => a.id));
+  const rightFiller = filler
+    .filter((a) => !usedFillerIds.has(a.id))
+    .sort(
+      (a, b) => Number(!!b.imageUrl) - Number(!!a.imageUrl) || byProminenceThenRecency(a, b),
+    )
+    .slice(0, Math.max(0, 6 - rightAssigned.length));
+
+  const left = [...leftAssigned, ...leftFiller];
+  const right = [...rightAssigned, ...rightFiller];
 
   return { lead, left, right };
 }

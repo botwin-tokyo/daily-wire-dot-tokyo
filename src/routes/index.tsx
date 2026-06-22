@@ -3,7 +3,7 @@ import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { PageShell } from "@/components/newspaper/PageShell";
 import { LeadStory } from "@/components/newspaper/LeadStory";
-import { SidebarStory } from "@/components/newspaper/SidebarStory";
+import { TopStoryListItem } from "@/components/newspaper/TopStoryListItem";
 import { RightStory } from "@/components/newspaper/RightStory";
 import { MarketTable } from "@/components/newspaper/MarketTable";
 import { MorningBriefing } from "@/components/newspaper/MorningBriefing";
@@ -63,12 +63,15 @@ function EditionView() {
 
   return (
     <>
-      {/* Editorial grid: 22 / 44 / 34 */}
-      <div className="grid grid-cols-1 lg:grid-cols-[22fr_44fr_34fr] gap-0 items-start">
-        {/* LEFT COL */}
+      {/* Editorial grid: left top stories / center lead / right features */}
+      <div className="grid grid-cols-1 lg:grid-cols-[30fr_44fr_26fr] gap-0 items-start">
+        {/* LEFT COL — Top Stories */}
         <div className="lg:border-r lg:border-[var(--rule)] lg:pr-5">
+          <h2 className="py-4 border-b border-[var(--ink)] font-sans text-[11px] font-bold uppercase tracking-wider text-[var(--ink-mid)]">
+            More Top Stories
+          </h2>
           {left.map((a) => (
-            <SidebarStory key={a.id} article={a} />
+            <TopStoryListItem key={a.id} article={a} />
           ))}
           <MarketTable marketSnapshot={newspaper.marketSnapshot} />
         </div>
