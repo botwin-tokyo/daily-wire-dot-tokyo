@@ -6,7 +6,7 @@ export function DailyForecast({ daily }: { daily: OpenMeteoDaily }) {
   return (
     <div className="rounded-lg border border-[var(--rule)] bg-[var(--paper)] p-6">
       <h2 className="mb-4 font-serif text-2xl text-[var(--ink)]">7-Day Forecast</h2>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
+      <div className="flex gap-2 overflow-x-auto pb-2">
         {daily.time.map((time, i) => {
           const date = new Date(time);
           const mapped = mapWeatherCode(daily.weather_code[i]);
@@ -20,21 +20,26 @@ export function DailyForecast({ daily }: { daily: OpenMeteoDaily }) {
           return (
             <div
               key={time}
-              className="flex flex-col items-center rounded border border-[var(--rule)] p-3 text-center"
+              className="flex min-w-[92px] flex-1 flex-col items-center rounded border border-[var(--rule)] px-2 py-3 text-center"
             >
-              <div className="text-xs font-bold uppercase text-[var(--ink-mid)]">
+              <div className="text-[10px] font-bold uppercase text-[var(--ink-mid)]">
                 {formatDay(date)}
               </div>
-              <div className="text-xs text-[var(--ink-faint)]">{formatDate(date)}</div>
-              <Icon className="my-2 h-8 w-8 text-[var(--ink-mid)]" strokeWidth={1.4} />
-              <div className="text-xs leading-tight text-[var(--ink-mid)]">{mapped.condition}</div>
-              <div className="my-1 font-mono text-sm text-[var(--ink)]">
+              <div className="text-[10px] text-[var(--ink-faint)]">{formatDate(date)}</div>
+              <Icon className="my-1.5 h-6 w-6 text-[var(--ink-mid)]" strokeWidth={1.4} />
+              <div className="text-[10px] leading-tight text-[var(--ink-mid)]">
+                {mapped.condition}
+              </div>
+              <div className="my-0.5 font-mono text-xs text-[var(--ink)]">
                 {maxTemp}° / <span className="text-[var(--ink-faint)]">{minTemp}°</span>
               </div>
-              <div className="text-xs text-[var(--ink-faint)]">{rainProb}% rain</div>
-              <div className="mt-1 flex items-center gap-1 text-xs text-[var(--ink-faint)]">
-                <Navigation className="h-3 w-3" style={{ transform: `rotate(${windDir}deg)` }} />
-                {Math.round(windSpeed)} km/h {degreesToCardinal(windDir)}
+              <div className="text-[10px] text-[var(--ink-faint)]">{rainProb}% rain</div>
+              <div className="mt-0.5 flex items-center gap-0.5 text-[10px] text-[var(--ink-faint)]">
+                <Navigation
+                  className="h-2.5 w-2.5"
+                  style={{ transform: `rotate(${windDir}deg)` }}
+                />
+                {Math.round(windSpeed)}
               </div>
             </div>
           );

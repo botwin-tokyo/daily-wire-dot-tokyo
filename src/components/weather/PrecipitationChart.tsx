@@ -15,10 +15,13 @@ export function PrecipitationChart({ daily }: { daily: OpenMeteoDaily }) {
         {data.map((d) => {
           const height = `${(d.value / max) * 100}%`;
           return (
-            <div key={d.day} className="flex flex-1 flex-col items-center gap-1">
-              <div className="w-full flex-1 flex items-end justify-center rounded-t bg-[var(--rule)]/20">
+            <div
+              key={d.day}
+              className="flex h-full min-w-[28px] flex-1 flex-col items-center justify-end gap-1"
+            >
+              <div className="relative w-full flex-1 rounded-t bg-[var(--rule)]/30">
                 <div
-                  className="w-full rounded-t bg-[var(--ink-mid)]/60 transition-all"
+                  className="absolute bottom-0 left-0 w-full rounded-t bg-[var(--ink-mid)]"
                   style={{ height }}
                   title={`${d.day}: ${d.value}%`}
                 />
