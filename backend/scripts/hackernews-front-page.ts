@@ -82,9 +82,7 @@ export async function aggregate(): Promise<void> {
   const url = "https://hn.algolia.com/api/v1/search?tags=front_page";
   const data = await fetchJson<HackerNewsResponse>(url);
 
-  const hits = (data.hits ?? []).filter(
-    (hit) => hit.url && hit.title && hit.title !== "Untitled",
-  );
+  const hits = (data.hits ?? []).filter((hit) => hit.url && hit.title && hit.title !== "Untitled");
 
   const articles: NormalizedArticle[] = [];
   for (const hit of hits.slice(0, 20)) {

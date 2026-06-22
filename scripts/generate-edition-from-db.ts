@@ -90,7 +90,7 @@ const CATEGORY_COPY: Record<
 function slugify(title: string): string {
   const base = title
     .normalize("NFKD")
-    .replace(/[^\x00-\x7F]/g, "")
+    .replace(/[^\p{ASCII}]/gu, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
@@ -152,7 +152,7 @@ function removeGluedCaptionNames(text: string): string {
   //   "Jennifer Read-DominguezJennifer says..."
   // Turn that into "Jennifer Read-Dominguez says...".
   const pattern = new RegExp(
-    `\\b([A-Z][A-Za-z\-']+)((?:\\s+[A-Za-z][A-Za-z\-']*){0,2})(\\1(?:'s)?)\\s+(${SPEECH_VERBS})\\b`,
+    `\\b([A-Z][A-Za-z'-]+)((?:\\s+[A-Za-z][A-Za-z'-]*){0,2})(\\1(?:'s)?)\\s+(${SPEECH_VERBS})\\b`,
     "g",
   );
   return text.replace(pattern, "$1$2 $4");

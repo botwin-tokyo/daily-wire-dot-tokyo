@@ -40,7 +40,6 @@ async function fetchJson<T>(path: string): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-const SAVED_KEY = "tmw.saved";
 const READ_KEY = "tmw.read";
 
 function readSet(key: string): Set<string> {
@@ -106,7 +105,7 @@ export async function getEditionByDate(date: string): Promise<Edition> {
     return newspaperEditionToEdition(newspaper);
   } catch (error) {
     if (import.meta.env.DEV) {
-      console.warn(`Failed to load edition ${date} from JSON, falling back to mock:`, error);
+      console.warn(`Failed to load edition ${date}, falling back to mock:`, error);
       return { ...MOCK_EDITION, editionDate: date };
     }
     throw error;
@@ -131,12 +130,14 @@ export async function getEditionByDateNewspaper(date: string): Promise<Newspaper
 export async function listEditions(): Promise<EditionSummary[]> {
   await wait(80);
   try {
+    // Client always hits the D1-backed API route. Server falls back to the
+    // static index file so SSR still works when D1 is not bound (local dev).
     return isServer()
       ? await loadEditionSummaries()
       : await fetchJson<EditionSummary[]>("/api/editions");
   } catch (error) {
     if (import.meta.env.DEV) {
-      console.warn("Failed to load edition index from JSON, falling back to mock:", error);
+      console.warn("Failed to load edition index, falling back to mock:", error);
       return MOCK_EDITION_SUMMARIES;
     }
     throw error;
@@ -194,58 +195,6 @@ export async function searchArticles(query: string): Promise<Article[]> {
     }
     throw error;
   }
-}
-
-export async function getSavedArticles(): Promise<Article[]> {
-  await wait(40);
-  if (isServer()) {
-    const ids = readSet(SAVED_KEY);
-    const edition = await loadEdition();
-    return edition.articles.filter((a) => ids.has(a.id));
-  }
-  try {
-    return await fetchJson<Article[]>("/api/saved");
-  } catch (error) {
-    if (import.meta.env.DEV) {
-      console.warn("Failed to fetch saved articles from API, falling back to localStorage:", error);
-      const ids = readSet(SAVED_KEY);
-      const edition = await loadEdition();
-      return edition.articles.filter((a) => ids.has(a.id));
-    }
-    throw error;
-  }
-}
-
-export async function toggleSaved(articleId: string): Promise<boolean> {
-  if (typeof window !== "undefined") {
-    try {
-      const current = await fetchJson<Article[]>("/api/saved");
-      const isCurrentlySaved = current.some((a) => a.id === articleId);
-      const method = isCurrentlySaved ? "DELETE" : "POST";
-      const response = await fetch("/api/saved", {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ articleId }),
-      });
-      if (!response.ok) throw new Error(`Failed to toggle saved: ${response.status}`);
-      return !isCurrentlySaved;
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.warn("Failed to toggle saved via API, falling back to localStorage:", error);
-      } else {
-        throw error;
-      }
-    }
-  }
-  const set = readSet(SAVED_KEY);
-  if (set.has(articleId)) set.delete(articleId);
-  else set.add(articleId);
-  writeSet(SAVED_KEY, set);
-  return set.has(articleId);
-}
-
-export function isSaved(articleId: string): boolean {
-  return readSet(SAVED_KEY).has(articleId);
 }
 
 export async function markRead(articleId: string): Promise<void> {

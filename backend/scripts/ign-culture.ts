@@ -6,6 +6,7 @@ import { aggregateFromRssFeeds } from "./lib/rss-source";
 
 const FEEDS = [
   {
+    category: "culture",
     url: "http://feeds.ign.com/ign/all",
     maxItems: 12,
     linkPattern: /https:\/\/www\.ign\.com\/articles\//,

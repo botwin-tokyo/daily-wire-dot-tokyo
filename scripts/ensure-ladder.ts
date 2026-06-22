@@ -55,12 +55,12 @@ async function startDocker(): Promise<void> {
 async function areLadderContainersRunning(): Promise<boolean> {
   try {
     const { stdout } = await exec(`docker compose -f ${COMPOSE_FILE} ps --format json`);
-    const lines = stdout.trim().split("\n").filter((line) => line.trim().length > 0);
-    const containers = lines.map((line) => JSON.parse(line)) as unknown[];
-    return (
-      containers.length >= 2 &&
-      containers.every((c: any) => c?.State === "running")
-    );
+    const lines = stdout
+      .trim()
+      .split("\n")
+      .filter((line) => line.trim().length > 0);
+    const containers = lines.map((line) => JSON.parse(line)) as Record<string, unknown>[];
+    return containers.length >= 2 && containers.every((c) => c?.State === "running");
   } catch {
     return false;
   }

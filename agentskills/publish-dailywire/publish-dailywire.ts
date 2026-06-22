@@ -20,6 +20,80 @@ import { plainText } from "../../backend/scripts/lib/extract";
 import { validateNewspaperEdition, validateBusinessRules } from "../../src/lib/schema";
 import type { NewspaperEdition, Article, Section, NavItem } from "../../src/lib/schema";
 
+const D1_API_URL = "https://api.cloudflare.com/client/v4/accounts";
+
+interface D1Config {
+  accountId: string;
+  databaseId: string;
+  apiToken: string;
+}
+
+function getD1Config(): D1Config | undefined {
+  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+  const databaseId = process.env.D1_DATABASE_ID ?? process.env.CLOUDFLARE_D1_DATABASE_ID;
+  const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+  if (!accountId || !databaseId || !apiToken) return undefined;
+  return { accountId, databaseId, apiToken };
+}
+
+async function upsertEditionToD1(edition: NewspaperEdition): Promise<void> {
+  const config = getD1Config();
+  if (!config) {
+    console.log(
+      "Skipping D1 upsert: CLOUDFLARE_ACCOUNT_ID, D1_DATABASE_ID, and CLOUDFLARE_API_TOKEN are not all set.",
+    );
+    return;
+  }
+
+  const url = `${D1_API_URL}/${config.accountId}/d1/database/${config.databaseId}/query`;
+  const categories = JSON.stringify(edition.sections.map((s) => s.id));
+
+  const sql = `
+    INSERT INTO editions
+      (edition_date, edition_json, status, story_count, lead_headline, categories, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+    ON CONFLICT(edition_date) DO UPDATE SET
+      edition_json = excluded.edition_json,
+      status = excluded.status,
+      story_count = excluded.story_count,
+      lead_headline = excluded.lead_headline,
+      categories = excluded.categories,
+      updated_at = datetime('now')
+  `;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${config.apiToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      sql,
+      params: [
+        edition.editionDate,
+        JSON.stringify(edition),
+        edition.status,
+        edition.articles.length,
+        edition.articles[0]?.headline ?? "",
+        categories,
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`D1 upsert failed (${response.status}): ${body}`);
+  }
+
+  const json = (await response.json()) as { success?: boolean; errors?: { message: string }[] };
+  if (!json.success) {
+    const message = json.errors?.map((e) => e.message).join("; ") ?? "unknown D1 error";
+    throw new Error(`D1 upsert failed: ${message}`);
+  }
+
+  console.log(`Upserted edition ${edition.editionDate} into D1.`);
+}
+
 const CATEGORIES = [
   "world",
   "war",
@@ -110,7 +184,7 @@ interface DepropRow {
 function slugify(title: string): string {
   const base = title
     .normalize("NFKD")
-    .replace(/[^\x00-\x7F]/g, "")
+    .replace(/[^\p{ASCII}]/gu, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
@@ -272,7 +346,7 @@ function getArticlesFromDeprop(db: DatabaseSync): DepropRow[] {
   return stmt.all() as DepropRow[];
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const db = openDepropDb();
   initDepropDb(db);
 
@@ -374,10 +448,7 @@ function main(): void {
     },
     navigation: {
       items: navItems,
-      moreLinks: [
-        { id: "saved", label: "Saved", path: "/saved" },
-        { id: "archive", label: "Archive", path: "/editions" },
-      ],
+      moreLinks: [{ id: "archive", label: "Archive", path: "/editions" }],
     },
     leadStoryId: lead.id,
     articles,
@@ -451,28 +522,37 @@ function main(): void {
   mkdirSync(editionsDir, { recursive: true });
 
   const currentPath = resolve(outDir, "current-edition.json");
-  const archivePath = resolve(editionsDir, `${editionDate}.json`);
-  const indexPath = resolve(editionsDir, "index.json");
-
   const json = JSON.stringify(validated.data, null, 2);
   writeFileSync(currentPath, json);
-  writeFileSync(archivePath, json);
-
-  const index = [
-    {
-      id: validated.data.editionId,
-      editionDate: validated.data.editionDate,
-      status: validated.data.status,
-      storyCount: validated.data.articles.length,
-      leadHeadline: validated.data.articles[0]?.headline ?? "",
-      categories: sections.map((s) => s.id),
-    },
-  ];
-  writeFileSync(indexPath, JSON.stringify(index, null, 2));
-
   console.log(`Wrote ${validated.data.articles.length} articles to ${currentPath}`);
-  console.log(`Wrote archive to ${archivePath}`);
-  console.log(`Wrote index to ${indexPath}`);
+
+  // If Cloudflare credentials are configured, store the archive in D1 and do
+  // not add a new static per-date file to the deploy bundle. Otherwise fall
+  // back to static files so local dev still works before D1 is set up.
+  const d1Config = getD1Config();
+  if (d1Config) {
+    await upsertEditionToD1(validated.data);
+  } else {
+    const archivePath = resolve(editionsDir, `${editionDate}.json`);
+    const indexPath = resolve(editionsDir, "index.json");
+
+    writeFileSync(archivePath, json);
+
+    const index = [
+      {
+        id: validated.data.editionId,
+        editionDate: validated.data.editionDate,
+        status: validated.data.status,
+        storyCount: validated.data.articles.length,
+        leadHeadline: validated.data.articles[0]?.headline ?? "",
+        categories: sections.map((s) => s.id),
+      },
+    ];
+    writeFileSync(indexPath, JSON.stringify(index, null, 2));
+
+    console.log(`Wrote archive to ${archivePath}`);
+    console.log(`Wrote index to ${indexPath}`);
+  }
 
   db.close();
 }

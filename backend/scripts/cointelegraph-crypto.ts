@@ -7,8 +7,7 @@
 
 import { aggregateFromLadderPages } from "./lib/ladder-source";
 
-const ARTICLE_PATTERN =
-  /^https?:\/\/(?:www\.)?cointelegraph\.com\/news\/[a-z0-9-]+/;
+const ARTICLE_PATTERN = /^https?:\/\/(?:www\.)?cointelegraph\.com\/news\/[a-z0-9-]+/;
 
 const PAGES = [
   {

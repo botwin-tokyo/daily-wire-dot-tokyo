@@ -16,7 +16,6 @@ import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ScienceRouteImport } from './routes/science'
-import { Route as SavedRouteImport } from './routes/saved'
 import { Route as PretextDemoRouteImport } from './routes/pretext-demo'
 import { Route as PoliticsRouteImport } from './routes/politics'
 import { Route as EditionsRouteImport } from './routes/editions'
@@ -31,7 +30,6 @@ import { Route as ApiWorldMarketsTickerRouteImport } from './routes/api/world-ma
 import { Route as ApiStockTickerRouteImport } from './routes/api/stock-ticker'
 import { Route as ApiSettingsRouteImport } from './routes/api/settings'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
-import { Route as ApiSavedRouteImport } from './routes/api/saved'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as ApiEditionsRouteImport } from './routes/api/editions'
 import { Route as ApiCryptoTickerRouteImport } from './routes/api/crypto-ticker'
@@ -74,11 +72,6 @@ const SearchRoute = SearchRouteImport.update({
 const ScienceRoute = ScienceRouteImport.update({
   id: '/science',
   path: '/science',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SavedRoute = SavedRouteImport.update({
-  id: '/saved',
-  path: '/saved',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PretextDemoRoute = PretextDemoRouteImport.update({
@@ -151,11 +144,6 @@ const ApiSearchRoute = ApiSearchRouteImport.update({
   path: '/api/search',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSavedRoute = ApiSavedRouteImport.update({
-  id: '/api/saved',
-  path: '/api/saved',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiHealthRoute = ApiHealthRouteImport.update({
   id: '/api/health',
   path: '/api/health',
@@ -205,7 +193,6 @@ export interface FileRoutesByFullPath {
   '/editions': typeof EditionsRouteWithChildren
   '/politics': typeof PoliticsRoute
   '/pretext-demo': typeof PretextDemoRoute
-  '/saved': typeof SavedRoute
   '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
@@ -216,7 +203,6 @@ export interface FileRoutesByFullPath {
   '/api/crypto-ticker': typeof ApiCryptoTickerRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
   '/api/health': typeof ApiHealthRoute
-  '/api/saved': typeof ApiSavedRoute
   '/api/search': typeof ApiSearchRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stock-ticker': typeof ApiStockTickerRoute
@@ -238,7 +224,6 @@ export interface FileRoutesByTo {
   '/editions': typeof EditionsRouteWithChildren
   '/politics': typeof PoliticsRoute
   '/pretext-demo': typeof PretextDemoRoute
-  '/saved': typeof SavedRoute
   '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
@@ -249,7 +234,6 @@ export interface FileRoutesByTo {
   '/api/crypto-ticker': typeof ApiCryptoTickerRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
   '/api/health': typeof ApiHealthRoute
-  '/api/saved': typeof ApiSavedRoute
   '/api/search': typeof ApiSearchRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stock-ticker': typeof ApiStockTickerRoute
@@ -272,7 +256,6 @@ export interface FileRoutesById {
   '/editions': typeof EditionsRouteWithChildren
   '/politics': typeof PoliticsRoute
   '/pretext-demo': typeof PretextDemoRoute
-  '/saved': typeof SavedRoute
   '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
@@ -283,7 +266,6 @@ export interface FileRoutesById {
   '/api/crypto-ticker': typeof ApiCryptoTickerRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
   '/api/health': typeof ApiHealthRoute
-  '/api/saved': typeof ApiSavedRoute
   '/api/search': typeof ApiSearchRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stock-ticker': typeof ApiStockTickerRoute
@@ -307,7 +289,6 @@ export interface FileRouteTypes {
     | '/editions'
     | '/politics'
     | '/pretext-demo'
-    | '/saved'
     | '/science'
     | '/search'
     | '/settings'
@@ -318,7 +299,6 @@ export interface FileRouteTypes {
     | '/api/crypto-ticker'
     | '/api/editions'
     | '/api/health'
-    | '/api/saved'
     | '/api/search'
     | '/api/settings'
     | '/api/stock-ticker'
@@ -340,7 +320,6 @@ export interface FileRouteTypes {
     | '/editions'
     | '/politics'
     | '/pretext-demo'
-    | '/saved'
     | '/science'
     | '/search'
     | '/settings'
@@ -351,7 +330,6 @@ export interface FileRouteTypes {
     | '/api/crypto-ticker'
     | '/api/editions'
     | '/api/health'
-    | '/api/saved'
     | '/api/search'
     | '/api/settings'
     | '/api/stock-ticker'
@@ -373,7 +351,6 @@ export interface FileRouteTypes {
     | '/editions'
     | '/politics'
     | '/pretext-demo'
-    | '/saved'
     | '/science'
     | '/search'
     | '/settings'
@@ -384,7 +361,6 @@ export interface FileRouteTypes {
     | '/api/crypto-ticker'
     | '/api/editions'
     | '/api/health'
-    | '/api/saved'
     | '/api/search'
     | '/api/settings'
     | '/api/stock-ticker'
@@ -407,7 +383,6 @@ export interface RootRouteChildren {
   EditionsRoute: typeof EditionsRouteWithChildren
   PoliticsRoute: typeof PoliticsRoute
   PretextDemoRoute: typeof PretextDemoRoute
-  SavedRoute: typeof SavedRoute
   ScienceRoute: typeof ScienceRoute
   SearchRoute: typeof SearchRoute
   SettingsRoute: typeof SettingsRoute
@@ -418,7 +393,6 @@ export interface RootRouteChildren {
   ApiCryptoTickerRoute: typeof ApiCryptoTickerRoute
   ApiEditionsRoute: typeof ApiEditionsRouteWithChildren
   ApiHealthRoute: typeof ApiHealthRoute
-  ApiSavedRoute: typeof ApiSavedRoute
   ApiSearchRoute: typeof ApiSearchRoute
   ApiSettingsRoute: typeof ApiSettingsRoute
   ApiStockTickerRoute: typeof ApiStockTickerRoute
@@ -480,13 +454,6 @@ declare module '@tanstack/react-router' {
       path: '/science'
       fullPath: '/science'
       preLoaderRoute: typeof ScienceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/saved': {
-      id: '/saved'
-      path: '/saved'
-      fullPath: '/saved'
-      preLoaderRoute: typeof SavedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pretext-demo': {
@@ -587,13 +554,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/saved': {
-      id: '/api/saved'
-      path: '/api/saved'
-      fullPath: '/api/saved'
-      preLoaderRoute: typeof ApiSavedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/health': {
       id: '/api/health'
       path: '/api/health'
@@ -685,7 +645,6 @@ const rootRouteChildren: RootRouteChildren = {
   EditionsRoute: EditionsRouteWithChildren,
   PoliticsRoute: PoliticsRoute,
   PretextDemoRoute: PretextDemoRoute,
-  SavedRoute: SavedRoute,
   ScienceRoute: ScienceRoute,
   SearchRoute: SearchRoute,
   SettingsRoute: SettingsRoute,
@@ -696,7 +655,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiCryptoTickerRoute: ApiCryptoTickerRoute,
   ApiEditionsRoute: ApiEditionsRouteWithChildren,
   ApiHealthRoute: ApiHealthRoute,
-  ApiSavedRoute: ApiSavedRoute,
   ApiSearchRoute: ApiSearchRoute,
   ApiSettingsRoute: ApiSettingsRoute,
   ApiStockTickerRoute: ApiStockTickerRoute,

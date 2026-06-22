@@ -128,4 +128,4 @@ articles, omit it.
 - Do not commit `drafts/daily.md`.
 - Keep the original URLs so a human can verify the source.
 - If the source material is already neutral, still review it against the style
-guide before including it.
+  guide before including it.

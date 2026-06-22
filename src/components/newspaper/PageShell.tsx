@@ -30,10 +30,7 @@ const defaultNavigation = {
     { id: "culture", label: "Culture", path: "/culture" },
     { id: "weather", label: "Weather", path: "/weather" },
   ],
-  moreLinks: [
-    { id: "saved", label: "Saved", path: "/saved" },
-    { id: "archive", label: "Archive", path: "/editions" },
-  ],
+  moreLinks: [{ id: "archive", label: "Archive", path: "/editions" }],
 };
 
 const defaultFooter = {

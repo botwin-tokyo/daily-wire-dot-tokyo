@@ -1,11 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
-import { Bookmark, Check, Link2, ExternalLink, ArrowLeft } from "lucide-react";
+import { Check, Link2, ExternalLink, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { PageShell } from "@/components/newspaper/PageShell";
 import { ArticleBody } from "@/components/newspaper/ArticleBody";
 import { FitText } from "@/components/pretext";
-import { getArticle, toggleSaved, isSaved, markRead } from "@/lib/api";
+import { getArticle, markRead } from "@/lib/api";
 import { hoursAgo } from "@/components/newspaper/SidebarStory";
 
 const articleQuery = (slug: string) =>
@@ -23,7 +23,10 @@ export const Route = createFileRoute("/article/$slug")({
   head: ({ loaderData }) => ({
     meta: [
       { title: `${loaderData?.headline ?? "Article"} — Botwin's Morning Wire` },
-      { name: "description", content: (loaderData?.content ?? loaderData?.summary ?? "").slice(0, 160) },
+      {
+        name: "description",
+        content: (loaderData?.content ?? loaderData?.summary ?? "").slice(0, 160),
+      },
     ],
   }),
   component: ArticlePage,
@@ -53,8 +56,6 @@ export const Route = createFileRoute("/article/$slug")({
 function ArticlePage() {
   const { slug } = Route.useParams();
   const { data: article } = useSuspenseQuery(articleQuery(slug));
-  const qc = useQueryClient();
-  const [saved, setSaved] = useState(isSaved(article.id));
   const [read, setRead] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -214,16 +215,6 @@ function ArticlePage() {
         <section className="mt-8 flex flex-wrap gap-3 border-t border-[var(--rule)] pt-5">
           <button
             onClick={async () => {
-              setSaved(await toggleSaved(article.id));
-              qc.invalidateQueries({ queryKey: ["saved"] });
-            }}
-            className="inline-flex items-center gap-2 border border-[var(--ink)] px-3 py-1.5 font-sans text-[12px]"
-          >
-            <Bookmark className={`h-3.5 w-3.5 ${saved ? "fill-[var(--ink)]" : ""}`} />
-            {saved ? "Saved" : "Save article"}
-          </button>
-          <button
-            onClick={async () => {
               await markRead(article.id);
               setRead(true);
             }}
@@ -244,8 +235,8 @@ function ArticlePage() {
         </section>
 
         <p className="meta mt-8 italic">
-          Botwin's Morning Wire publishes the full source article for reading convenience. Please visit
-          the publisher for the original presentation and any updates.
+          Botwin's Morning Wire publishes the full source article for reading convenience. Please
+          visit the publisher for the original presentation and any updates.
         </p>
       </article>
     </PageShell>

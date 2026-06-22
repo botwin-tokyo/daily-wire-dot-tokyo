@@ -11,6 +11,7 @@ import { aggregateFromRssFeeds } from "./lib/rss-source";
 
 const FEEDS = [
   {
+    category: "culture",
     url: "https://www.animenewsnetwork.com/all/rss.xml?ann-edition=us",
     maxItems: 8,
     fetchFullContent: true,

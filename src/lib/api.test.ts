@@ -7,7 +7,6 @@ import {
   listEditions,
   getArticle,
   searchArticles,
-  getSavedArticles,
 } from "./api";
 
 describe("edition loading (server-side)", () => {
@@ -69,12 +68,5 @@ describe("search (server-side)", () => {
     const term = edition.articles[0].headline.split(" ")[0].toLowerCase();
     const results = await searchArticles(term);
     expect(results.length).toBeGreaterThan(0);
-  });
-});
-
-describe("saved articles fallback", () => {
-  it("returns an empty array when localStorage is unavailable", async () => {
-    const saved = await getSavedArticles();
-    expect(saved).toEqual([]);
   });
 });

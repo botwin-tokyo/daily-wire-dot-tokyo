@@ -27,7 +27,7 @@ export const minimalValidEdition: NewspaperEdition = {
       { id: "top", label: "Top Stories", path: "/" },
       { id: "world", label: "World", path: "/world", category: "world" },
     ],
-    moreLinks: [{ id: "saved", label: "Saved", path: "/saved" }],
+    moreLinks: [{ id: "archive", label: "Archive", path: "/editions" }],
   },
   leadStoryId: "lead-1",
   articles: [
