@@ -31,6 +31,7 @@ import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as ApiSavedRouteImport } from './routes/api/saved'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as ApiEditionsRouteImport } from './routes/api/editions'
+import { Route as ApiCryptoTickerRouteImport } from './routes/api/crypto-ticker'
 import { Route as ApiEditionsDateRouteImport } from './routes/api/editions/$date'
 import { Route as ApiEditionLatestRouteImport } from './routes/api/edition/latest'
 import { Route as ApiArticlesIdRouteImport } from './routes/api/articles/$id'
@@ -147,6 +148,11 @@ const ApiEditionsRoute = ApiEditionsRouteImport.update({
   path: '/api/editions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCryptoTickerRoute = ApiCryptoTickerRouteImport.update({
+  id: '/api/crypto-ticker',
+  path: '/api/crypto-ticker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiEditionsDateRoute = ApiEditionsDateRouteImport.update({
   id: '/$date',
   path: '/$date',
@@ -188,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/technology': typeof TechnologyRoute
   '/war': typeof WarRoute
   '/world': typeof WorldRoute
+  '/api/crypto-ticker': typeof ApiCryptoTickerRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
   '/api/health': typeof ApiHealthRoute
   '/api/saved': typeof ApiSavedRoute
@@ -217,6 +224,7 @@ export interface FileRoutesByTo {
   '/technology': typeof TechnologyRoute
   '/war': typeof WarRoute
   '/world': typeof WorldRoute
+  '/api/crypto-ticker': typeof ApiCryptoTickerRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
   '/api/health': typeof ApiHealthRoute
   '/api/saved': typeof ApiSavedRoute
@@ -247,6 +255,7 @@ export interface FileRoutesById {
   '/technology': typeof TechnologyRoute
   '/war': typeof WarRoute
   '/world': typeof WorldRoute
+  '/api/crypto-ticker': typeof ApiCryptoTickerRoute
   '/api/editions': typeof ApiEditionsRouteWithChildren
   '/api/health': typeof ApiHealthRoute
   '/api/saved': typeof ApiSavedRoute
@@ -278,6 +287,7 @@ export interface FileRouteTypes {
     | '/technology'
     | '/war'
     | '/world'
+    | '/api/crypto-ticker'
     | '/api/editions'
     | '/api/health'
     | '/api/saved'
@@ -307,6 +317,7 @@ export interface FileRouteTypes {
     | '/technology'
     | '/war'
     | '/world'
+    | '/api/crypto-ticker'
     | '/api/editions'
     | '/api/health'
     | '/api/saved'
@@ -336,6 +347,7 @@ export interface FileRouteTypes {
     | '/technology'
     | '/war'
     | '/world'
+    | '/api/crypto-ticker'
     | '/api/editions'
     | '/api/health'
     | '/api/saved'
@@ -366,6 +378,7 @@ export interface RootRouteChildren {
   TechnologyRoute: typeof TechnologyRoute
   WarRoute: typeof WarRoute
   WorldRoute: typeof WorldRoute
+  ApiCryptoTickerRoute: typeof ApiCryptoTickerRoute
   ApiEditionsRoute: typeof ApiEditionsRouteWithChildren
   ApiHealthRoute: typeof ApiHealthRoute
   ApiSavedRoute: typeof ApiSavedRoute
@@ -535,6 +548,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiEditionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/crypto-ticker': {
+      id: '/api/crypto-ticker'
+      path: '/api/crypto-ticker'
+      fullPath: '/api/crypto-ticker'
+      preLoaderRoute: typeof ApiCryptoTickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/editions/$date': {
       id: '/api/editions/$date'
       path: '/$date'
@@ -612,6 +632,7 @@ const rootRouteChildren: RootRouteChildren = {
   TechnologyRoute: TechnologyRoute,
   WarRoute: WarRoute,
   WorldRoute: WorldRoute,
+  ApiCryptoTickerRoute: ApiCryptoTickerRoute,
   ApiEditionsRoute: ApiEditionsRouteWithChildren,
   ApiHealthRoute: ApiHealthRoute,
   ApiSavedRoute: ApiSavedRoute,

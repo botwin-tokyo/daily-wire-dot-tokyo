@@ -5,6 +5,7 @@ import {
   editionQuery,
   getSectionCopy,
 } from "./section.$category";
+import { CryptoTicker } from "@/components/crypto/CryptoTicker";
 
 export const Route = createFileRoute("/crypto")({
   head: ({ loaderData }) => {
@@ -19,5 +20,5 @@ export const Route = createFileRoute("/crypto")({
     };
   },
   loader: ({ context }) => context.queryClient.ensureQueryData(editionQuery),
-  component: () => <SectionPageContent category="crypto" />,
+  component: () => <SectionPageContent category="crypto" headerSlot={<CryptoTicker />} />,
 });

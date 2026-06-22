@@ -1,3 +1,4 @@
+import * as React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { PageShell } from "@/components/newspaper/PageShell";
@@ -88,7 +89,13 @@ function SectionPage() {
   return <SectionPageContent category={category} />;
 }
 
-export function SectionPageContent({ category }: { category: string }) {
+export function SectionPageContent({
+  category,
+  headerSlot,
+}: {
+  category: string;
+  headerSlot?: React.ReactNode;
+}) {
   const { data: edition } = useSuspenseQuery(editionQuery);
   const cat = CategorySchema.safeParse(category);
   if (!cat.success) {
@@ -132,6 +139,8 @@ export function SectionPageContent({ category }: { category: string }) {
 
   return (
     <PageShell>
+      {headerSlot}
+
       {/* Section masthead */}
       <header className="border-b border-[var(--ink)] py-10">
         <p className="eyebrow eyebrow-red">
