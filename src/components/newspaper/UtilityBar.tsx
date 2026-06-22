@@ -1,4 +1,5 @@
-import { Calendar, Cloud, CloudRain, CloudSun, Sun } from "lucide-react";
+import { Calendar, Cloud, CloudRain, CloudSun, Loader2, Sun } from "lucide-react";
+import { useLocalWeather } from "@/hooks/use-local-weather";
 import type { NewspaperUtilityBar } from "@/lib/types";
 
 const iconMap = {
@@ -10,7 +11,10 @@ const iconMap = {
 } as const;
 
 export function UtilityBar({ data }: { data: NewspaperUtilityBar }) {
-  const WeatherIcon = iconMap[data.weather.icon] ?? Cloud;
+  const { data: local, loading } = useLocalWeather();
+
+  const weather = local ?? data.weather;
+  const WeatherIcon = iconMap[weather.icon] ?? Cloud;
 
   return (
     <div className="border-b border-[var(--rule)] bg-[var(--paper)]">
@@ -22,10 +26,15 @@ export function UtilityBar({ data }: { data: NewspaperUtilityBar }) {
           </span>
           <span className="text-[var(--rule)]">|</span>
           <span className="inline-flex items-center gap-1.5">
-            <WeatherIcon className="h-3.5 w-3.5" strokeWidth={1.5} />
+            {loading ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" strokeWidth={1.5} />
+            ) : (
+              <WeatherIcon className="h-3.5 w-3.5" strokeWidth={1.5} />
+            )}
             <span>
-              <strong className="font-semibold text-[var(--ink)]">{data.weather.tempC}°C</strong>{" "}
-              {data.weather.condition}
+              <strong className="font-semibold text-[var(--ink)]">{weather.tempC}°C</strong>{" "}
+              {weather.condition}
+              {local && <span className="ml-1 text-[var(--ink-faint)]">· {local.city}</span>}
             </span>
           </span>
         </div>

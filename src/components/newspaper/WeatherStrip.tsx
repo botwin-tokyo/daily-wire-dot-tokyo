@@ -1,5 +1,6 @@
-import { Cloud, CloudRain, Sun, CloudSun } from "lucide-react";
+import { Cloud, CloudRain, Loader2, Sun, CloudSun } from "lucide-react";
 import { FitText } from "@/components/pretext";
+import { useLocalWeather } from "@/hooks/use-local-weather";
 import type { NewspaperWeatherSnapshot, NewspaperMarketTicker } from "@/lib/types";
 
 const iconMap = {
@@ -17,6 +18,10 @@ export function WeatherStrip({
   weather: NewspaperWeatherSnapshot;
   commodities: NewspaperMarketTicker[];
 }) {
+  const { data: local, loading } = useLocalWeather();
+
+  const cells = local ? [local, ...weather.cities] : weather.cities;
+
   return (
     <section className="border-y border-[var(--ink)] bg-[var(--paper)]">
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-0 px-6 py-4 lg:grid-cols-[1fr_auto] lg:items-center">
@@ -36,13 +41,29 @@ export function WeatherStrip({
             <p className="meta">Source: {weather.sourceName}</p>
           </div>
           <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
-            {weather.cities.map((w) => {
+            {loading && !local && (
+              <div className="flex items-center gap-2.5">
+                <Loader2 className="h-5 w-5 animate-spin text-[var(--ink-mid)]" strokeWidth={1.4} />
+                <div className="font-sans text-[12px] leading-tight text-[var(--ink-mid)]">
+                  Locating you…
+                </div>
+              </div>
+            )}
+            {cells.map((w, index) => {
               const Icon = iconMap[w.icon];
+              const isLocal = index === 0 && local != null;
               return (
-                <div key={w.city} className="flex items-center gap-2.5">
+                <div key={`${w.city}-${index}`} className="flex items-center gap-2.5">
                   <Icon className="h-5 w-5 text-[var(--ink-mid)]" strokeWidth={1.4} />
                   <div className="font-sans text-[12px] leading-tight">
-                    <div className="text-[var(--ink-mid)]">{w.city}</div>
+                    <div className="text-[var(--ink-mid)]">
+                      {w.city}
+                      {isLocal && (
+                        <span className="ml-1 text-[10px] uppercase tracking-wider text-[var(--ink-faint)]">
+                          Local
+                        </span>
+                      )}
+                    </div>
                     <div className="text-[var(--ink)] font-semibold">{w.tempC}°C</div>
                     <div className="text-[var(--ink-faint)]">{w.condition}</div>
                   </div>

@@ -3,16 +3,24 @@ import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { Masthead } from "./Masthead";
 import { UtilityBar } from "./UtilityBar";
+import { WeatherStrip } from "./WeatherStrip";
 import { SiteFooter } from "./SiteFooter";
 import { SectionNav } from "./SectionNav";
+import { useLocalWeather } from "@/hooks/use-local-weather";
 import type {
   NewspaperMasthead,
   NewspaperUtilityBar,
   NewspaperFooter,
   NewspaperNavigation,
+  NewspaperWeatherSnapshot,
+  NewspaperMarketTicker,
 } from "@/lib/types";
 
 let mockPathname = "/";
+
+vi.mock("@/hooks/use-local-weather", () => ({
+  useLocalWeather: vi.fn(),
+}));
 
 vi.mock("@tanstack/react-router", async () => {
   const actual = await vi.importActual<object>("@tanstack/react-router");
@@ -37,6 +45,12 @@ vi.mock("@tanstack/react-router", async () => {
 
 beforeEach(() => {
   mockPathname = "/";
+  vi.mocked(useLocalWeather).mockReturnValue({
+    data: null,
+    loading: false,
+    error: null,
+    permission: null,
+  });
 });
 
 vi.mock("@/components/pretext", () => ({
@@ -90,6 +104,20 @@ describe("UtilityBar", () => {
     expect(screen.getByText("Next edition scheduled")).toBeInTheDocument();
     expect(screen.getByText("Updated by AI at 06:00")).toBeInTheDocument();
   });
+
+  it("shows local weather when available", () => {
+    vi.mocked(useLocalWeather).mockReturnValue({
+      data: { city: "London", tempC: 18, condition: "Overcast", icon: "cloud" },
+      loading: false,
+      error: null,
+      permission: "granted",
+    });
+
+    render(<UtilityBar data={utilityBar} />);
+    expect(screen.getByText(/London/)).toBeInTheDocument();
+    expect(screen.getByText("18°C")).toBeInTheDocument();
+    expect(screen.getByText("Overcast")).toBeInTheDocument();
+  });
 });
 
 describe("SiteFooter", () => {
@@ -114,5 +142,40 @@ describe("SectionNav", () => {
     render(<SectionNav data={navigation} />);
     const worldLink = screen.getByText("World").closest("a");
     expect(worldLink).toHaveClass("active");
+  });
+});
+
+const weatherSnapshot: NewspaperWeatherSnapshot = {
+  sourceName: "Open-Meteo",
+  cities: [
+    { city: "New York", tempC: 22, condition: "Partly Cloudy", icon: "partly" },
+    { city: "Tokyo", tempC: 24, condition: "Sunny", icon: "sun" },
+  ],
+};
+
+const commodities: NewspaperMarketTicker[] = [
+  { symbol: "Brent Crude", value: "$78.50", changePct: 1.2 },
+];
+
+describe("WeatherStrip", () => {
+  it("renders global cities when local weather is unavailable", () => {
+    render(<WeatherStrip weather={weatherSnapshot} commodities={commodities} />);
+    expect(screen.getByText("New York")).toBeInTheDocument();
+    expect(screen.getByText("Tokyo")).toBeInTheDocument();
+    expect(screen.getByText("Brent Crude")).toBeInTheDocument();
+  });
+
+  it("renders local weather first when available", () => {
+    vi.mocked(useLocalWeather).mockReturnValue({
+      data: { city: "Paris", tempC: 20, condition: "Mainly clear", icon: "partly" },
+      loading: false,
+      error: null,
+      permission: "granted",
+    });
+
+    render(<WeatherStrip weather={weatherSnapshot} commodities={commodities} />);
+    expect(screen.getByText("Paris")).toBeInTheDocument();
+    expect(screen.getByText("20°C")).toBeInTheDocument();
+    expect(screen.getByText("New York")).toBeInTheDocument();
   });
 });
