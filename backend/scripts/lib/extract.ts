@@ -115,7 +115,15 @@ function silenceCssWarnings<T>(fn: () => T): T {
 
 export function plainText(html: string): string {
   return silenceCssWarnings(() => {
-    const dom = new JSDOM(html);
+    // Some publishers (e.g. Anime News Network) encode markup inside HTML
+    // entities like &lt;span style="..."&gt;. Decode those entities so the
+    // tags are stripped during text extraction instead of preserved as text.
+    const decoded = html
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;lt;/g, "<")
+      .replace(/&amp;gt;/g, ">");
+    const dom = new JSDOM(decoded);
     const document = dom.window.document;
     document.querySelectorAll("br").forEach((br) => br.replaceWith("\n"));
     document.querySelectorAll("p, li, h1, h2, h3, h4, h5, h6, div").forEach((el) => {

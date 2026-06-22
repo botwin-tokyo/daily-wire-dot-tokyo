@@ -42,7 +42,7 @@ function plainText(maxLength?: number) {
     schema = schema.max(maxLength);
   }
   return schema.refine(
-    (val) => !/<[^>]+>|\bjavascript:|\bon\w+\s*=|\bstyle\s*=/i.test(val),
+    (val) => !/<[a-zA-Z][^>]*>|\bjavascript:|\bon\w+\s*=|\bstyle\s*=/i.test(val),
     "Text must not contain HTML, event handlers, javascript: URLs, or inline styles",
   );
 }
@@ -52,7 +52,7 @@ function articleContent(maxLength = 100000) {
     .string()
     .max(maxLength)
     .refine(
-      (val) => !/\bjavascript:|\bon\w+\s*=|\bstyle\s*=/i.test(val),
+      (val) => !/<[^>]*(?:\bjavascript:|\bon\w+\s*=|\bstyle\s*=)[^>]*>/i.test(val),
       "Content must not contain event handlers, javascript: URLs, or inline styles",
     );
 }

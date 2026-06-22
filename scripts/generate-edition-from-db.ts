@@ -271,7 +271,9 @@ function buildArticle(row: ReturnType<typeof getLatestArticles>[number], index: 
   const id = idFromUrl(row.url, index);
   const rawContent = row.content ?? row.summary ?? "";
   const content = formatContent(plainText(rawContent), row.source);
-  const summary = (row.summary ?? content.slice(0, 500)).slice(0, 1997).trim();
+  const summary = plainText(row.summary ?? content.slice(0, 500))
+    .slice(0, 1997)
+    .trim();
 
   return {
     id,
