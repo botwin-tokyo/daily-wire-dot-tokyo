@@ -1,4 +1,4 @@
-import { aqiDescription, uvDescription, pollenDescription } from "@/lib/weather-utils";
+import { uvDescription, pollenDescription } from "@/lib/weather-utils";
 
 function Donut({
   value,
@@ -48,30 +48,14 @@ function Donut({
   );
 }
 
-export function WeatherIndices({
-  aqi,
-  uv,
-  pollen,
-}: {
-  aqi?: number;
-  uv?: number;
-  pollen?: number;
-}) {
-  const aqiInfo = aqiDescription(aqi ?? 0);
+export function WeatherIndices({ uv }: { uv?: number }) {
   const uvInfo = uvDescription(uv ?? 0);
-  const pollenInfo = pollenDescription(pollen ?? 4.7);
+  const pollenInfo = pollenDescription(4.7);
 
   return (
     <div className="rounded-lg border border-[var(--rule)] bg-[var(--paper)] p-6">
       <h3 className="mb-4 font-serif text-lg text-[var(--ink)]">Today's Indices</h3>
       <div className="flex justify-around">
-        <Donut
-          value={aqi ?? 32}
-          max={200}
-          color={aqiInfo.color}
-          label="AQI (US)"
-          sublabel={aqiInfo.label}
-        />
         <Donut
           value={uv ?? 5}
           max={11}
@@ -80,7 +64,7 @@ export function WeatherIndices({
           sublabel={uvInfo.label}
         />
         <Donut
-          value={pollen ?? 4.7}
+          value={4.7}
           max={10}
           color={pollenInfo.color}
           label="Pollen"
@@ -88,7 +72,7 @@ export function WeatherIndices({
         />
       </div>
       <p className="mt-4 text-[10px] text-[var(--ink-faint)]">
-        Pollen data is a placeholder until a free pollen source is integrated.
+        Pollen and AQI data are placeholders until free data sources are integrated.
       </p>
     </div>
   );

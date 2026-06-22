@@ -95,46 +95,13 @@ export async function fetchForecast(
   return (await response.json()) as ForecastResponse;
 }
 
-export interface AirQualityResponse {
-  current: {
-    us_aqi?: number;
-    uv_index?: number;
-  };
-  daily?: {
-    uv_index_max?: number[];
-    us_aqi_max?: number[];
-  };
-}
-
-export async function fetchAirQuality(
-  latitude: number,
-  longitude: number,
-): Promise<AirQualityResponse> {
-  const url = new URL("https://air-quality-api.open-meteo.com/v1/air-quality");
-  url.searchParams.set("latitude", String(latitude));
-  url.searchParams.set("longitude", String(longitude));
-  url.searchParams.set("current", "us_aqi,uv_index");
-  url.searchParams.set("daily", "uv_index_max,us_aqi_max");
-  url.searchParams.set("timezone", "auto");
-
-  const response = await fetch(url.toString());
-  if (!response.ok) {
-    throw new Error(`Air quality fetch failed: ${response.status}`);
-  }
-  return (await response.json()) as AirQualityResponse;
-}
-
 export interface WeatherData {
   forecast: ForecastResponse;
-  airQuality: AirQualityResponse;
 }
 
 export async function fetchWeatherData(latitude: number, longitude: number): Promise<WeatherData> {
-  const [forecast, airQuality] = await Promise.all([
-    fetchForecast(latitude, longitude),
-    fetchAirQuality(latitude, longitude),
-  ]);
-  return { forecast, airQuality };
+  const forecast = await fetchForecast(latitude, longitude);
+  return { forecast };
 }
 
 export function weatherQueryOptions(latitude: number | null, longitude: number | null) {

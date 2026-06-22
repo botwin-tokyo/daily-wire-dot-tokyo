@@ -103,7 +103,6 @@ export function WeatherDashboard() {
   }
 
   const forecast = weather.forecast;
-  const airQuality = weather.airQuality;
   const locationLabel =
     activeLocation.city || `${forecast.latitude.toFixed(2)}, ${forecast.longitude.toFixed(2)}`;
   const today = new Date(forecast.current.time);
@@ -137,10 +136,7 @@ export function WeatherDashboard() {
 
         <div className="space-y-6">
           <WeatherBriefing daily={forecast.daily} currentTemp={forecast.current.temperature_2m} />
-          <WeatherIndices
-            aqi={airQuality.current?.us_aqi ?? 32}
-            uv={airQuality.current?.uv_index ?? forecast.daily.uv_index_max?.[0] ?? 5}
-          />
+          <WeatherIndices uv={forecast.daily.uv_index_max?.[0] ?? 5} />
           <RegionalOutlook forecast={forecast} />
           <MoonPhaseWidget />
         </div>
