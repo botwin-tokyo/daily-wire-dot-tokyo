@@ -5,13 +5,13 @@
   "editionNumber": 1,
   "editionTitle": "Test Edition",
   "status": "published",
-  "generatedAt": "2026-06-22T12:29:08.321Z",
-  "publishedAt": "2026-06-22T12:29:08.321Z",
-  "updatedAt": "2026-06-22T12:29:08.321Z",
+  "generatedAt": "2026-06-22T13:19:59.976Z",
+  "publishedAt": "2026-06-22T13:19:59.976Z",
+  "updatedAt": "2026-06-22T13:19:59.976Z",
   "timezone": "UTC",
   "locale": "en-US",
   "masthead": {
-    "title": "The Morning Wire",
+    "title": "Botwin's Morning Wire",
     "tagline": "Your Personal Daily Intelligence"
   },
   "utilityBar": {
@@ -22,7 +22,7 @@
       "icon": "partly"
     },
     "editionLabel": "Global",
-    "updatedByAiAt": "12:29",
+    "updatedByAiAt": "13:19",
     "nextEditionText": "Next edition scheduled"
   },
   "navigation": {
@@ -4158,65 +4158,7 @@
       }
     },
     {
-      "id": "a-124-lcy9ic2hhcnA",
-      "slug": "show-hn-teach-your-kids-perfect-pitch",
-      "displayPosition": "standard",
-      "headline": "Show HN: Teach your kids perfect pitch",
-      "deck": "BSharp: Perfect Pitch Trainer Young children can acquire absolute (perfect) pitch — but adults cannot.",
-      "summary": "BSharp: Perfect Pitch Trainer\nYoung children can acquire absolute (perfect) pitch — but adults cannot. The window closes around age 6. BSharp helps develop this ability using Eguchi's chord identification method.\n\n  \n    \n  \n\n  \n    See it on the Play Store\n  \n\nHow it Works\nChildren listen to piano chords and learn to identify each one by its color. Start with two chords (red and yellow) and gradually introduce new ones as your child masters each level. Practice 5 times a day for 2–3 minutes each session — about 20–25 identifications.\n\n  \n    \n    \n  \n\nAbout the Eguchi Method\nEguchi's chord identification method was documented in research published in Psychology of Music. Children associate chords with colors (red, yellow, blue, black, green, orange, purple, pink, brown) and progress through levels. New chords should be introduced no sooner than every 2 weeks, and only after the child can identify all current chords with 100% accuracy.\nBased on the open-source CIM Trainer by Paul Ganssle.\nUsing BSharp\n\n  \n    \n  \n\nChildren listen to a chord and tap the matching colored flag. The app tracks accuracy, adjusts chord frequency using an adaptive weighting algorithm (presenting harder ch",
-      "content": "BSharp: Perfect Pitch Trainer Young children can acquire absolute (perfect) pitch — but adults cannot. The window closes around age 6. BSharp helps develop this ability using Eguchi's chord identification method.\n\nSee it on the Play Store How it Works Children listen to piano chords and learn to identify each one by its color. Start with two chords (red and yellow) and gradually introduce new ones as your child masters each level. Practice 5 times a day for 2–3 minutes each session — about 20–25 identifications. About the Eguchi Method Eguchi's chord identification method was documented in research published in Psychology of Music.\n\nChildren associate chords with colors (red, yellow, blue, black, green, orange, purple, pink, brown) and progress through levels. New chords should be introduced no sooner than every 2 weeks, and only after the child can identify all current chords with 100% accuracy. Based on the open-source CIM Trainer by Paul Ganssle. Using BSharp Children listen to a chord and tap the matching colored flag.\n\nThe app tracks accuracy, adjusts chord frequency using an adaptive weighting algorithm (presenting harder chords more often), and supports multiple user profiles. Chord progression: Level Color Chord 1 Yellow F/C 2 Blue G/B 3 Black F/A 4 Green G/D 5 Orange C/E 6 Purple F 7 Pink G 8 Brown C/G After mastering the 9 white-key chords, 5 black-key chords are introduced (Gray, Tan, Light Green, Light Purple, Sky Blue). Developer Building Requires Node. js.\n\nnpm install make build This produces dist/ with the bundled app. Android make android-deploy Then open android/ in Android Studio, sync Gradle, and run on a device or emulator. Attribution Derived from pganssle/cim by Paul Ganssle. Rebuilt as a separate tool with a distinct name at his request.\n\nLicensed under the Apache License 2. 0. See NOTICE for details.",
-      "category": "technology",
-      "tags": [],
-      "author": "paytonjjones",
-      "source": {
-        "name": "Hacker News",
-        "url": "https://news.ycombinator.com",
-        "reliability": "high"
-      },
-      "originalUrl": "https://github.com/paytonjjones/bsharp",
-      "publishedAt": "2026-06-21T12:49:48.000Z",
-      "retrievedAt": "2026-06-22T12:18:22.379Z",
-      "readingTimeMin": 2,
-      "keyPoints": [],
-      "relatedArticleIds": [],
-      "relevanceScore": 0.8,
-      "confidenceScore": 0.85,
-      "editorialProminence": 0.5,
-      "aiDisclosure": {
-        "summaryIsAiGenerated": false
-      }
-    },
-    {
-      "id": "a-125-9uLWNsYXVkZQ",
-      "slug": "identity-verification-on-claude",
-      "displayPosition": "standard",
-      "headline": "Identity verification on Claude",
-      "deck": "All CollectionsSafeguardsIdentity verification on Claude Updated this weekTable of contentsBeing responsible with powerful technology starts with knowing who is using it.",
-      "summary": "All CollectionsSafeguardsIdentity verification on Claude Updated this weekTable of contentsBeing responsible with powerful technology starts with knowing who is using it. Identity verification helps us prevent abuse, enforce our usage policies, and comply with legal obligations.We are rolling out identity verification for a few use cases, and you might see a verification prompt when accessing certain capabilities, as part of our routine platform integrity checks, or other safety and compliance measures.We only use your verification data to confirm who you are and not for any other purposes.How are we verifying? We selected Persona Identities as our verification partner based on the strength of their technology, privacy controls, and security safeguards. Follow the steps below to complete your identity verification process.What you'll needBefore you start, have these ready:Accepted ID typesWe accept original, physical government-issued photo IDs from most countries. Common examples include:Your ID must be issued by a government, clearly legible, undamaged, and include a photo of you.We do not accept:How your data is protectedWe know that handing over an ID is a meaningful ask, and w",
-      "content": "All CollectionsSafeguardsIdentity verification on Claude Updated this weekTable of contentsBeing responsible with powerful technology starts with knowing who is using it. Identity verification helps us prevent abuse, enforce our usage policies, and comply with legal obligations. We are rolling out identity verification for a few use cases, and you might see a verification prompt when accessing certain capabilities, as part of our routine platform integrity checks, or other safety and compliance measures.\n\nWe only use your verification data to confirm who you are and not for any other purposes. How are we verifying? We selected Persona Identities as our verification partner based on the strength of their technology, privacy controls, and security safeguards. Follow the steps below to complete your identity verification process.\n\nWhat you'll needBefore you start, have these ready:Accepted ID typesWe accept original, physical government-issued photo IDs from most countries. Common examples include:Your ID must be issued by a government, clearly legible, undamaged, and include a photo of you. We do not accept:How your data is protectedWe know that handing over an ID is a meaningful ask, and we've designed this process to protect your information at every step. For full details on how we handle personal data, see our Privacy Policy.\n\nWhat we're not doingWhat if my verification fails? Verification can fail for a number of reasons: a blurry photo, an unreadable document, an expired ID, or a technical issue. If your verification is unsuccessful:Why did my account get banned after verification? As part of our safety process, we may ban an account for a variety of reasons:If you feel your account has been wrongly suspended or terminated, please go to claude.\n\nai, log in with your banned account, and fill out the appeal form linked below. Our Safeguards team can further investigate why your account was disabled. Questions? If you have questions about identity verification, your data, or the verification process, reach out to us via this form.",
-      "category": "technology",
-      "tags": [],
-      "author": "bathory",
-      "source": {
-        "name": "Hacker News",
-        "url": "https://news.ycombinator.com",
-        "reliability": "high"
-      },
-      "originalUrl": "https://support.claude.com/en/articles/14328960-identity-verification-on-claude",
-      "publishedAt": "2026-06-21T12:44:13.000Z",
-      "retrievedAt": "2026-06-22T12:18:22.379Z",
-      "readingTimeMin": 2,
-      "keyPoints": [],
-      "relatedArticleIds": [],
-      "relevanceScore": 0.8,
-      "confidenceScore": 0.85,
-      "editorialProminence": 0.5,
-      "aiDisclosure": {
-        "summaryIsAiGenerated": false
-      }
-    },
-    {
-      "id": "a-126-LS8uMjM4Nzcy",
+      "id": "a-124-LS8uMjM4Nzcy",
       "slug": "ray-kindo-s-the-knight-of-blasphemy-1-shot-manga-from-young-magazine-us-starts-s",
       "displayPosition": "standard",
       "headline": "Ray Kindo's The Knight of Blasphemy 1-Shot Manga from Young Magazine US Starts Serialization on July 16",
@@ -4244,7 +4186,7 @@
       }
     },
     {
-      "id": "a-127-tLy4yMzg3OTE",
+      "id": "a-125-tLy4yMzg3OTE",
       "slug": "saved-by-the-ice-cold-prince-s-embrace-light-anime-s-2nd-teaser-unveils-ending-s",
       "displayPosition": "standard",
       "headline": "Saved by the Ice Cold Prince's Embrace Light Anime's 2nd Teaser Unveils Ending Song, More Cast Members, July 7 Debut",
@@ -4272,7 +4214,7 @@
       }
     },
     {
-      "id": "a-128-lLy4yMzg3ODk",
+      "id": "a-126-lLy4yMzg3ODk",
       "slug": "azusa-banjo-s-i-think-i-turned-my-childhood-friend-into-a-girl-manga-gets-tv-ani",
       "displayPosition": "standard",
       "headline": "Azusa Banjo's I Think I Turned My Childhood Friend Into a Girl Manga Gets TV Anime",
@@ -4300,7 +4242,7 @@
       }
     },
     {
-      "id": "a-129-MvLjIzODc4OA",
+      "id": "a-127-MvLjIzODc4OA",
       "slug": "the-insipid-prince-s-furtive-grab-for-the-throne-anime-reveals-2-new-cast-member",
       "displayPosition": "standard",
       "headline": "The Insipid Prince's Furtive Grab for The Throne Anime Reveals 2 New Cast Members",
@@ -4328,7 +4270,7 @@
       }
     },
     {
-      "id": "a-130-4Ly4yMzg3ODM",
+      "id": "a-128-4Ly4yMzg3ODM",
       "slug": "kageki-shojo-manga-continues-hiatus-returns-on-august",
       "displayPosition": "standard",
       "headline": "Kageki Shojo!! Manga Continues Hiatus, Returns on August 28",
@@ -4356,7 +4298,7 @@
       }
     },
     {
-      "id": "a-131-cy8uMjM4Nzcz",
+      "id": "a-129-cy8uMjM4Nzcz",
       "slug": "uma-musume-pretty-derby-franchise-announces-1st-world-tour-with-performance-in-l",
       "displayPosition": "standard",
       "headline": "Uma Musume: Pretty Derby Franchise Announces 1st World Tour With Performance in Los Angeles",
@@ -4384,7 +4326,7 @@
       }
     },
     {
-      "id": "a-132-MvLjIzODc4MQ",
+      "id": "a-130-MvLjIzODc4MQ",
       "slug": "the-world-is-dancing-anime-unveils-final-trailer-ending-song-artist-more-cast-me",
       "displayPosition": "standard",
       "headline": "The World Is Dancing Anime Unveils Final Trailer, Ending Song Artist, More Cast Members",
@@ -4412,7 +4354,7 @@
       }
     },
     {
-      "id": "a-133-nLy4yMzg3NzQ",
+      "id": "a-131-nLy4yMzg3NzQ",
       "slug": "live-action-wandance-film-s-teaser-reveals-lead-actor-staff-november-27-opening",
       "displayPosition": "standard",
       "headline": "Live-Action Wandance Film's Teaser Reveals Lead Actor, Staff, November 27 Opening",
@@ -4440,7 +4382,7 @@
       }
     },
     {
-      "id": "a-134-txZzk1OHYxbw",
+      "id": "a-132-txZzk1OHYxbw",
       "slug": "toy-story-5-scores-record-opening-weekend-for-franchise",
       "displayPosition": "standard",
       "headline": "Toy Story 5 scores record opening weekend for franchise",
@@ -4474,7 +4416,7 @@
       }
     },
     {
-      "id": "a-135-JnZDlsa3h6bw",
+      "id": "a-133-JnZDlsa3h6bw",
       "slug": "rupee-currency-crash-visa-crackdowns-force-indian-students-to-rethink-foreign-ed",
       "displayPosition": "standard",
       "headline": "Rupee: Currency crash, visa crackdowns force Indian students to rethink foreign education",
@@ -4508,7 +4450,7 @@
       }
     },
     {
-      "id": "a-136-tlcnBreW5rbw",
+      "id": "a-134-tlcnBreW5rbw",
       "slug": "ipo-reliance-jio-announces-what-may-be-india-s-biggest-ever-share-sale",
       "displayPosition": "standard",
       "headline": "IPO: Reliance Jio announces what may be India's biggest-ever share sale",
@@ -4542,7 +4484,7 @@
       }
     },
     {
-      "id": "a-137-R5a3hyajVlbw",
+      "id": "a-135-R5a3hyajVlbw",
       "slug": "is-germany-looking-again-at-coal-powered-electricity",
       "displayPosition": "standard",
       "headline": "Is Germany looking again at coal-powered electricity?",
@@ -4576,7 +4518,7 @@
       }
     },
     {
-      "id": "a-138-VyankyMGt5bw",
+      "id": "a-136-VyankyMGt5bw",
       "slug": "why-an-ai-company-cleaned-my-new-york-city-apartment-for-free",
       "displayPosition": "standard",
       "headline": "Why an AI company cleaned my New York City apartment for free",
@@ -4610,7 +4552,7 @@
       }
     },
     {
-      "id": "a-139-h3ODU1MHk4bw",
+      "id": "a-137-h3ODU1MHk4bw",
       "slug": "simpler-older-version-of-stonehenge-found-three-miles-from-famous-site",
       "displayPosition": "standard",
       "headline": "Simpler, older version of Stonehenge found three miles from famous site",
@@ -4644,7 +4586,7 @@
       }
     },
     {
-      "id": "a-140-Q4ank0ajF5bw",
+      "id": "a-138-Q4ank0ajF5bw",
       "slug": "killer-fungus-discovered-that-destroys-uk-invasive-plant",
       "displayPosition": "standard",
       "headline": "Killer fungus discovered that destroys UK invasive plant",
@@ -4678,7 +4620,7 @@
       }
     },
     {
-      "id": "a-141-MwcjA5NDRnbw",
+      "id": "a-139-MwcjA5NDRnbw",
       "slug": "nearly-30-illegal-waste-super-sites-revealed-in-new-government-watchlist",
       "displayPosition": "standard",
       "headline": "Nearly 30 illegal waste 'super sites' revealed in new government watchlist",
@@ -4712,7 +4654,7 @@
       }
     },
     {
-      "id": "a-142-BlMjk1M3Exbw",
+      "id": "a-140-BlMjk1M3Exbw",
       "slug": "spacex-files-for-ipo-that-could-make-elon-musk-a-trillionaire",
       "displayPosition": "standard",
       "headline": "SpaceX files for IPO that could make Elon Musk a trillionaire",
@@ -4746,7 +4688,7 @@
       }
     },
     {
-      "id": "a-143-hyZGRwMXZxbw",
+      "id": "a-141-hyZGRwMXZxbw",
       "slug": "cambridge-science-park-plans-create-20-000-new-jobs-and-public-spaces",
       "displayPosition": "standard",
       "headline": "Cambridge Science Park plans create '20,000 new jobs and public spaces'",
@@ -4780,7 +4722,7 @@
       }
     },
     {
-      "id": "a-144-k1MTJyMTlybw",
+      "id": "a-142-k1MTJyMTlybw",
       "slug": "how-the-social-media-ban-could-reshape-how-all-of-us-use-the-internet",
       "displayPosition": "standard",
       "headline": "How the social media ban could reshape how all of us use the internet",
@@ -4814,7 +4756,7 @@
       }
     },
     {
-      "id": "a-145-V3cHhleTh3bw",
+      "id": "a-143-V3cHhleTh3bw",
       "slug": "london-s-driverless-revolution-awe-anxiety-and-the-unknown",
       "displayPosition": "standard",
       "headline": "London's driverless revolution: Awe, anxiety and the unknown",
@@ -4848,7 +4790,7 @@
       }
     },
     {
-      "id": "a-146-lncDAwNXdqbw",
+      "id": "a-144-lncDAwNXdqbw",
       "slug": "we-had-to-get-out-of-the-way-the-backlash-over-delivery-robots",
       "displayPosition": "standard",
       "headline": "'We had to get out of the way': The backlash over delivery robots",
@@ -4882,7 +4824,7 @@
       }
     },
     {
-      "id": "a-147-E3ODE4eGpybw",
+      "id": "a-145-E3ODE4eGpybw",
       "slug": "new-cambridge-university-ai-tool-could-flag-council-home-issues",
       "displayPosition": "standard",
       "headline": "New Cambridge University AI tool could flag council home issues",
@@ -4916,7 +4858,7 @@
       }
     },
     {
-      "id": "a-148-BxNDF2MWx6bw",
+      "id": "a-146-BxNDF2MWx6bw",
       "slug": "first-round-of-us-iran-talks-end-with-encouraging-progress-mediators-say",
       "displayPosition": "standard",
       "headline": "First round of US-Iran talks end with 'encouraging progress', mediators say",
@@ -4950,7 +4892,7 @@
       }
     },
     {
-      "id": "a-149-U0a3kyeXpwbw",
+      "id": "a-147-U0a3kyeXpwbw",
       "slug": "trump-backed-political-outsider-wins-colombia-election-initial-count-shows",
       "displayPosition": "standard",
       "headline": "Trump-backed political outsider wins Colombia election, initial count shows",
@@ -4984,7 +4926,7 @@
       }
     },
     {
-      "id": "a-150-k2Nzg2cHg0bw",
+      "id": "a-148-k2Nzg2cHg0bw",
       "slug": "martha-karua-kenya-s-ex-justice-minister-blocked-from-entering-uganda-lawyers-bo",
       "displayPosition": "standard",
       "headline": "Martha Karua: Kenya's ex-justice minister blocked from entering Uganda, lawyers body says",
@@ -5018,7 +4960,7 @@
       }
     },
     {
-      "id": "a-151-k5Zzk2MDg2bw",
+      "id": "a-149-k5Zzk2MDg2bw",
       "slug": "schools-close-as-more-than-half-of-france-under-red-heat-alerts",
       "displayPosition": "standard",
       "headline": "Schools close as more than half of France under red heat alerts",
@@ -5052,7 +4994,7 @@
       }
     },
     {
-      "id": "a-152-lnanpyOGo3bw",
+      "id": "a-150-lnanpyOGo3bw",
       "slug": "australia-s-largest-ever-cocaine-bust-made-in-underground-bunker-raid",
       "displayPosition": "standard",
       "headline": "Australia's largest ever cocaine bust made in underground bunker raid",
@@ -5086,7 +5028,7 @@
       }
     },
     {
-      "id": "a-153-td2l0aC1ibnk",
+      "id": "a-151-td2l0aC1ibnk",
       "slug": "tradfi-fund-manager-baillie-gifford-introduces-solana-ethereum-tokenized-fund-wi",
       "displayPosition": "standard",
       "headline": "TradFi fund manager Baillie Gifford introduces Solana, Ethereum tokenized fund with BNY",
@@ -5120,7 +5062,7 @@
       }
     },
     {
-      "id": "a-154-5lZC1yYWxseQ",
+      "id": "a-152-5lZC1yYWxseQ",
       "slug": "as-btc-eth-prices-gain-derivatives-signal-skepticism-over-a-sustained-rally",
       "displayPosition": "standard",
       "headline": "As BTC, ETH prices gain, derivatives signal skepticism over a sustained rally",
@@ -5154,7 +5096,7 @@
       }
     },
     {
-      "id": "a-155-1YW5jZS1jYXA",
+      "id": "a-153-1YW5jZS1jYXA",
       "slug": "bank-of-england-backs-down-on-strict-stablecoin-holding-limits-sets-50-billion-i",
       "displayPosition": "standard",
       "headline": "Bank of England backs down on strict stablecoin holding limits, sets $50 billion issuance cap",
@@ -5188,7 +5130,7 @@
       }
     },
     {
-      "id": "a-156-lZWstYWhlYWQ",
+      "id": "a-154-lZWstYWhlYWQ",
       "slug": "geopolitical-relief-meets-the-warsh-fed-crypto-week-ahead",
       "displayPosition": "standard",
       "headline": "Geopolitical relief meets the Warsh Fed: Crypto Week Ahead",
@@ -5222,7 +5164,7 @@
       }
     },
     {
-      "id": "a-157-tZGl2ZXMtMTA",
+      "id": "a-155-tZGl2ZXMtMTA",
       "slug": "taiko-halts-ethereum-layer-2-network-after-a-bridge-exploit-token-dives",
       "displayPosition": "standard",
       "headline": "Taiko halts Ethereum layer-2 network after a bridge exploit, token dives",
@@ -5256,7 +5198,7 @@
       }
     },
     {
-      "id": "a-158-0aW1lLWhpZ2g",
+      "id": "a-156-0aW1lLWhpZ2g",
       "slug": "bitcoin-btc-price-is-forming-a-bear-flag-that-may-signal-crash-to-55-000-analyst",
       "displayPosition": "standard",
       "headline": "Bitcoin (BTC) price is forming a bear flag that may signal crash to $55,000, analyst says",
@@ -5290,7 +5232,7 @@
       }
     },
     {
-      "id": "a-159-aXh0aC13ZWVr",
+      "id": "a-157-aXh0aC13ZWVr",
       "slug": "live-updates-strategy-buys-520-more-bitcoin-and-raises-reserves-to-1-4-billion",
       "displayPosition": "standard",
       "headline": "Live updates: Strategy buys 520 more bitcoin and raises reserves to $1.4 billion",
@@ -5324,7 +5266,7 @@
       }
     },
     {
-      "id": "a-160-VyZS1zLXdoeQ",
+      "id": "a-158-VyZS1zLXdoeQ",
       "slug": "bitcoin-developers-look-to-remove-old-fee-signal-that-leaks-wallet-clues",
       "displayPosition": "standard",
       "headline": "Bitcoin developers look to remove old fee signal that leaks wallet clues",
@@ -5358,7 +5300,7 @@
       }
     },
     {
-      "id": "a-161-cC1yZWJvdW5k",
+      "id": "a-159-cC1yZWJvdW5k",
       "slug": "xrp-price-briefly-loses-1-14-support-before-buyers-drive-sharp-rebound",
       "displayPosition": "standard",
       "headline": "XRP price briefly loses $1.14 support before buyers drive sharp rebound",
@@ -5392,7 +5334,7 @@
       }
     },
     {
-      "id": "a-162-0aGUtcmFsbHk",
+      "id": "a-160-0aGUtcmFsbHk",
       "slug": "btc-eth-sol-price-what-next-as-bitcoin-drifts-under-64",
       "displayPosition": "standard",
       "headline": "BTC, ETH, SOL price: What next as bitcoin drifts under $64,000",
@@ -5426,7 +5368,7 @@
       }
     },
     {
-      "id": "a-163-lyZS10YWxrcw",
+      "id": "a-161-lyZS10YWxrcw",
       "slug": "btc-eth-sol-price-news-bitcoin-holds-near-64-000-amid-us-iran-ceasefire-talks",
       "displayPosition": "standard",
       "headline": "BTC, ETH, SOL price news: Bitcoin holds near $64,000 amid US-Iran ceasefire talks",
@@ -5460,7 +5402,7 @@
       }
     },
     {
-      "id": "a-164-1tZWx0ZG93bg",
+      "id": "a-162-1tZWx0ZG93bg",
       "slug": "a-look-at-how-falling-bitcoin-prices-capital-structure-changes-pushed-strc-below",
       "displayPosition": "standard",
       "headline": "A look at how falling Bitcoin prices, capital structure changes pushed STRC below $83 in just five weeks.",
@@ -5494,7 +5436,7 @@
       }
     },
     {
-      "id": "a-165-I3LWxhdW5jaA",
+      "id": "a-163-I3LWxhdW5jaA",
       "slug": "bank-of-england-publishes-stablecoin-rules-targets-2027-launch",
       "displayPosition": "standard",
       "headline": "Bank of England Publishes Stablecoin Rules, Targets 2027 Launch",
@@ -5527,7 +5469,7 @@
       }
     },
     {
-      "id": "a-166-aW5jaWRlbnRz",
+      "id": "a-164-aW5jaWRlbnRz",
       "slug": "q2-2026-emerges-as-most-hacked-quarter-on-record-with-83-incidents",
       "displayPosition": "standard",
       "headline": "Q2 2026 Emerges as Most-Hacked Quarter on Record with 83 Incidents",
@@ -5560,7 +5502,7 @@
       }
     },
     {
-      "id": "a-167-RyYW5zZmVycw",
+      "id": "a-165-RyYW5zZmVycw",
       "slug": "south-korea-pushes-crypto-travel-rule-expansion",
       "displayPosition": "standard",
       "headline": "South Korea Pushes Crypto Travel Rule Expansion",
@@ -5593,7 +5535,7 @@
       }
     },
     {
-      "id": "a-168-cHRvLXRvZGF5",
+      "id": "a-166-cHRvLXRvZGF5",
       "slug": "crypto-today-taiko-exploit-mev-exploit-japan-pensions-in-crypto",
       "displayPosition": "standard",
       "headline": "Crypto Today: Taiko Exploit, MEV Exploit, Japan Pensions in Crypto",
@@ -5626,7 +5568,7 @@
       }
     },
     {
-      "id": "a-169-ZhbHMtZmVlcw",
+      "id": "a-167-ZhbHMtZmVlcw",
       "slug": "morgan-stanley-amends-eth-sol-etfs-to-reveal-cheap-fees",
       "displayPosition": "standard",
       "headline": "Morgan Stanley Amends ETH, SOL ETFs to Reveal Cheap Fees",
@@ -5659,7 +5601,7 @@
       }
     },
     {
-      "id": "a-170-QtZm9yLTc1bQ",
+      "id": "a-168-QtZm9yLTc1bQ",
       "slug": "mev-bot-jaredfromsubway-eth-exploited-for-7-5m",
       "displayPosition": "standard",
       "headline": "MEV Bot Jaredfromsubway.eth Exploited For $7.5M",
@@ -5692,7 +5634,7 @@
       }
     },
     {
-      "id": "a-171-sbG9jYXRpb24",
+      "id": "a-169-sbG9jYXRpb24",
       "slug": "japan-pension-fund-serving-1-200-firms-plans-crypto-investment",
       "displayPosition": "standard",
       "headline": "Japan Pension Fund Serving 1,200 Firms Plans Crypto Investment",
@@ -5725,7 +5667,7 @@
       }
     },
     {
-      "id": "a-172-dHMtbWFya2V0",
+      "id": "a-170-dHMtbWFya2V0",
       "slug": "dash-weighs-philippine-entry-as-crypto-firms-navigate-regulation",
       "displayPosition": "standard",
       "headline": "Dash Weighs Philippine Entry as Crypto Firms Navigate Regulation",
@@ -5758,7 +5700,7 @@
       }
     },
     {
-      "id": "a-173-4tc2hpdmVycw",
+      "id": "a-171-4tc2hpdmVycw",
       "slug": "bitcoin-etfs-shed-a-record-6-4b-in-30-days",
       "displayPosition": "standard",
       "headline": "Bitcoin ETFs Shed a Record $6.4B in 30 Days",
@@ -5791,7 +5733,7 @@
       }
     },
     {
-      "id": "a-174-pb24tc3VyZ2U",
+      "id": "a-172-pb24tc3VyZ2U",
       "slug": "bitcoin-activity-nears-record-highs-as-microtransactions-surge-cryptoquant",
       "displayPosition": "standard",
       "headline": "Bitcoin Activity Nears Record Highs as Microtransactions Surge: CryptoQuant",
@@ -5824,7 +5766,7 @@
       }
     },
     {
-      "id": "a-175-LWxvdy0xNjkv",
+      "id": "a-173-LWxvdy0xNjkv",
       "slug": "airpods-pro-3-return-to-record-low-169-price-ahead-of-prime-day",
       "displayPosition": "standard",
       "headline": "AirPods Pro 3 Return to Record Low $169 Price Ahead of Prime Day",
@@ -5858,7 +5800,7 @@
       }
     },
     {
-      "id": "a-176-bmV3LWFwcHMv",
+      "id": "a-174-bmV3LWFwcHMv",
       "slug": "apple-unveiled-these-five-new-apps-last-week",
       "displayPosition": "standard",
       "headline": "Apple Unveiled These Five New Apps Last Week",
@@ -5892,7 +5834,7 @@
       }
     },
     {
-      "id": "a-177-NlLWhpa2VzLw",
+      "id": "a-175-NlLWhpa2VzLw",
       "slug": "top-stories-apple-price-hikes-coming-20th-anniversary-iphone-rumors-and-more",
       "displayPosition": "standard",
       "headline": "Top Stories: Apple Price Hikes Coming, 20th Anniversary iPhone Rumors, and More",
@@ -5926,7 +5868,7 @@
       }
     },
     {
-      "id": "a-178-oLWlvcy0yNy8",
+      "id": "a-176-oLWlvcy0yNy8",
       "slug": "the-macrumors-show-hands-on-with-ios-27-brutal-watchos-27-cuts-and-more",
       "displayPosition": "standard",
       "headline": "The MacRumors Show: Hands-On With iOS 27, Brutal watchOS 27 Cuts, and More",
@@ -5960,7 +5902,7 @@
       }
     },
     {
-      "id": "a-179-BsZS0yMDI2Lw",
+      "id": "a-177-BsZS0yMDI2Lw",
       "slug": "prime-day-2026-best-early-apple-device-and-accessory-deals-now-live",
       "displayPosition": "standard",
       "headline": "Prime Day 2026: Best Early Apple Device and Accessory Deals Now Live",
@@ -5994,7 +5936,7 @@
       }
     },
     {
-      "id": "a-180-sZS10di00ay8",
+      "id": "a-178-sZS10di00ay8",
       "slug": "deals-adorama-introduces-new-low-prices-on-32gb-apple-tv-4k-159-and-airpods-max",
       "displayPosition": "standard",
       "headline": "Deals: Adorama Introduces New Low Prices on 32GB Apple TV 4K ($159) and AirPods Max ($449)",
@@ -6028,7 +5970,7 @@
       }
     },
     {
-      "id": "a-181-aWZ0LWNhcmQv",
+      "id": "a-179-aWZ0LWNhcmQv",
       "slug": "deals-get-10-amazon-credit-when-purchasing-a-100-apple-gift-card",
       "displayPosition": "standard",
       "headline": "Deals: Get $10 Amazon Credit When Purchasing a $100 Apple Gift Card",
@@ -6062,7 +6004,7 @@
       }
     },
     {
-      "id": "a-182-ZHMtbW9kZWwv",
+      "id": "a-180-ZHMtbW9kZWwv",
       "slug": "deals-new-sales-hit-every-airpods-model-starting-at-109-for-regular-airpods",
       "displayPosition": "standard",
       "headline": "Deals: New Sales Hit Every AirPods Model, Starting at $109 for Regular AirPods",
@@ -6096,7 +6038,7 @@
       }
     },
     {
-      "id": "a-183-FkLXByby0zLw",
+      "id": "a-181-FkLXByby0zLw",
       "slug": "deals-take-up-to-100-off-2021-ipad-pro-tablets-at-amazon",
       "displayPosition": "standard",
       "headline": "Deals: Take Up To $100 Off 2021 iPad Pro Tablets at Amazon",
@@ -6130,7 +6072,7 @@
       }
     },
     {
-      "id": "a-184-VyeS1wYWNrLw",
+      "id": "a-182-VyeS1wYWNrLw",
       "slug": "deals-apple-s-magsafe-battery-pack-drops-to-84-15-15-off",
       "displayPosition": "standard",
       "headline": "Deals: Apple's MagSafe Battery Pack Drops to $84.15 ($15 Off)",
@@ -6164,7 +6106,7 @@
       }
     },
     {
-      "id": "a-185-ib29rLWFpci8",
+      "id": "a-183-ib29rLWFpci8",
       "slug": "deals-get-the-apple-pencil-2-for-109-99-19-off-and-512gb-m1-macbook-air-for-1",
       "displayPosition": "standard",
       "headline": "Deals: Get the Apple Pencil 2 for $109.99 ($19 Off) and 512GB M1 MacBook Air for $1,099.99 ($149 Off)",
@@ -6198,7 +6140,7 @@
       }
     },
     {
-      "id": "a-186-9rLWFpci0yLw",
+      "id": "a-184-9rLWFpci0yLw",
       "slug": "deals-amazon-takes-149-off-2020-macbook-air-models-starting-at-849-99-for-256gb",
       "displayPosition": "standard",
       "headline": "Deals: Amazon Takes $149 Off 2020 MacBook Air Models, Starting at $849.99 for 256GB",
@@ -6232,7 +6174,7 @@
       }
     },
     {
-      "id": "a-187-ib29rLWFpci8",
+      "id": "a-185-ib29rLWFpci8",
       "slug": "deals-amazon-drops-price-of-256gb-m1-macbook-air-to-new-low-of-849-99-149-off",
       "displayPosition": "standard",
       "headline": "Deals: Amazon Drops Price of 256GB M1 MacBook Air to New Low of $849.99 ($149 Off)",
@@ -6266,7 +6208,7 @@
       }
     },
     {
-      "id": "a-188-ib29rLXByby8",
+      "id": "a-186-ib29rLXByby8",
       "slug": "deals-all-time-low-prices-return-to-apple-s-m1-macbook-pro-starting-at-1-099-99",
       "displayPosition": "standard",
       "headline": "Deals: All-Time Low Prices Return to Apple's M1 MacBook Pro, Starting at $1,099.99 for 256GB",
@@ -6300,7 +6242,7 @@
       }
     },
     {
-      "id": "a-189-tbWFjYm9vay8",
+      "id": "a-187-tbWFjYm9vay8",
       "slug": "deals-take-up-to-199-off-apple-s-m1-macbook-pro-and-macbook-air-at-best-buy-and",
       "displayPosition": "standard",
       "headline": "Deals: Take Up to $199 Off Apple's M1 MacBook Pro and MacBook Air at Best Buy and Amazon",
@@ -6334,7 +6276,7 @@
       }
     },
     {
-      "id": "a-190-Nzc2My5odG1s",
+      "id": "a-188-Nzc2My5odG1s",
       "slug": "us-iran-meet-in-switzerland-as-fresh-trump-threat-angers-tehran",
       "displayPosition": "standard",
       "headline": "US, Iran meet in Switzerland as fresh Trump threat angers Tehran",
@@ -6368,7 +6310,7 @@
       }
     },
     {
-      "id": "a-191-YzMzMuaHRtbA",
+      "id": "a-189-YzMzMuaHRtbA",
       "slug": "iran-says-it-has-closed-strait-of-hormuz-again-as-talks-continue",
       "displayPosition": "standard",
       "headline": "Iran says it has closed Strait of Hormuz again as talks continue",
@@ -6402,7 +6344,7 @@
       }
     },
     {
-      "id": "a-192-NzQxNi5odG1s",
+      "id": "a-190-NzQxNi5odG1s",
       "slug": "us-iran-nuclear-talks-stall-over-lebanon-before-they-begin",
       "displayPosition": "standard",
       "headline": "US-Iran nuclear talks stall over Lebanon before they begin",
@@ -6436,7 +6378,7 @@
       }
     },
     {
-      "id": "a-193-Y0MjYuaHRtbA",
+      "id": "a-191-Y0MjYuaHRtbA",
       "slug": "new-commander-inherits-expanding-air-defense-mission-in-europe",
       "displayPosition": "standard",
       "headline": "New commander inherits expanding air defense mission in Europe",
@@ -6469,7 +6411,7 @@
       }
     },
     {
-      "id": "a-194-Mzk5NS5odG1s",
+      "id": "a-192-Mzk5NS5odG1s",
       "slug": "hegseth-puts-allies-on-notice-as-pentagon-eyes-new-europe-force-posture",
       "displayPosition": "standard",
       "headline": "Hegseth puts allies on notice as Pentagon eyes new Europe force posture",
@@ -6503,7 +6445,7 @@
       }
     },
     {
-      "id": "a-195-QyNTAuaHRtbA",
+      "id": "a-193-QyNTAuaHRtbA",
       "slug": "finnish-lawmakers-vote-to-lift-ban-on-nuclear-weapons-deployments",
       "displayPosition": "standard",
       "headline": "Finnish lawmakers vote to lift ban on nuclear weapons deployments",
@@ -6536,7 +6478,7 @@
       }
     },
     {
-      "id": "a-196-E5MTMuaHRtbA",
+      "id": "a-194-E5MTMuaHRtbA",
       "slug": "us-japan-navies-make-early-start-to-exercise-valiant-shield",
       "displayPosition": "standard",
       "headline": "US, Japan navies make early start to exercise Valiant Shield",
@@ -6569,7 +6511,7 @@
       }
     },
     {
-      "id": "a-197-xNjkxLmh0bWw",
+      "id": "a-195-xNjkxLmh0bWw",
       "slug": "us-troops-on-eod-duty-for-world-war-ii-era-bombs-in-papua-new-guinea",
       "displayPosition": "standard",
       "headline": "US troops on EOD duty for World War II-era bombs in Papua New Guinea",
@@ -6602,7 +6544,7 @@
       }
     },
     {
-      "id": "a-198-xNjAzLmh0bWw",
+      "id": "a-196-xNjAzLmh0bWw",
       "slug": "thaad-returns-to-home-base-in-south-korea-after-temporary-relocation-report-says",
       "displayPosition": "standard",
       "headline": "THAAD returns to home base in South Korea after temporary relocation, report says",
@@ -6635,7 +6577,7 @@
       }
     },
     {
-      "id": "a-199-yNDQ3Lmh0bWw",
+      "id": "a-197-yNDQ3Lmh0bWw",
       "slug": "us-airstrikes-in-somalia-return-after-brief-pause",
       "displayPosition": "standard",
       "headline": "US airstrikes in Somalia return after brief pause",
@@ -6669,7 +6611,7 @@
       }
     },
     {
-      "id": "a-200-MzEyMy5odG1s",
+      "id": "a-198-MzEyMy5odG1s",
       "slug": "us-troops-deployed-to-kenya-to-build-ebola-quarantine-facility",
       "displayPosition": "standard",
       "headline": "US troops deployed to Kenya to build Ebola quarantine facility",
@@ -6702,7 +6644,7 @@
       }
     },
     {
-      "id": "a-201-AyMTQuaHRtbA",
+      "id": "a-199-AyMTQuaHRtbA",
       "slug": "us-forces-renew-attacks-against-isis-militants-in-nigeria",
       "displayPosition": "standard",
       "headline": "US forces renew attacks against ISIS militants in Nigeria",
@@ -6735,7 +6677,7 @@
       }
     },
     {
-      "id": "a-202-3Mjk2Lmh0bWw",
+      "id": "a-200-3Mjk2Lmh0bWw",
       "slug": "another-us-strike-on-alleged-drug-traffickers-kills-3-in-eastern-pacific",
       "displayPosition": "standard",
       "headline": "Another US strike on alleged drug traffickers kills 3 in Eastern Pacific",
@@ -6768,7 +6710,7 @@
       }
     },
     {
-      "id": "a-203-4NTQwLmh0bWw",
+      "id": "a-201-4NTQwLmh0bWw",
       "slug": "senate-panel-proposes-hegseth-travel-limits-until-info-release-on-iran-school-bo",
       "displayPosition": "standard",
       "headline": "Senate panel proposes Hegseth travel limits until info release on Iran school bombing, boat strikes",
@@ -6802,7 +6744,7 @@
       }
     },
     {
-      "id": "a-204-0Mjg2Lmh0bWw",
+      "id": "a-202-0Mjg2Lmh0bWw",
       "slug": "us-strike-on-alleged-drug-boat-kills-1-leaves-2-survivors-in-eastern-pacific",
       "displayPosition": "standard",
       "headline": "US strike on alleged drug boat kills 1, leaves 2 survivors in Eastern Pacific",
@@ -6835,7 +6777,7 @@
       }
     },
     {
-      "id": "a-205-sbHktd29ya3M",
+      "id": "a-203-sbHktd29ya3M",
       "slug": "here-is-how-russias-skyfall-nuclear-powered-cruise-missile-actually-works",
       "displayPosition": "standard",
       "headline": "Here Is How Russia’s Skyfall Nuclear-Powered Cruise Missile Actually Works",
@@ -6869,7 +6811,7 @@
       }
     },
     {
-      "id": "a-206-lmdC1ncm91cA",
+      "id": "a-204-lmdC1ncm91cA",
       "slug": "new-air-force-vc-25b-bridge-jet-has-joined-the-presidential-airlift-group-update",
       "displayPosition": "standard",
       "headline": "New Air Force VC-25B “Bridge” Jet Has Joined The Presidential Airlift Group (Updated)",
@@ -6903,7 +6845,7 @@
       }
     },
     {
-      "id": "a-207-td2Vlay0xOTY",
+      "id": "a-205-td2Vlay0xOTY",
       "slug": "bunker-talk-lets-talk-about-all-the-things-we-did-and-didnt-cover-this-week",
       "displayPosition": "standard",
       "headline": "Bunker Talk: Let’s Talk About All The Things We Did And Didn’t Cover This Week",
@@ -6937,7 +6879,7 @@
       }
     },
     {
-      "id": "a-208-hYmlsaXRpZXM",
+      "id": "a-206-hYmlsaXRpZXM",
       "slug": "rc-135-rivet-joints-could-control-drones-to-drastically-expand-collection-capabi",
       "displayPosition": "standard",
       "headline": "RC-135 Rivet Joints Could Control Drones To Drastically Expand Collection Capabilities",
@@ -6971,7 +6913,7 @@
       }
     },
     {
-      "id": "a-209-maWMtZmlnaHQ",
+      "id": "a-207-maWMtZmlnaHQ",
       "slug": "armys-newest-unit-aims-to-overwhelm-adversary-with-drones-in-pacific-fight",
       "displayPosition": "standard",
       "headline": "Army’s Newest Unit Aims To “Overwhelm” Adversary With Drones In Pacific Fight",
@@ -7005,7 +6947,7 @@
       }
     },
     {
-      "id": "a-210-FsLWF0dGFjaw",
+      "id": "a-208-FsLWF0dGFjaw",
       "slug": "extraordinary-footage-from-moscow-under-heavy-ukrainian-aerial-attack",
       "displayPosition": "standard",
       "headline": "Extraordinary Footage From Moscow Under Heavy Ukrainian Aerial Attack",
@@ -7039,7 +6981,7 @@
       }
     },
     {
-      "id": "a-211-hlLXJvY2tzLw",
+      "id": "a-209-hlLXJvY2tzLw",
       "slug": "understanding-the-russo-ukrainian-war-a-guide-from-war-on-the-rocks",
       "displayPosition": "standard",
       "headline": "Understanding the Russo-Ukrainian War: A Guide From War on the Rocks",
@@ -7072,7 +7014,7 @@
       }
     },
     {
-      "id": "a-212-vbS9sb2dpbi8",
+      "id": "a-210-vbS9sb2dpbi8",
       "slug": "login",
       "displayPosition": "standard",
       "headline": "Login",
@@ -7132,11 +7074,11 @@
         "a-65-1YzQwZDE1MTg",
         "a-81-YWwtcnVub2Zm",
         "a-119-tY29uZmxpY3Q",
-        "a-148-BxNDF2MWx6bw",
-        "a-149-U0a3kyeXpwbw",
-        "a-150-k2Nzg2cHg0bw",
-        "a-151-k5Zzk2MDg2bw",
-        "a-152-lnanpyOGo3bw"
+        "a-146-BxNDF2MWx6bw",
+        "a-147-U0a3kyeXpwbw",
+        "a-148-k2Nzg2cHg0bw",
+        "a-149-k5Zzk2MDg2bw",
+        "a-150-lnanpyOGo3bw"
       ]
     },
     {
@@ -7150,29 +7092,29 @@
         "a-57-zdC13YXNudC8",
         "a-59-tMjEtMjAyNi8",
         "a-68-LTIxLTIwMjYv",
-        "a-190-Nzc2My5odG1s",
-        "a-191-YzMzMuaHRtbA",
-        "a-192-NzQxNi5odG1s",
-        "a-193-Y0MjYuaHRtbA",
-        "a-194-Mzk5NS5odG1s",
-        "a-195-QyNTAuaHRtbA",
-        "a-196-E5MTMuaHRtbA",
-        "a-197-xNjkxLmh0bWw",
-        "a-198-xNjAzLmh0bWw",
-        "a-199-yNDQ3Lmh0bWw",
-        "a-200-MzEyMy5odG1s",
-        "a-201-AyMTQuaHRtbA",
-        "a-202-3Mjk2Lmh0bWw",
-        "a-203-4NTQwLmh0bWw",
-        "a-204-0Mjg2Lmh0bWw",
-        "a-205-sbHktd29ya3M",
-        "a-206-lmdC1ncm91cA",
-        "a-207-td2Vlay0xOTY",
-        "a-208-hYmlsaXRpZXM",
-        "a-209-maWMtZmlnaHQ",
-        "a-210-FsLWF0dGFjaw",
-        "a-211-hlLXJvY2tzLw",
-        "a-212-vbS9sb2dpbi8"
+        "a-188-Nzc2My5odG1s",
+        "a-189-YzMzMuaHRtbA",
+        "a-190-NzQxNi5odG1s",
+        "a-191-Y0MjYuaHRtbA",
+        "a-192-Mzk5NS5odG1s",
+        "a-193-QyNTAuaHRtbA",
+        "a-194-E5MTMuaHRtbA",
+        "a-195-xNjkxLmh0bWw",
+        "a-196-xNjAzLmh0bWw",
+        "a-197-yNDQ3Lmh0bWw",
+        "a-198-MzEyMy5odG1s",
+        "a-199-AyMTQuaHRtbA",
+        "a-200-3Mjk2Lmh0bWw",
+        "a-201-4NTQwLmh0bWw",
+        "a-202-0Mjg2Lmh0bWw",
+        "a-203-sbHktd29ya3M",
+        "a-204-lmdC1ncm91cA",
+        "a-205-td2Vlay0xOTY",
+        "a-206-hYmlsaXRpZXM",
+        "a-207-maWMtZmlnaHQ",
+        "a-208-FsLWF0dGFjaw",
+        "a-209-hlLXJvY2tzLw",
+        "a-210-vbS9sb2dpbi8"
       ]
     },
     {
@@ -7238,27 +7180,25 @@
         "a-121-aWRlby1iZXRz",
         "a-122-RoZS13b3JsZA",
         "a-123-dXNkMTg5LTk5",
-        "a-124-lcy9ic2hhcnA",
-        "a-125-9uLWNsYXVkZQ",
-        "a-144-k1MTJyMTlybw",
-        "a-145-V3cHhleTh3bw",
-        "a-146-lncDAwNXdqbw",
-        "a-147-E3ODE4eGpybw",
-        "a-175-LWxvdy0xNjkv",
-        "a-176-bmV3LWFwcHMv",
-        "a-177-NlLWhpa2VzLw",
-        "a-178-oLWlvcy0yNy8",
-        "a-179-BsZS0yMDI2Lw",
-        "a-180-sZS10di00ay8",
-        "a-181-aWZ0LWNhcmQv",
-        "a-182-ZHMtbW9kZWwv",
-        "a-183-FkLXByby0zLw",
-        "a-184-VyeS1wYWNrLw",
+        "a-142-k1MTJyMTlybw",
+        "a-143-V3cHhleTh3bw",
+        "a-144-lncDAwNXdqbw",
+        "a-145-E3ODE4eGpybw",
+        "a-173-LWxvdy0xNjkv",
+        "a-174-bmV3LWFwcHMv",
+        "a-175-NlLWhpa2VzLw",
+        "a-176-oLWlvcy0yNy8",
+        "a-177-BsZS0yMDI2Lw",
+        "a-178-sZS10di00ay8",
+        "a-179-aWZ0LWNhcmQv",
+        "a-180-ZHMtbW9kZWwv",
+        "a-181-FkLXByby0zLw",
+        "a-182-VyeS1wYWNrLw",
+        "a-183-ib29rLWFpci8",
+        "a-184-9rLWFpci0yLw",
         "a-185-ib29rLWFpci8",
-        "a-186-9rLWFpci0yLw",
-        "a-187-ib29rLWFpci8",
-        "a-188-ib29rLXByby8",
-        "a-189-tbWFjYm9vay8"
+        "a-186-ib29rLXByby8",
+        "a-187-tbWFjYm9vay8"
       ]
     },
     {
@@ -7270,11 +7210,11 @@
       "visible": true,
       "articleIds": [
         "a-50-NlLWNyYXplLw",
-        "a-134-txZzk1OHYxbw",
-        "a-135-JnZDlsa3h6bw",
-        "a-136-tlcnBreW5rbw",
-        "a-137-R5a3hyajVlbw",
-        "a-138-VyankyMGt5bw"
+        "a-132-txZzk1OHYxbw",
+        "a-133-JnZDlsa3h6bw",
+        "a-134-tlcnBreW5rbw",
+        "a-135-R5a3hyajVlbw",
+        "a-136-VyankyMGt5bw"
       ]
     },
     {
@@ -7289,11 +7229,11 @@
         "a-22-vYXJkLWlzcy8",
         "a-80-1mbG9yaWRhLw",
         "a-93-tMjctMjAyNi8",
-        "a-139-h3ODU1MHk4bw",
-        "a-140-Q4ank0ajF5bw",
-        "a-141-MwcjA5NDRnbw",
-        "a-142-BlMjk1M3Exbw",
-        "a-143-hyZGRwMXZxbw"
+        "a-137-h3ODU1MHk4bw",
+        "a-138-Q4ank0ajF5bw",
+        "a-139-MwcjA5NDRnbw",
+        "a-140-BlMjk1M3Exbw",
+        "a-141-hyZGRwMXZxbw"
       ]
     },
     {
@@ -7326,14 +7266,14 @@
         "a-84-LW1lc3NhZ2Uv",
         "a-101-cy1yZXNvcnQv",
         "a-104-jZ2ktc3VpdC8",
-        "a-126-LS8uMjM4Nzcy",
-        "a-127-tLy4yMzg3OTE",
-        "a-128-lLy4yMzg3ODk",
-        "a-129-MvLjIzODc4OA",
-        "a-130-4Ly4yMzg3ODM",
-        "a-131-cy8uMjM4Nzcz",
-        "a-132-MvLjIzODc4MQ",
-        "a-133-nLy4yMzg3NzQ"
+        "a-124-LS8uMjM4Nzcy",
+        "a-125-tLy4yMzg3OTE",
+        "a-126-lLy4yMzg3ODk",
+        "a-127-MvLjIzODc4OA",
+        "a-128-4Ly4yMzg3ODM",
+        "a-129-cy8uMjM4Nzcz",
+        "a-130-MvLjIzODc4MQ",
+        "a-131-nLy4yMzg3NzQ"
       ]
     },
     {
@@ -7344,28 +7284,28 @@
       "order": 7,
       "visible": true,
       "articleIds": [
-        "a-153-td2l0aC1ibnk",
-        "a-154-5lZC1yYWxseQ",
-        "a-155-1YW5jZS1jYXA",
-        "a-156-lZWstYWhlYWQ",
-        "a-157-tZGl2ZXMtMTA",
-        "a-158-0aW1lLWhpZ2g",
-        "a-159-aXh0aC13ZWVr",
-        "a-160-VyZS1zLXdoeQ",
-        "a-161-cC1yZWJvdW5k",
-        "a-162-0aGUtcmFsbHk",
-        "a-163-lyZS10YWxrcw",
-        "a-164-1tZWx0ZG93bg",
-        "a-165-I3LWxhdW5jaA",
-        "a-166-aW5jaWRlbnRz",
-        "a-167-RyYW5zZmVycw",
-        "a-168-cHRvLXRvZGF5",
-        "a-169-ZhbHMtZmVlcw",
-        "a-170-QtZm9yLTc1bQ",
-        "a-171-sbG9jYXRpb24",
-        "a-172-dHMtbWFya2V0",
-        "a-173-4tc2hpdmVycw",
-        "a-174-pb24tc3VyZ2U"
+        "a-151-td2l0aC1ibnk",
+        "a-152-5lZC1yYWxseQ",
+        "a-153-1YW5jZS1jYXA",
+        "a-154-lZWstYWhlYWQ",
+        "a-155-tZGl2ZXMtMTA",
+        "a-156-0aW1lLWhpZ2g",
+        "a-157-aXh0aC13ZWVr",
+        "a-158-VyZS1zLXdoeQ",
+        "a-159-cC1yZWJvdW5k",
+        "a-160-0aGUtcmFsbHk",
+        "a-161-lyZS10YWxrcw",
+        "a-162-1tZWx0ZG93bg",
+        "a-163-I3LWxhdW5jaA",
+        "a-164-aW5jaWRlbnRz",
+        "a-165-RyYW5zZmVycw",
+        "a-166-cHRvLXRvZGF5",
+        "a-167-ZhbHMtZmVlcw",
+        "a-168-QtZm9yLTc1bQ",
+        "a-169-sbG9jYXRpb24",
+        "a-170-dHMtbWFya2V0",
+        "a-171-4tc2hpdmVycw",
+        "a-172-pb24tc3VyZ2U"
       ]
     },
     {
@@ -7405,11 +7345,11 @@
     "text": "This test edition is populated directly from aggregated source articles to verify layout and navigation before AI rewriting.",
     "whyItMatters": "Layout validation ensures every section and article card renders correctly across devices.",
     "model": "aggregate-test",
-    "generatedAt": "2026-06-22T12:29:08.321Z",
+    "generatedAt": "2026-06-22T13:19:59.976Z",
     "sourcesConsidered": 33
   },
   "marketSnapshot": {
-    "updatedAt": "2026-06-22T12:29:08.321Z",
+    "updatedAt": "2026-06-22T13:19:59.976Z",
     "sourceName": "Test Data",
     "tickers": [],
     "commodities": []
@@ -7532,7 +7472,7 @@
     {
       "name": "Hacker News",
       "url": "https://news.ycombinator.com",
-      "articles": 14
+      "articles": 12
     },
     {
       "name": "warontherocks",
@@ -7613,13 +7553,13 @@
   "generationMetadata": {
     "model": "aggregate-test",
     "sourcesCount": 33,
-    "storiesAnalyzed": 213,
-    "readingTimeMin": 961,
-    "collectionStartedAt": "2026-06-22T12:29:08.321Z",
-    "collectionFinishedAt": "2026-06-22T12:29:08.321Z"
+    "storiesAnalyzed": 211,
+    "readingTimeMin": 957,
+    "collectionStartedAt": "2026-06-22T13:19:59.976Z",
+    "collectionFinishedAt": "2026-06-22T13:19:59.976Z"
   },
   "footer": {
-    "copyright": "© 2026 The Morning Wire. All rights reserved.",
+    "copyright": "© 2026 Botwin's Morning Wire. All rights reserved.",
     "links": [
       {
         "label": "Privacy Policy",

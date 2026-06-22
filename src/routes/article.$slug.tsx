@@ -22,7 +22,7 @@ export const Route = createFileRoute("/article/$slug")({
   loader: ({ context, params }) => context.queryClient.ensureQueryData(articleQuery(params.slug)),
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.headline ?? "Article"} — The Morning Wire` },
+      { title: `${loaderData?.headline ?? "Article"} — Botwin's Morning Wire` },
       { name: "description", content: (loaderData?.content ?? loaderData?.summary ?? "").slice(0, 160) },
     ],
   }),
@@ -244,7 +244,7 @@ function ArticlePage() {
         </section>
 
         <p className="meta mt-8 italic">
-          The Morning Wire publishes the full source article for reading convenience. Please visit
+          Botwin's Morning Wire publishes the full source article for reading convenience. Please visit
           the publisher for the original presentation and any updates.
         </p>
       </article>

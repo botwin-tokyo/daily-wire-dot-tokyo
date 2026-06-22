@@ -8,7 +8,7 @@ import { FitText } from "@/components/pretext";
 import { searchArticles } from "@/lib/api";
 
 export const Route = createFileRoute("/search")({
-  head: () => ({ meta: [{ title: "Search — The Morning Wire" }] }),
+  head: () => ({ meta: [{ title: "Search — Botwin's Morning Wire" }] }),
   validateSearch: (s: Record<string, unknown>) => ({ q: typeof s.q === "string" ? s.q : "" }),
   component: SearchPage,
 });

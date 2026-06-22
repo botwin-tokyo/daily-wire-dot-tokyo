@@ -22,13 +22,13 @@ const newspaperEditionQuery = queryOptions({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "The Morning Wire — Today's Edition" },
+      { title: "Botwin's Morning Wire — Today's Edition" },
       {
         name: "description",
         content:
           "A personal AI-curated newspaper. Today's lead stories, morning briefing, and editor's note — refreshed before sunrise.",
       },
-      { property: "og:title", content: "The Morning Wire — Today's Edition" },
+      { property: "og:title", content: "Botwin's Morning Wire — Today's Edition" },
       {
         property: "og:description",
         content: "Your personal daily intelligence, delivered before sunrise.",

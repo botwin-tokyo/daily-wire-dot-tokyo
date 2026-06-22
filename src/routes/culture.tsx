@@ -11,9 +11,9 @@ export const Route = createFileRoute("/culture")({
     const copy = getSectionCopy(loaderData, "culture") ?? CATEGORY_COPY.culture;
     return {
       meta: [
-        { title: `${copy.title} — The Morning Wire` },
+        { title: `${copy.title} — Botwin's Morning Wire` },
         { name: "description", content: copy.dek },
-        { property: "og:title", content: `${copy.title} — The Morning Wire` },
+        { property: "og:title", content: `${copy.title} — Botwin's Morning Wire` },
         { property: "og:description", content: copy.dek },
       ],
     };

@@ -6,7 +6,7 @@ import { FitText } from "@/components/pretext";
 import { getSavedArticles } from "@/lib/api";
 
 export const Route = createFileRoute("/saved")({
-  head: () => ({ meta: [{ title: "Saved — The Morning Wire" }] }),
+  head: () => ({ meta: [{ title: "Saved — Botwin's Morning Wire" }] }),
   component: SavedPage,
 });
 

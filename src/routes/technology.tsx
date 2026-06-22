@@ -12,9 +12,9 @@ export const Route = createFileRoute("/technology")({
     const copy = getSectionCopy(loaderData, "technology") ?? CATEGORY_COPY.technology;
     return {
       meta: [
-        { title: `${copy.title} — The Morning Wire` },
+        { title: `${copy.title} — Botwin's Morning Wire` },
         { name: "description", content: copy.dek },
-        { property: "og:title", content: `${copy.title} — The Morning Wire` },
+        { property: "og:title", content: `${copy.title} — Botwin's Morning Wire` },
         { property: "og:description", content: copy.dek },
       ],
     };

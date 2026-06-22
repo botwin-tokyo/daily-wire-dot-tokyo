@@ -7,7 +7,7 @@ import { SiteFooter } from "./SiteFooter";
 import { newspaperEditionQuery } from "@/lib/api";
 
 const defaultMasthead = {
-  title: "The Morning Wire",
+  title: "Botwin's Morning Wire",
   tagline: "Your Personal Daily Intelligence",
 };
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Rollback Agent for The Morning Wire.
+ * Rollback Agent for Botwin's Morning Wire.
  *
  * Restores a historical edition by copying its archive file to
  * public/data/current-edition.json, optionally running validation/tests,

@@ -1,5 +1,5 @@
 /**
- * Canonical JSON schema for The Morning Wire edition documents.
+ * Canonical JSON schema for Botwin's Morning Wire edition documents.
  *
  * This is the single source of truth for the content contract between
  * the AI publishing pipeline and the frontend. Every field that appears

@@ -7,7 +7,7 @@ import { getSettings, updateSettings, testFeed, triggerGeneration } from "@/lib/
 import type { Settings } from "@/lib/types";
 
 export const Route = createFileRoute("/settings")({
-  head: () => ({ meta: [{ title: "Edition Settings — The Morning Wire" }] }),
+  head: () => ({ meta: [{ title: "Edition Settings — Botwin's Morning Wire" }] }),
   component: SettingsPage,
 });
 

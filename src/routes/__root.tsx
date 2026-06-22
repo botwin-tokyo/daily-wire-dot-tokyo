@@ -77,7 +77,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: ({ loaderData }) => {
     const edition = loaderData as NewspaperEdition | undefined;
-    const title = edition?.masthead?.title ?? "The Morning Wire";
+    const title = edition?.masthead?.title ?? "Botwin's Morning Wire";
     const tagline = edition?.masthead?.tagline ?? "Your Personal Daily Intelligence";
     return {
       meta: [

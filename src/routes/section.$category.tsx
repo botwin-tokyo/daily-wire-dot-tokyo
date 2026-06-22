@@ -75,8 +75,8 @@ export const Route = createFileRoute("/section/$category")({
     const copy = sectionCopy ?? fallback ?? null;
     return {
       meta: [
-        { title: `${copy?.title ?? params.category} — The Morning Wire` },
-        { name: "description", content: copy?.dek ?? "Section of The Morning Wire." },
+        { title: `${copy?.title ?? params.category} — Botwin's Morning Wire` },
+        { name: "description", content: copy?.dek ?? "Section of Botwin's Morning Wire." },
       ],
     };
   },

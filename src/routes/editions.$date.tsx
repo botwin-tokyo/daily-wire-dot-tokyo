@@ -19,7 +19,7 @@ const editionQuery = (date: string) =>
   });
 
 export const Route = createFileRoute("/editions/$date")({
-  head: ({ params }) => ({ meta: [{ title: `Edition ${params.date} — The Morning Wire` }] }),
+  head: ({ params }) => ({ meta: [{ title: `Edition ${params.date} — Botwin's Morning Wire` }] }),
   loader: ({ context, params }) => context.queryClient.ensureQueryData(editionQuery(params.date)),
   component: EditionByDate,
 });

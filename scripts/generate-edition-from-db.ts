@@ -413,7 +413,7 @@ function main(): void {
     timezone: "UTC",
     locale: "en-US",
     masthead: {
-      title: "The Morning Wire",
+      title: "Botwin's Morning Wire",
       tagline: "Your Personal Daily Intelligence",
     },
     utilityBar: {
@@ -481,7 +481,7 @@ function main(): void {
       collectionFinishedAt: isoNow,
     },
     footer: {
-      copyright: `© ${now.getFullYear()} The Morning Wire. All rights reserved.`,
+      copyright: `© ${now.getFullYear()} Botwin's Morning Wire. All rights reserved.`,
       links: [
         { label: "Privacy Policy", path: "/settings" },
         { label: "Terms of Service", path: "/settings" },

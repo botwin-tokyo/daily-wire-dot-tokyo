@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Publishing Agent for The Morning Wire.
+ * Publishing Agent for Botwin's Morning Wire.
  *
  * Usage:
  *   npm run publish:edition -- --draft drafts/2025-05-21.json --date 2025-05-21

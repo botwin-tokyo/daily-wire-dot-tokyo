@@ -7,7 +7,7 @@ import { listEditions } from "@/lib/api";
 const editionsQuery = queryOptions({ queryKey: ["editions"], queryFn: () => listEditions() });
 
 export const Route = createFileRoute("/editions")({
-  head: () => ({ meta: [{ title: "Edition Archive — The Morning Wire" }] }),
+  head: () => ({ meta: [{ title: "Edition Archive — Botwin's Morning Wire" }] }),
   loader: ({ context }) => context.queryClient.ensureQueryData(editionsQuery),
   component: EditionsPage,
 });
@@ -39,7 +39,7 @@ function EditionsPage() {
             fontWeight={900}
           />
         </h1>
-        <p className="mt-3 meta">Browse every edition published by The Morning Wire.</p>
+        <p className="mt-3 meta">Browse every edition published by Botwin's Morning Wire.</p>
 
         <ul className="mt-8 border-t border-[var(--ink)]">
           {editions.map((e) => (
