@@ -19,6 +19,20 @@ dist-ssr
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
+.env
+
+# Local SQLite database populated by aggregation scripts
+backend/db/*.db
+backend/db/*.db-*
+
+# Daily neutral rewrite scratch file (regenerated every day)
+drafts/daily.md
+
+# Subagent rewrite batches and temporary outputs
+drafts/rewrite_*/
+
+# Tooling metadata
+.lovable/
 
 # Editor directories and files
 .vscode/*

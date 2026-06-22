@@ -1,0 +1,11 @@
+# Custom Ladder rules for the news aggregation pipeline.
+# These rules enable FlareSolverr / Google Cache for publishers that serve
+# Cloudflare / bot challenges to automated requests.
+- domain: washingtonpost.com
+  useFlareSolverr: true
+- domain: techcrunch.com
+  useFlareSolverr: true
+- domain: macrumors.com
+  useFlareSolverr: true
+- domain: reuters.com
+  useFlareSolverr: true

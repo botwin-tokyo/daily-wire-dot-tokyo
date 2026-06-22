@@ -1,0 +1,848 @@
+{
+  "schemaVersion": "1.0.0",
+  "editionId": "ed-2025-05-20-global",
+  "editionDate": "2025-05-20",
+  "editionNumber": 42,
+  "editionTitle": "Global Edition",
+  "status": "published",
+  "generatedAt": "2025-05-20T05:28:00Z",
+  "publishedAt": "2025-05-20T05:30:00Z",
+  "updatedAt": "2025-05-20T05:30:00Z",
+  "timezone": "Europe/Berlin",
+  "locale": "en-US",
+  "masthead": {
+    "title": "The Morning Wire",
+    "tagline": "Your Personal Daily Intelligence"
+  },
+  "utilityBar": {
+    "dateLabel": "May 20, 2025",
+    "weather": {
+      "tempC": 18,
+      "condition": "Partly Cloudy",
+      "icon": "partly"
+    },
+    "editionLabel": "Global",
+    "updatedByAiAt": "05:30",
+    "nextEditionText": "Next edition scheduled"
+  },
+  "navigation": {
+    "items": [
+      {
+        "id": "top",
+        "label": "Top Stories",
+        "path": "/"
+      },
+      {
+        "id": "world",
+        "label": "World",
+        "path": "/world",
+        "category": "world"
+      },
+      {
+        "id": "technology",
+        "label": "Technology",
+        "path": "/technology",
+        "category": "technology"
+      },
+      {
+        "id": "business",
+        "label": "Business",
+        "path": "/business",
+        "category": "business"
+      },
+      {
+        "id": "science",
+        "label": "Science",
+        "path": "/science",
+        "category": "science"
+      },
+      {
+        "id": "culture",
+        "label": "Culture",
+        "path": "/culture",
+        "category": "culture"
+      }
+    ],
+    "moreLinks": [
+      {
+        "id": "saved",
+        "label": "Saved",
+        "path": "/saved"
+      },
+      {
+        "id": "archive",
+        "label": "Archive",
+        "path": "/editions"
+      }
+    ]
+  },
+  "leadStoryId": "a1",
+  "articles": [
+    {
+      "id": "a1",
+      "slug": "global-cities-race-climate",
+      "displayPosition": "lead",
+      "headline": "Global cities race to adapt to a changing climate",
+      "deck": "From flood defenses to green infrastructure, mayors say urgent action today will determine the livability of tomorrow.",
+      "summary": "City leaders from more than 40 countries gathered in Singapore this week for the Global Resilient Cities Summit, sharing strategies to tackle climate threats ranging from extreme heat to rising seas. Funding, innovation, and cross-border collaboration took center stage as mayors emphasized that adaptation is no longer optional.",
+      "whyItMatters": "Two thirds of the world will live in urban areas by 2050. The decisions made by city halls this decade will determine where billions of people can safely live and work.",
+      "category": "world",
+      "tags": ["climate", "cities", "policy"],
+      "author": "Olivia Grant",
+      "source": {
+        "name": "Associated Press",
+        "url": "https://apnews.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://apnews.com/example",
+      "publishedAt": "2025-05-20T04:10:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 6,
+      "image": {
+        "url": "/images/hero-city.jpg",
+        "alt": "Singapore skyline with coastal development and green spaces.",
+        "attribution": "AP Images",
+        "caption": "Singapore is investing in coastal defenses and sustainable urban planning to prepare for rising seas."
+      },
+      "keyPoints": [
+        "40+ cities pledged shared flood-defense funding by 2030.",
+        "Singapore unveiled a $4B coastal protection program.",
+        "New cross-city data-sharing platform launches in Q3."
+      ],
+      "relatedArticleIds": ["a4", "a5"],
+      "relevanceScore": 0.97,
+      "confidenceScore": 0.92,
+      "editorialProminence": 1,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "City leaders from more than 40 countries gathered in Singapore this week for the Global Resilient Cities Summit, sharing strategies to tackle climate threats ranging from extreme heat to rising seas. Funding, innovation, and cross-border collaboration took center stage as mayors emphasized that adaptation is no longer optional."
+    },
+    {
+      "id": "a2",
+      "slug": "european-defense-strategy",
+      "displayPosition": "sidebar",
+      "headline": "European leaders push for unified defense strategy",
+      "summary": "EU leaders met in Brussels to advance a joint defense initiative aimed at strengthening capabilities and reducing dependence on external allies.",
+      "category": "world",
+      "tags": ["europe", "defense"],
+      "author": "Claire Donovan",
+      "source": {
+        "name": "DW",
+        "url": "https://www.dw.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://www.dw.com/example",
+      "publishedAt": "2025-05-20T03:15:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 4,
+      "keyPoints": [
+        "€80B joint procurement framework discussed.",
+        "Eastern members pushed for a faster timeline."
+      ],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.88,
+      "confidenceScore": 0.9,
+      "editorialProminence": 0.7,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "EU leaders met in Brussels to advance a joint defense initiative aimed at strengthening capabilities and reducing dependence on external allies."
+    },
+    {
+      "id": "a3",
+      "slug": "markets-rise-inflation-cools",
+      "displayPosition": "sidebar",
+      "headline": "Markets rise as inflation cools in key regions",
+      "summary": "Global markets opened higher after new data showed inflation easing in the U.S. and Europe, boosting investor confidence.",
+      "category": "business",
+      "tags": ["markets", "inflation"],
+      "author": "Marcus Lee",
+      "source": {
+        "name": "Reuters",
+        "url": "https://reuters.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://reuters.com/example",
+      "publishedAt": "2025-05-20T02:45:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 3,
+      "keyPoints": [
+        "U.S. CPI fell to 2.4% year-over-year.",
+        "Euro area core inflation at 18-month low."
+      ],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.82,
+      "confidenceScore": 0.91,
+      "editorialProminence": 0.65,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "Global markets opened higher after new data showed inflation easing in the U.S. and Europe, boosting investor confidence."
+    },
+    {
+      "id": "a4",
+      "slug": "ai-regulation-frameworks",
+      "displayPosition": "imageFeature",
+      "headline": "AI regulation frameworks take shape worldwide",
+      "summary": "New policies in the EU and Asia aim to balance innovation with transparency and safety as generative AI tools become more powerful.",
+      "category": "technology",
+      "tags": ["ai", "policy", "regulation"],
+      "author": "Daniel Chen",
+      "source": {
+        "name": "The Verge",
+        "url": "https://theverge.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://theverge.com/example",
+      "publishedAt": "2025-05-20T01:30:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 5,
+      "image": {
+        "url": "/images/tech-ai.jpg",
+        "alt": "Close-up of an AI chip on a circuit board.",
+        "attribution": "Reuters",
+        "caption": "AI chip on circuit board."
+      },
+      "keyPoints": [
+        "EU AI Act enforcement begins next quarter.",
+        "Japan publishes voluntary safety standard.",
+        "U.S. agencies adopt model evaluation guidelines."
+      ],
+      "relatedArticleIds": ["a1"],
+      "relevanceScore": 0.86,
+      "confidenceScore": 0.89,
+      "editorialProminence": 0.75,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "New policies in the EU and Asia aim to balance innovation with transparency and safety as generative AI tools become more powerful."
+    },
+    {
+      "id": "a5",
+      "slug": "battery-tech-breakthrough",
+      "displayPosition": "imageFeature",
+      "headline": "Breakthrough in battery tech could power the next generation",
+      "summary": "Researchers develop a solid-state battery with higher capacity and faster charging, bringing long-range EV vehicles closer to reality.",
+      "category": "science",
+      "tags": ["energy", "ev", "research"],
+      "author": "Maya Patel",
+      "source": {
+        "name": "Nature",
+        "url": "https://nature.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://nature.com/example",
+      "publishedAt": "2025-05-20T00:50:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 6,
+      "image": {
+        "url": "/images/science-battery.jpg",
+        "alt": "Solid-state battery prototypes in a research lab.",
+        "attribution": "Nature",
+        "caption": "Solid-state battery prototypes."
+      },
+      "keyPoints": [
+        "Energy density 40% higher than current Li-ion.",
+        "Charging from 10% to 80% in under 12 minutes.",
+        "Commercial production targeted for 2027."
+      ],
+      "relatedArticleIds": ["a1"],
+      "relevanceScore": 0.84,
+      "confidenceScore": 0.93,
+      "editorialProminence": 0.7,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "Researchers develop a solid-state battery with higher capacity and faster charging, bringing long-range EV vehicles closer to reality."
+    },
+    {
+      "id": "a6",
+      "slug": "ceasefire-talks-resume",
+      "displayPosition": "standard",
+      "headline": "Ceasefire talks resume in the Middle East with cautious optimism",
+      "summary": "Mediators report incremental progress as parties return to the negotiating table after a month-long pause.",
+      "category": "world",
+      "tags": ["geopolitics"],
+      "source": {
+        "name": "Al Jazeera",
+        "url": "https://aljazeera.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://aljazeera.com/example",
+      "publishedAt": "2025-05-20T01:55:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 4,
+      "keyPoints": ["Humanitarian corridors discussed.", "Phased exchange proposed."],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.78,
+      "confidenceScore": 0.84,
+      "editorialProminence": 0.5,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "Mediators report incremental progress as parties return to the negotiating table after a month-long pause."
+    },
+    {
+      "id": "a8",
+      "slug": "alzheimers-early-screening",
+      "displayPosition": "standard",
+      "headline": "New study highlights the benefits of early screening for Alzheimer's disease",
+      "summary": "Early detection improved long-term outcomes in a multi-country cohort, researchers report.",
+      "category": "science",
+      "tags": ["health", "research"],
+      "source": {
+        "name": "The Guardian",
+        "url": "https://theguardian.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://theguardian.com/example",
+      "publishedAt": "2025-05-20T02:20:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 4,
+      "keyPoints": ["Cohort of 12,000 across 8 countries.", "Five-year improvement signal."],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.74,
+      "confidenceScore": 0.86,
+      "editorialProminence": 0.5,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "Early detection improved long-term outcomes in a multi-country cohort, researchers report."
+    },
+    {
+      "id": "a9",
+      "slug": "venice-biennale-opens",
+      "displayPosition": "standard",
+      "headline": "Venice Biennale opens with focus on memory and migration",
+      "summary": "This year's curation centers on artists exploring identity across shifting borders.",
+      "category": "culture",
+      "tags": ["art", "culture"],
+      "source": {
+        "name": "ARTnews",
+        "url": "https://artnews.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://artnews.com/example",
+      "publishedAt": "2025-05-19T22:10:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 5,
+      "keyPoints": ["89 national pavilions.", "Themes of memory, displacement, and home."],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.7,
+      "confidenceScore": 0.82,
+      "editorialProminence": 0.5,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "This year's curation centers on artists exploring identity across shifting borders."
+    },
+    {
+      "id": "a10",
+      "slug": "pacific-trade-pact",
+      "displayPosition": "major",
+      "headline": "Pacific nations sign expanded trade pact after years of stalled talks",
+      "summary": "Twelve economies finalized tariff reductions on digital goods and agricultural exports, signaling a pivot toward regional integration.",
+      "category": "world",
+      "tags": ["trade", "asia-pacific"],
+      "author": "Hana Sato",
+      "source": {
+        "name": "Reuters",
+        "url": "https://reuters.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://reuters.com/example-trade",
+      "publishedAt": "2025-05-20T03:40:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 4,
+      "keyPoints": [
+        "Tariffs cut on 1,400 product lines.",
+        "Digital-services chapter is the first of its kind."
+      ],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.81,
+      "confidenceScore": 0.88,
+      "editorialProminence": 0.6,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "Twelve economies finalized tariff reductions on digital goods and agricultural exports, signaling a pivot toward regional integration."
+    },
+    {
+      "id": "a11",
+      "slug": "chip-export-controls",
+      "displayPosition": "major",
+      "headline": "Chip export controls tighten as supply chains reroute through Southeast Asia",
+      "summary": "New licensing rules from Washington and Brussels are pushing fabricators to diversify packaging and assembly outside their traditional hubs.",
+      "category": "technology",
+      "tags": ["semiconductors", "trade", "supply-chain"],
+      "author": "Priya Raman",
+      "source": {
+        "name": "Bloomberg",
+        "url": "https://bloomberg.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://bloomberg.com/example-chips",
+      "publishedAt": "2025-05-20T02:55:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 5,
+      "keyPoints": [
+        "Vietnam and Malaysia gain new fab investment.",
+        "License approvals slow to 90+ days."
+      ],
+      "relatedArticleIds": ["a4"],
+      "relevanceScore": 0.83,
+      "confidenceScore": 0.87,
+      "editorialProminence": 0.6,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "New licensing rules from Washington and Brussels are pushing fabricators to diversify packaging and assembly outside their traditional hubs."
+    },
+    {
+      "id": "a12",
+      "slug": "open-source-model-release",
+      "displayPosition": "standard",
+      "headline": "A new open-weights model challenges closed labs on reasoning benchmarks",
+      "summary": "A consortium released a 70B-parameter model with permissive licensing that matches leading proprietary systems on math and code tasks.",
+      "category": "technology",
+      "tags": ["ai", "open-source"],
+      "source": {
+        "name": "Ars Technica",
+        "url": "https://arstechnica.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://arstechnica.com/example-model",
+      "publishedAt": "2025-05-20T01:05:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 4,
+      "keyPoints": ["Apache-2.0 license.", "Tops three public reasoning benchmarks."],
+      "relatedArticleIds": ["a4"],
+      "relevanceScore": 0.79,
+      "confidenceScore": 0.86,
+      "editorialProminence": 0.5,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "A consortium released a 70B-parameter model with permissive licensing that matches leading proprietary systems on math and code tasks."
+    },
+    {
+      "id": "a14",
+      "slug": "retail-earnings-mixed",
+      "displayPosition": "standard",
+      "headline": "Retail earnings split the market as consumers trade down",
+      "summary": "Discount chains beat expectations while mid-tier department stores warned on margins, sharpening the K-shaped consumer story.",
+      "category": "business",
+      "tags": ["retail", "consumer"],
+      "source": {
+        "name": "CNBC",
+        "url": "https://cnbc.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://cnbc.com/example-retail",
+      "publishedAt": "2025-05-20T02:25:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 3,
+      "keyPoints": ["Discounter comps up 6.4%.", "Two majors cut full-year guidance."],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.74,
+      "confidenceScore": 0.85,
+      "editorialProminence": 0.5,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "Discount chains beat expectations while mid-tier department stores warned on margins, sharpening the K-shaped consumer story."
+    },
+    {
+      "id": "a15",
+      "slug": "exoplanet-atmosphere",
+      "displayPosition": "major",
+      "headline": "Telescope detects water vapor in atmosphere of a temperate exoplanet",
+      "summary": "Spectral readings from a planet 41 light-years away reveal conditions astronomers say warrant deeper follow-up campaigns.",
+      "category": "science",
+      "tags": ["astronomy", "exoplanets"],
+      "author": "Lin Wei",
+      "source": {
+        "name": "NASA",
+        "url": "https://nasa.gov",
+        "reliability": "high"
+      },
+      "originalUrl": "https://nasa.gov/example-exo",
+      "publishedAt": "2025-05-20T00:20:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 5,
+      "keyPoints": ["Planet sits in the habitable zone.", "Follow-up time approved for 2026."],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.77,
+      "confidenceScore": 0.88,
+      "editorialProminence": 0.6,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "Spectral readings from a planet 41 light-years away reveal conditions astronomers say warrant deeper follow-up campaigns."
+    },
+    {
+      "id": "a16",
+      "slug": "fusion-milestone",
+      "displayPosition": "standard",
+      "headline": "Private fusion startup reports sustained plasma at record duration",
+      "summary": "The 22-minute run clears a key engineering hurdle, though commercial power remains years away, independent reviewers say.",
+      "category": "science",
+      "tags": ["energy", "fusion"],
+      "source": {
+        "name": "MIT Technology Review",
+        "url": "https://technologyreview.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://technologyreview.com/example-fusion",
+      "publishedAt": "2025-05-19T23:40:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 5,
+      "keyPoints": ["22-minute plasma confinement.", "Independent review pending."],
+      "relatedArticleIds": ["a5"],
+      "relevanceScore": 0.76,
+      "confidenceScore": 0.84,
+      "editorialProminence": 0.5,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "The 22-minute run clears a key engineering hurdle, though commercial power remains years away, independent reviewers say."
+    },
+    {
+      "id": "a17",
+      "slug": "literary-prize-shortlist",
+      "displayPosition": "major",
+      "headline": "International literary prize shortlist spans five continents",
+      "summary": "Judges praised a slate that foregrounds translation and debut novelists, with a record number of small-press titles in contention.",
+      "category": "culture",
+      "tags": ["literature", "prize"],
+      "source": {
+        "name": "The Guardian",
+        "url": "https://theguardian.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://theguardian.com/example-books",
+      "publishedAt": "2025-05-19T21:30:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 4,
+      "keyPoints": ["Six novels, five languages.", "Three debut authors shortlisted."],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.68,
+      "confidenceScore": 0.83,
+      "editorialProminence": 0.6,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "Judges praised a slate that foregrounds translation and debut novelists, with a record number of small-press titles in contention."
+    },
+    {
+      "id": "a18",
+      "slug": "film-festival-lineup",
+      "displayPosition": "standard",
+      "headline": "Cannes lineup leans into hybrid documentary and emerging directors",
+      "summary": "Festival programmers say the slate reflects a generational shift toward genre-blurring nonfiction.",
+      "category": "culture",
+      "tags": ["film", "festivals"],
+      "source": {
+        "name": "Variety",
+        "url": "https://variety.com",
+        "reliability": "high"
+      },
+      "originalUrl": "https://variety.com/example-cannes",
+      "publishedAt": "2025-05-19T20:00:00Z",
+      "retrievedAt": "2025-05-20T05:25:00Z",
+      "readingTimeMin": 4,
+      "keyPoints": ["21 films in competition.", "Seven first-time directors."],
+      "relatedArticleIds": [],
+      "relevanceScore": 0.66,
+      "confidenceScore": 0.82,
+      "editorialProminence": 0.5,
+      "aiDisclosure": {
+        "summaryIsAiGenerated": true,
+        "model": "publish-dailywire"
+      },
+      "content": "Festival programmers say the slate reflects a generational shift toward genre-blurring nonfiction."
+    }
+  ],
+  "sections": [
+    {
+      "id": "world",
+      "label": "World",
+      "eyebrow": "The World Desk",
+      "dek": "Geopolitics, diplomacy, and the stories shaping nations before sunrise.",
+      "order": 1,
+      "visible": true,
+      "articleIds": ["a2", "a6", "a10"]
+    },
+    {
+      "id": "business",
+      "label": "Business",
+      "eyebrow": "Markets & Business",
+      "dek": "Macro signals, central banks, earnings, and the deals moving capital today.",
+      "order": 2,
+      "visible": true,
+      "articleIds": ["a3", "a14"]
+    },
+    {
+      "id": "technology",
+      "label": "Technology",
+      "eyebrow": "The Technology Desk",
+      "dek": "Models, chips, platforms, and the policy lines being drawn around them.",
+      "order": 3,
+      "visible": true,
+      "articleIds": ["a4", "a11", "a12"]
+    },
+    {
+      "id": "science",
+      "label": "Science",
+      "eyebrow": "Science & Research",
+      "dek": "Breakthroughs from labs, observatories, and clinical trials worth your attention.",
+      "order": 4,
+      "visible": true,
+      "articleIds": ["a5", "a8", "a15", "a16"]
+    },
+    {
+      "id": "culture",
+      "label": "Culture",
+      "eyebrow": "Culture & Ideas",
+      "dek": "Art, books, film, and the conversations defining the week.",
+      "order": 5,
+      "visible": true,
+      "articleIds": ["a9", "a17", "a18"]
+    }
+  ],
+  "morningBriefing": [
+    {
+      "topic": "Geopolitics",
+      "text": "Ceasefire talks resume in the Middle East with cautious optimism.",
+      "sourceName": "Al Jazeera",
+      "articleId": "a6",
+      "icon": "globe"
+    },
+    {
+      "topic": "Economy",
+      "text": "Markets rise as inflation cools in key regions",
+      "sourceName": "Reuters",
+      "articleId": "a3",
+      "icon": "chart"
+    },
+    {
+      "topic": "Health",
+      "text": "New study highlights the benefits of early screening for Alzheimer's disease.",
+      "sourceName": "The Guardian",
+      "articleId": "a8",
+      "icon": "health"
+    }
+  ],
+  "editorsNote": {
+    "text": "Today's top stories highlight how cities, policies, and technologies are shaping our future in the face of climate, economic, and technological change.",
+    "whyItMatters": "Climate adaptation, smart regulation, and clean energy breakthroughs dominate the global agenda — each with long-term impact on communities and economies.",
+    "model": "publish-dailywire",
+    "generatedAt": "2025-05-20T05:29:00Z",
+    "sourcesConsidered": 42
+  },
+  "marketSnapshot": {
+    "updatedAt": "2025-05-20T05:15:00Z",
+    "sourceName": "Bloomberg",
+    "sourceUrl": "https://www.bloomberg.com",
+    "tickers": [
+      {
+        "symbol": "S&P 500",
+        "value": "5,312.07",
+        "changePct": 1.02
+      },
+      {
+        "symbol": "FTSE 100",
+        "value": "8,726.71",
+        "changePct": 0.68
+      },
+      {
+        "symbol": "DAX",
+        "value": "18,772.85",
+        "changePct": 0.74
+      },
+      {
+        "symbol": "NIKKEI 225",
+        "value": "38,529.48",
+        "changePct": 1.1
+      }
+    ],
+    "commodities": [
+      {
+        "symbol": "Brent Oil",
+        "value": "$64.12",
+        "changePct": -0.85
+      },
+      {
+        "symbol": "Gold",
+        "value": "$2,415.60",
+        "changePct": 0.35
+      },
+      {
+        "symbol": "10Y BOND (US)",
+        "value": "4.42%",
+        "changePct": -0.03
+      }
+    ]
+  },
+  "weather": {
+    "sourceName": "AccuWeather",
+    "sourceUrl": "https://www.accuweather.com",
+    "local": {
+      "city": "Berlin",
+      "tempC": 18,
+      "condition": "Partly Cloudy",
+      "icon": "partly"
+    },
+    "cities": [
+      {
+        "city": "New York",
+        "tempC": 22,
+        "condition": "Partly Cloudy",
+        "icon": "partly"
+      },
+      {
+        "city": "London",
+        "tempC": 16,
+        "condition": "Mostly Cloudy",
+        "icon": "cloud"
+      },
+      {
+        "city": "Paris",
+        "tempC": 17,
+        "condition": "Partly Cloudy",
+        "icon": "partly"
+      },
+      {
+        "city": "Berlin",
+        "tempC": 18,
+        "condition": "Showers",
+        "icon": "rain"
+      },
+      {
+        "city": "Tokyo",
+        "tempC": 24,
+        "condition": "Sunny",
+        "icon": "sun"
+      },
+      {
+        "city": "Sydney",
+        "tempC": 20,
+        "condition": "Partly Cloudy",
+        "icon": "partly"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "name": "Associated Press",
+      "url": "https://apnews.com",
+      "articles": 1
+    },
+    {
+      "name": "DW",
+      "url": "https://www.dw.com",
+      "articles": 1
+    },
+    {
+      "name": "Reuters",
+      "url": "https://reuters.com",
+      "articles": 2
+    },
+    {
+      "name": "The Verge",
+      "url": "https://theverge.com",
+      "articles": 1
+    },
+    {
+      "name": "Nature",
+      "url": "https://nature.com",
+      "articles": 1
+    },
+    {
+      "name": "Al Jazeera",
+      "url": "https://aljazeera.com",
+      "articles": 1
+    },
+    {
+      "name": "The Guardian",
+      "url": "https://theguardian.com",
+      "articles": 2
+    },
+    {
+      "name": "ARTnews",
+      "url": "https://artnews.com",
+      "articles": 1
+    },
+    {
+      "name": "Bloomberg",
+      "url": "https://bloomberg.com",
+      "articles": 1
+    },
+    {
+      "name": "CNBC",
+      "url": "https://cnbc.com",
+      "articles": 1
+    },
+    {
+      "name": "NASA",
+      "url": "https://nasa.gov",
+      "articles": 1
+    },
+    {
+      "name": "MIT Technology Review",
+      "url": "https://technologyreview.com",
+      "articles": 1
+    },
+    {
+      "name": "Variety",
+      "url": "https://variety.com",
+      "articles": 1
+    },
+    {
+      "name": "Ars Technica",
+      "url": "https://arstechnica.com",
+      "articles": 1
+    }
+  ],
+  "generationMetadata": {
+    "model": "publish-dailywire",
+    "sourcesCount": 42,
+    "storiesAnalyzed": 318,
+    "readingTimeMin": 12,
+    "collectionStartedAt": "2025-05-20T05:10:00Z",
+    "collectionFinishedAt": "2025-05-20T05:25:00Z"
+  },
+  "footer": {
+    "copyright": "© 2025 The Morning Wire. All rights reserved.",
+    "links": [
+      {
+        "label": "Privacy Policy",
+        "path": "/settings"
+      },
+      {
+        "label": "Terms of Service",
+        "path": "/settings"
+      },
+      {
+        "label": "Contact",
+        "path": "/settings"
+      }
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SectionSchema } from "./schema";
 
 export const CategorySchema = z.enum([
   "world",
@@ -6,6 +7,10 @@ export const CategorySchema = z.enum([
   "business",
   "science",
   "culture",
+  "crypto",
+  "politics",
+  "war",
+  "weather",
 ]);
 export type Category = z.infer<typeof CategorySchema>;
 
@@ -17,6 +22,7 @@ export const ArticleSchema = z.object({
   headline: z.string(),
   deck: z.string().optional(),
   summary: z.string(),
+  content: z.string().optional(),
   whyItMatters: z.string().optional(),
   keyPoints: z.array(z.string()).default([]),
   source: z.object({
@@ -48,7 +54,9 @@ export const BriefingItemSchema = z.object({
   text: z.string(),
   sourceName: z.string(),
   articleId: z.string().optional(),
-  icon: z.enum(["globe", "chart", "health", "tech", "culture"]).default("globe"),
+  icon: z
+    .enum(["globe", "chart", "health", "tech", "culture", "crypto", "politics", "war"])
+    .default("globe"),
 });
 export type BriefingItem = z.infer<typeof BriefingItemSchema>;
 
@@ -101,6 +109,7 @@ export const EditionSchema = z.object({
   markets: z.array(MarketTickerSchema),
   commodities: z.array(MarketTickerSchema),
   weather: z.array(WeatherCellSchema),
+  sections: z.array(SectionSchema).default([]),
 });
 export type Edition = z.infer<typeof EditionSchema>;
 
@@ -155,3 +164,33 @@ export type Feed = {
   lastError?: string;
   health: "healthy" | "degraded" | "down";
 };
+
+/**
+ * Canonical content-layer types derived from src/lib/schema.ts.
+ * These describe the exact shape of public/data/current-edition.json.
+ * Existing components continue to use the legacy `Edition`/`Article` types
+ * above while the adapter layer is being built out.
+ */
+export type {
+  NewspaperEdition,
+  Article as NewspaperArticle,
+  Section as NewspaperSection,
+  BriefingItem as NewspaperBriefingItem,
+  MarketTicker as NewspaperMarketTicker,
+  MarketSnapshot as NewspaperMarketSnapshot,
+  WeatherCell as NewspaperWeatherCell,
+  WeatherSnapshot as NewspaperWeatherSnapshot,
+  Source as NewspaperSource,
+  Image as NewspaperImage,
+  EditorsNote as NewspaperEditorsNote,
+  TransparencySource as NewspaperTransparencySource,
+  GenerationMetadata as NewspaperGenerationMetadata,
+  Footer as NewspaperFooter,
+  FooterLink as NewspaperFooterLink,
+  Banner as NewspaperBanner,
+  Navigation as NewspaperNavigation,
+  NavItem as NewspaperNavItem,
+  Masthead as NewspaperMasthead,
+  UtilityBar as NewspaperUtilityBar,
+  DisplayPosition,
+} from "./schema";

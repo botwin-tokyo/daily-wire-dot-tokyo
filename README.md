@@ -1,182 +1,232 @@
-# The Morning Wire
+# Botwin's Morning Wire
 
-A personal, AI-curated morning newspaper. Every morning before sunrise, a
-fresh edition is generated from configured RSS feeds: stories are
-deduplicated, ranked, summarized, and arranged into a broadsheet layout
-that loads instantly on desktop, tablet, or e-ink display.
+A self-hosted, AI-assisted daily newspaper. It ingests news from open web
+sources, lets an agent rewrite stories into neutral, propaganda-free copy,
+stores the results, and publishes a validated edition as static JSON that a
+TanStack Start frontend renders as a broadsheet-style page.
 
-This repository contains the **complete frontend** and a **typed mock API**
-that mirrors the production Cloudflare backend contract. The mock layer
-lets the UI run end-to-end with realistic data while the Cloudflare
-pieces (D1, KV, R2, Cron Worker) are wired in.
+The entire workflow is designed to run on your machine: ingest, rewrite,
+database population, and edition generation are local scripts and agent skills.
+Cloudflare enters the picture only for hosting and long-term archive storage.
+
+## What it does
+
+1. **Ingest** — `npm run ingest:articles` fetches the last 24 hours of news
+   from configured RSS, API, and HTML sources into a local SQLite database
+   (`backend/db/news.db`).
+2. **Rewrite** — the `rewrite-articles` agent skill reads the ingested articles,
+   distributes them to subagents, and has each one rewrite stories in a neutral,
+   Pulitzer-grade wire-service style. Output lands in `drafts/daily.md`.
+3. **Populate** — the `populate-depropdb` agent skill parses `drafts/daily.md`
+   and inserts the rewritten articles into `backend/db/deprop.db`.
+4. **Publish** — the `publish-dailywire` agent skill builds a schema-valid
+   `NewspaperEdition` from `deprop.db`, writes `public/data/current-edition.json`,
+   and archives the edition in Cloudflare D1 when credentials are configured.
+
+The frontend then renders today's edition, section pages, article pages, search,
+and an archive view.
 
 ## Stack
 
-| Layer | Choice |
-|---|---|
-| UI | React 19 + TypeScript + Tailwind v4 |
-| Routing / SSR | TanStack Start (file-based, Cloudflare Workers-ready) |
-| Server state | TanStack Query |
-| Validation | Zod |
-| Icons | Lucide (used sparingly) |
-| Fonts | Playfair Display · Source Serif 4 · Source Sans 3 · JetBrains Mono |
-| Deploy target | Cloudflare Workers / Pages |
+| Layer           | Choice                                                   |
+| --------------- | -------------------------------------------------------- |
+| UI              | React 19 · TypeScript · Tailwind CSS v4                  |
+| Framework / SSR | TanStack Start (file-based routes, Cloudflare-ready)     |
+| Server state    | TanStack Query                                           |
+| Validation      | Zod                                                      |
+| Local data      | SQLite via Node's built-in `node:sqlite`                 |
+| Archive data    | Cloudflare D1 (optional; static files are the fallback)  |
+| Icons           | Lucide                                                   |
+| Fonts           | Playfair Display · Source Serif 4 · Source Sans 3 · JetBrains Mono |
+| Deploy target   | Cloudflare Pages                                         |
 
-TanStack Start replaces the original spec's plain Vite + React Router DOM
-setup. It runs on the same Cloudflare Workers runtime and exposes
-file-based API routes under `src/routes/api/`, so the production
-endpoints land in exactly the same place documented below.
+## Project layout
 
-## Routes
-
-| Path | Purpose |
-|---|---|
-| `/` | Today's edition — full broadsheet layout |
-| `/article/:slug` | One story: summary, key points, source transparency |
-| `/section/:category` | All stories in a section |
-| `/editions` | Archive of past editions |
-| `/editions/:date` | A historical edition rendered in the same layout |
-| `/search?q=` | Search headlines, summaries, sources, tags |
-| `/saved` | Bookmarked reading list |
-| `/settings` | Personalization, schedule, AI config, feeds |
-
-## Mock data → real backend
-
-All UI calls go through `src/lib/api.ts`. Each function is the typed
-equivalent of one Cloudflare Pages Function endpoint:
-
-| Client call | HTTP endpoint |
-|---|---|
-| `getLatestEdition()` | `GET /api/edition/latest` |
-| `listEditions()` | `GET /api/editions` |
-| `getEditionByDate(date)` | `GET /api/editions/:date` |
-| `getArticle(slug)` | `GET /api/articles/:id` |
-| `searchArticles(q)` | `GET /api/search?q=` |
-| `getSavedArticles()` | `GET /api/saved` |
-| `toggleSaved(id)` | `POST /api/saved/:id` / `DELETE /api/saved/:id` |
-| `markRead(id)` | `POST /api/articles/:id/read` |
-| `getSettings()` / `updateSettings()` | `GET` / `PUT /api/settings` |
-| `listFeeds()` / `testFeed(id)` | `GET /api/feeds` / `POST /api/feeds/:id/test` |
-| `triggerGeneration()` | `POST /api/admin/generate` |
-
-To swap to the real backend, replace each function body with a `fetch()`
-call. Zod schemas in `src/lib/types.ts` already validate responses.
-
-## Cloudflare backend (scaffold)
-
-The production deployment uses:
-
-- **Workers / Pages Functions** under `src/routes/api/` (TanStack server routes)
-- **D1** for persistent structured data (editions, articles, feeds, settings)
-- **KV** for the `current_edition` pointer and rate-limit counters
-- **R2** (optional) for proxied article images
-- **A separate Cron-triggered Worker** for morning edition generation
-
-### `wrangler.toml` example
-
-```toml
-name = "morning-wire"
-compatibility_date = "2025-05-20"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "morning-wire"
-database_id = "REPLACE_WITH_D1_ID"
-
-[[kv_namespaces]]
-binding = "KV"
-id = "REPLACE_WITH_KV_ID"
-
-[[r2_buckets]]
-binding = "IMAGES"
-bucket_name = "morning-wire-images"
-
-[vars]
-AI_PROVIDER = "lovable"
-AI_MODEL = "google/gemini-3-flash-preview"
-
-# Secrets: set via `wrangler secret put`
-# - LOVABLE_API_KEY
-# - ADMIN_TOKEN
+```text
+agentskills/              # Agent skills for rewriting and publishing
+backend/
+  db/                     # SQLite databases (templates tracked, .db ignored)
+  scripts/                # News fetchers and aggregation pipeline
+migrations/               # D1 schema migrations
+public/data/              # Generated edition JSON
+scripts/                  # Edition generation, publishing, rollback helpers
+src/
+  routes/                 # TanStack Start routes, including API routes
+  components/newspaper/   # Broadsheet UI components
+  lib/                    # Schema, types, API client, layout engine
 ```
 
-### Cron Worker (`workers/cron/wrangler.toml`)
+## Agent skills
 
-```toml
-name = "morning-wire-cron"
-main = "src/index.ts"
-compatibility_date = "2025-05-20"
+Skills live under `agentskills/` and are mirrored to a local skill registry for
+agent consumption. Each skill is a self-contained recipe the agent can execute.
 
-[triggers]
-crons = ["30 5 * * *"]  # 05:30 daily; user-configurable via settings
-```
+| Skill                | Purpose                                                              |
+| -------------------- | -------------------------------------------------------------------- |
+| `fetch-news`         | Run the news ingest pipeline (`npm run ingest:articles`).            |
+| `rewrite-articles`   | Extract last-24h articles, deploy subagents to rewrite them, and     |
+|                      | write `drafts/daily.md` in the project style.                        |
+| `populate-depropdb`  | Parse `drafts/daily.md` and insert rewritten articles into           |
+|                      | `backend/db/deprop.db`.                                              |
+| `publish-dailywire`  | Generate a valid `NewspaperEdition` from `deprop.db` and write       |
+|                      | `public/data/current-edition.json` (and archive to D1 when set up).  |
 
-The cron handler runs the generation pipeline as discrete stages:
-
-```
-fetch → parse → dedupe → cluster → rank → summarize → validate
-      → write briefing → write editor's note → save draft → publish
-```
-
-Each stage is reusable and validated with Zod before persistence. The
-`current_edition` KV pointer is only flipped after the draft passes
-validation, so a failed run never overwrites a good edition.
-
-## D1 schema
-
-See the full schema in `src/lib/types.ts` and the schema notes in
-`design.md`. Tables: `editions`, `articles`, `edition_articles`,
-`article_key_points`, `sources`, `article_relationships`,
-`saved_articles`, `read_articles`, `settings`, `generation_jobs`.
-
-## Environment variables
-
-Create `.dev.vars` (for `wrangler dev`):
-
-```
-LOVABLE_API_KEY=...      # AI gateway key, server-only
-ADMIN_TOKEN=...          # protects /api/admin/*
-```
-
-Public config goes through `import.meta.env.VITE_*`.
+The `rewrite-articles` skill includes a style guide (`STYLE.md`) that every
+subagent receives. Rewrites are neutral, propaganda-free, and attributed.
 
 ## Local development
 
 ```bash
-bun install
-bun dev           # Vite dev server, mock API
+npm install
+npm run dev
 ```
 
-## Deploying
+`npm run dev` starts the TanStack Start dev server. The site reads
+`public/data/current-edition.json`, which is regenerated by the publish skill.
+
+### Required environment
+
+Copy `.env.example` to `.env` and fill in anything you need for fetching:
 
 ```bash
-bun run build
-wrangler deploy   # main app
-cd workers/cron && wrangler deploy   # scheduled generator
+cp .env.example .env
 ```
 
-## Design
+For local dev the only hard requirement is the Ladder proxy if you use
+Ladder-dependent fetchers:
 
-The visual language is derived directly from the broadsheet reference and
-`design.md`. Tokens live in `src/styles.css`:
+```bash
+npm run ladder:up
+```
 
-- Warm newsprint `--paper` (#F5F0E8) instead of pure white
-- Charcoal `--ink` (#1A1A1A) instead of pure black (e-ink friendly)
-- Color used **only** as semantic signal: `--accent-red` for top-story
-  eyebrows, `--accent-gold` for AI editor markers, `--positive` /
-  `--negative` for market data, `--live-dot` for edition status
-- `Playfair Display` for the masthead and headlines; `Source Serif 4` for
-  reading copy; `Source Sans 3` for UI; `JetBrains Mono` for market and
-  timestamp data
-- All images are rendered with a `grayscale(100%)` filter
+Cloudflare variables are only needed for deployment and D1 archiving.
 
-## Safety
+## Running the daily pipeline
 
-- We **never** reproduce full original article text. Only AI summaries,
-  short excerpts, metadata, and links to the original publisher are
-  displayed.
-- AI-generated content is clearly labeled.
-- API keys are server-side only; the browser only sees whether a provider
-  is configured.
-- Feed text is sanitized; admin mutation endpoints are protected by
-  `ADMIN_TOKEN` (swap for Cloudflare Access in production).
+A full cycle looks like this:
+
+```bash
+# 1. Fetch fresh articles
+npm run ingest:articles
+
+# 2. Rewrite (agentic — follow the rewrite-articles skill)
+#    Produces drafts/daily.md
+
+# 3. Populate deprop.db (agentic — follow the populate-depropdb skill)
+
+# 4. Publish the edition
+npx tsx agentskills/publish-dailywire/publish-dailywire.ts
+```
+
+Step 2 and 3 are intentionally agentic: the agent reads the source articles,
+applies the style guide, and saves output. Step 1 and 4 are deterministic
+scripts.
+
+## Edition JSON
+
+The canonical edition shape is defined in `src/lib/schema.ts` and validated with
+Zod. Two reference files are included:
+
+- `drafts/template-edition.json` — minimal schema-valid skeleton.
+- `examples/example-edition.json` — fuller example edition.
+
+You can validate any draft before publishing:
+
+```bash
+npm run validate:edition -- drafts/my-draft.json
+```
+
+## Cloudflare deployment
+
+The site deploys to Cloudflare Pages. Before deploying you need to provision
+Cloudflare resources and update `wrangler.toml`.
+
+1. **Create a D1 database:**
+
+   ```bash
+   wrangler d1 create morning-wire
+   ```
+
+   Copy the returned database ID into `wrangler.toml` under
+   `[[d1_databases]] database_id`.
+
+2. **Apply migrations:**
+
+   ```bash
+   wrangler d1 execute morning-wire --file=migrations/0001_initial.sql
+   wrangler d1 execute morning-wire --file=migrations/0002_create_editions_table.sql
+   ```
+
+3. **Set secrets:**
+
+   ```bash
+   wrangler secret put ADMIN_TOKEN
+   ```
+
+4. **Create a Pages project** and bind the D1 database (`DB`).
+
+5. **Deploy:**
+
+   ```bash
+   npm run build
+   npm run deploy
+   ```
+
+   The build is output to `.output/`; `npm run deploy` publishes that directory
+   to Cloudflare Pages.
+
+The publish skill archives editions to D1 when `CLOUDFLARE_ACCOUNT_ID`,
+`D1_DATABASE_ID`, and `CLOUDFLARE_API_TOKEN` are set as environment variables.
+Until then it falls back to static files in `public/data/editions/`, which is
+fine for local development.
+
+## Environment variables
+
+See `.env.example` for the full list. Important variables:
+
+| Variable                  | Purpose                                                     |
+| ------------------------- | ----------------------------------------------------------- |
+| `LADDER_URL`              | Proxy for fetching publisher pages.                         |
+| `FIRECRAWL_API_KEY`       | Optional fallback for hard-to-fetch sources.                |
+| `CLOUDFLARE_ACCOUNT_ID`   | Required for D1 archive writes from the publish skill.      |
+| `D1_DATABASE_ID`          | D1 database UUID for archive writes.                        |
+| `CLOUDFLARE_API_TOKEN`    | API token with D1 edit permissions.                         |
+| `ADMIN_TOKEN`             | Protects admin API routes if you enable them.               |
+
+## Routes
+
+| Path                 | Purpose                                              |
+| -------------------- | ---------------------------------------------------- |
+| `/`                  | Today's edition — broadsheet layout                  |
+| `/article/:slug`     | Individual story with source transparency            |
+| `/section/:category` | Stories grouped by section                           |
+| `/editions`          | Archive of past editions                             |
+| `/editions/:date`    | Historical edition rendered in the same layout       |
+| `/search?q=`         | Search headlines, summaries, sources, and tags       |
+| `/settings`          | Personalization, schedule, feeds, and AI config      |
+
+## API routes
+
+Server routes under `src/routes/api/` become Cloudflare Pages Functions in
+production:
+
+| Endpoint              | Description                                     |
+| --------------------- | ----------------------------------------------- |
+| `GET /api/edition/latest` | Returns `public/data/current-edition.json`  |
+| `GET /api/editions`       | Lists archived edition summaries (D1 or static fallback) |
+| `GET /api/editions/:date` | Returns a historical edition (D1 or static fallback)     |
+| `GET /api/articles/:id`   | Looks up a single article from today's edition |
+| `GET /api/search?q=`      | Searches today's articles                       |
+| `GET /api/settings`       | Returns user settings                           |
+
+## Safety and transparency
+
+- Only neutral, rewritten summaries and metadata are displayed. Original URLs
+  are preserved for verification.
+- AI-generated content is labeled in `aiDisclosure` fields.
+- API keys and tokens are never exposed to the browser.
+- Source reliability scores and confidence scores are stored per article.
+
+## License
+
+Proprietary — Botwin's Daily Wire.

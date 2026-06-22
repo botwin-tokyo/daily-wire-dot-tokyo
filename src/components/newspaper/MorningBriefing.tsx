@@ -1,17 +1,41 @@
-import { Globe, BarChart3, HeartPulse, Cpu, Sparkles } from "lucide-react";
+import { Globe, BarChart3, HeartPulse, Cpu, Sparkles, Coins, Landmark, Swords } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { FitText } from "@/components/pretext";
 import type { Edition } from "@/lib/types";
 
-const iconMap = { globe: Globe, chart: BarChart3, health: HeartPulse, tech: Cpu, culture: Sparkles };
+const iconMap = {
+  globe: Globe,
+  chart: BarChart3,
+  health: HeartPulse,
+  tech: Cpu,
+  culture: Sparkles,
+  crypto: Coins,
+  politics: Landmark,
+  war: Swords,
+};
 
 export function MorningBriefing({ edition }: { edition: Edition }) {
   return (
     <section className="panel-tinted" aria-labelledby="morning-briefing">
       <div className="flex items-baseline justify-between border-b border-[var(--rule)] pb-2">
-        <h3 id="morning-briefing" className="eyebrow eyebrow-red" style={{ color: "var(--live-dot)" }}>
-          ◆ Morning Briefing
+        <h3
+          id="morning-briefing"
+          className="eyebrow eyebrow-red"
+          style={{ color: "var(--live-dot)" }}
+        >
+          <FitText
+            text="◆ Morning Briefing"
+            minFontSize={10}
+            maxFontSize={12}
+            maxLines={1}
+            lineHeightRatio={1}
+            fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+            fontWeight={700}
+          />
         </h3>
-        <span className="meta">{edition.readingTimeMin} min · {edition.storiesAnalyzed} stories analyzed</span>
+        <span className="meta">
+          {edition.readingTimeMin} min · {edition.storiesAnalyzed} stories analyzed
+        </span>
       </div>
       <ul className="mt-3 space-y-3">
         {edition.morningBriefing.map((b) => {
@@ -28,8 +52,14 @@ export function MorningBriefing({ edition }: { edition: Edition }) {
         })}
       </ul>
       <div className="mt-4 flex items-center justify-between border-t border-[var(--rule)] pt-3">
-        <Link to="/editions" className="read-more">See full briefing →</Link>
-        <button type="button" className="meta hover:text-[var(--ink)]" aria-label="Listen to briefing (coming soon)">
+        <Link to="/editions" className="read-more">
+          See full briefing →
+        </Link>
+        <button
+          type="button"
+          className="meta hover:text-[var(--ink)]"
+          aria-label="Listen to briefing (coming soon)"
+        >
           ▶ Listen to briefing
         </button>
       </div>

@@ -1,15 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SectionPageContent, CATEGORY_COPY, editionQuery } from "./section.$category";
+import {
+  SectionPageContent,
+  CATEGORY_COPY,
+  editionQuery,
+  getSectionCopy,
+} from "./section.$category";
 
 export const Route = createFileRoute("/business")({
-  head: () => ({
-    meta: [
-      { title: `${CATEGORY_COPY.business.title} — The Morning Wire` },
-      { name: "description", content: CATEGORY_COPY.business.dek },
-      { property: "og:title", content: `${CATEGORY_COPY.business.title} — The Morning Wire` },
-      { property: "og:description", content: CATEGORY_COPY.business.dek },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const copy = getSectionCopy(loaderData, "business") ?? CATEGORY_COPY.business;
+    return {
+      meta: [
+        { title: `${copy.title} — Botwin's Morning Wire` },
+        { name: "description", content: copy.dek },
+        { property: "og:title", content: `${copy.title} — Botwin's Morning Wire` },
+        { property: "og:description", content: copy.dek },
+      ],
+    };
+  },
   loader: ({ context }) => context.queryClient.ensureQueryData(editionQuery),
   component: () => <SectionPageContent category="business" />,
 });

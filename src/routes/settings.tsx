@@ -2,11 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { PageShell } from "@/components/newspaper/PageShell";
+import { FitText } from "@/components/pretext";
 import { getSettings, updateSettings, testFeed, triggerGeneration } from "@/lib/api";
 import type { Settings } from "@/lib/types";
 
 export const Route = createFileRoute("/settings")({
-  head: () => ({ meta: [{ title: "Edition Settings — The Morning Wire" }] }),
+  head: () => ({ meta: [{ title: "Edition Settings — Botwin's Morning Wire" }] }),
   component: SettingsPage,
 });
 
@@ -21,31 +22,67 @@ function SettingsPage() {
   const [feedMsg, setFeedMsg] = useState<Record<string, string>>({});
 
   if (isLoading || !data) {
-    return <PageShell><p className="py-12 meta">Loading settings…</p></PageShell>;
+    return (
+      <PageShell>
+        <p className="py-12 meta">Loading settings…</p>
+      </PageShell>
+    );
   }
 
   const s = data;
   return (
     <PageShell>
       <div className="py-10 max-w-4xl">
-        <p className="eyebrow eyebrow-red">Edition Settings</p>
-        <h1 className="mt-2 font-serif font-black text-[40px] leading-none">Personalize your morning</h1>
+        <p className="eyebrow eyebrow-red">
+          <FitText
+            text="Edition Settings"
+            minFontSize={9}
+            maxFontSize={11}
+            maxLines={1}
+            lineHeightRatio={1}
+            fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+            fontWeight={700}
+          />
+        </p>
+        <h1 className="mt-2 font-serif font-black leading-none">
+          <FitText
+            text="Personalize your morning"
+            minFontSize={32}
+            maxFontSize={56}
+            maxLines={1}
+            lineHeightRatio={1}
+            fontFamily='"Playfair Display", Georgia, serif'
+            fontWeight={900}
+          />
+        </h1>
 
         <Section title="Personalization">
-          <Row label="Preferred categories" value={s.personalization.preferredCategories.join(", ")} />
+          <Row
+            label="Preferred categories"
+            value={s.personalization.preferredCategories.join(", ")}
+          />
           <Row label="Muted topics" value={s.personalization.mutedTopics.join(", ") || "—"} />
           <Row label="Preferred sources" value={s.personalization.preferredSources.join(", ")} />
-          <Row label="Geographic interests" value={s.personalization.geographicInterests.join(", ")} />
+          <Row
+            label="Geographic interests"
+            value={s.personalization.geographicInterests.join(", ")}
+          />
           <Row label="Keyword interests" value={s.personalization.keywordInterests.join(", ")} />
           <Row label="Viewpoint diversity" value={s.personalization.viewpointDiversity} />
-          <Row label="Max stories per edition" value={String(s.personalization.maxStoriesPerEdition)} />
+          <Row
+            label="Max stories per edition"
+            value={String(s.personalization.maxStoriesPerEdition)}
+          />
         </Section>
 
         <Section title="Morning Schedule">
           <Row label="Delivery time" value={s.schedule.deliveryTime + " " + s.schedule.timezone} />
           <Row label="Days" value={s.schedule.days.join(", ").toUpperCase()} />
           <Row label="Generate automatically" value={s.schedule.autoGenerate ? "Yes" : "No"} />
-          <Row label="Regenerate on failure" value={s.schedule.regenerateOnFailure ? "Yes" : "No"} />
+          <Row
+            label="Regenerate on failure"
+            value={s.schedule.regenerateOnFailure ? "Yes" : "No"}
+          />
           <div className="pt-3">
             <button
               onClick={() => generate.mutate()}
@@ -53,19 +90,28 @@ function SettingsPage() {
             >
               {generate.isPending ? "Queuing…" : "Generate new edition"}
             </button>
-            {generate.data && <p className="mt-2 meta">Job queued: <span className="font-mono">{generate.data.jobId}</span></p>}
+            {generate.data && (
+              <p className="mt-2 meta">
+                Job queued: <span className="font-mono">{generate.data.jobId}</span>
+              </p>
+            )}
           </div>
         </Section>
 
         <Section title="AI Configuration">
-          <Row label="Provider" value={`${s.ai.provider} ${s.ai.providerConfigured ? "✓ configured" : "(not configured)"}`} />
+          <Row
+            label="Provider"
+            value={`${s.ai.provider} ${s.ai.providerConfigured ? "✓ configured" : "(not configured)"}`}
+          />
           <Row label="Model" value={s.ai.model} mono />
           <Row label="Summary length" value={s.ai.summaryLength} />
           <Row label="Editorial tone" value={s.ai.tone} />
           <Row label="Include 'Why it matters'" value={s.ai.includeWhyItMatters ? "Yes" : "No"} />
           <Row label="Cross-story analysis" value={s.ai.includeCrossStoryAnalysis ? "Yes" : "No"} />
           <Row label="Source balancing" value={s.ai.sourceBalancing ? "Yes" : "No"} />
-          <p className="meta italic mt-2">API keys are stored server-side and never exposed to the browser.</p>
+          <p className="meta italic mt-2">
+            API keys are stored server-side and never exposed to the browser.
+          </p>
         </Section>
 
         <Section title="Feed Management">
@@ -88,12 +134,23 @@ function SettingsPage() {
                   </td>
                   <td className="px-3 py-2">{f.category}</td>
                   <td className="px-3 py-2">
-                    <span style={{ color: f.health === "healthy" ? "var(--positive)" : f.health === "degraded" ? "var(--accent-gold)" : "var(--negative)" }}>
+                    <span
+                      style={{
+                        color:
+                          f.health === "healthy"
+                            ? "var(--positive)"
+                            : f.health === "degraded"
+                              ? "var(--accent-gold)"
+                              : "var(--negative)",
+                      }}
+                    >
                       ● {f.health}
                     </span>
                     {f.lastError && <div className="meta italic">{f.lastError}</div>}
                   </td>
-                  <td className="px-3 py-2 font-mono text-[12px]">{f.lastSuccessAt ? new Date(f.lastSuccessAt).toLocaleTimeString() : "—"}</td>
+                  <td className="px-3 py-2 font-mono text-[12px]">
+                    {f.lastSuccessAt ? new Date(f.lastSuccessAt).toLocaleTimeString() : "—"}
+                  </td>
                   <td className="px-3 py-2">
                     <button
                       onClick={async () => {
@@ -129,7 +186,17 @@ function SettingsPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-10">
-      <h2 className="font-serif text-[24px] border-b border-[var(--ink)] pb-2">{title}</h2>
+      <h2 className="font-serif border-b border-[var(--ink)] pb-2">
+        <FitText
+          text={title}
+          minFontSize={20}
+          maxFontSize={24}
+          maxLines={1}
+          lineHeightRatio={1}
+          fontFamily='"Playfair Display", Georgia, serif'
+          fontWeight={700}
+        />
+      </h2>
       <div className="mt-4 space-y-2">{children}</div>
     </section>
   );

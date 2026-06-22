@@ -4,10 +4,11 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { PageShell } from "@/components/newspaper/PageShell";
 import { SidebarStory } from "@/components/newspaper/SidebarStory";
+import { FitText } from "@/components/pretext";
 import { searchArticles } from "@/lib/api";
 
 export const Route = createFileRoute("/search")({
-  head: () => ({ meta: [{ title: "Search — The Morning Wire" }] }),
+  head: () => ({ meta: [{ title: "Search — Botwin's Morning Wire" }] }),
   validateSearch: (s: Record<string, unknown>) => ({ q: typeof s.q === "string" ? s.q : "" }),
   component: SearchPage,
 });
@@ -23,9 +24,32 @@ function SearchPage() {
   return (
     <PageShell>
       <div className="py-10">
-        <p className="eyebrow eyebrow-red">Search</p>
-        <h1 className="mt-2 font-serif font-black text-[40px] leading-none">Search the archive</h1>
-        <form onSubmit={(e) => e.preventDefault()} className="mt-6 flex items-center gap-3 border-b border-[var(--ink)] py-2">
+        <p className="eyebrow eyebrow-red">
+          <FitText
+            text="Search"
+            minFontSize={9}
+            maxFontSize={11}
+            maxLines={1}
+            lineHeightRatio={1}
+            fontFamily='"Source Sans 3", system-ui, Arial, sans-serif'
+            fontWeight={700}
+          />
+        </p>
+        <h1 className="mt-2 font-serif font-black leading-none">
+          <FitText
+            text="Search the archive"
+            minFontSize={32}
+            maxFontSize={56}
+            maxLines={1}
+            lineHeightRatio={1}
+            fontFamily='"Playfair Display", Georgia, serif'
+            fontWeight={900}
+          />
+        </h1>
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="mt-6 flex items-center gap-3 border-b border-[var(--ink)] py-2"
+        >
           <Search className="h-4 w-4 text-[var(--ink-mid)]" />
           <input
             autoFocus
@@ -43,7 +67,11 @@ function SearchPage() {
           )}
           {data && data.length > 0 && (
             <ul className="border-t border-[var(--rule)]">
-              {data.map((a) => <li key={a.id}><SidebarStory article={a} /></li>)}
+              {data.map((a) => (
+                <li key={a.id}>
+                  <SidebarStory article={a} />
+                </li>
+              ))}
             </ul>
           )}
         </div>

@@ -10,22 +10,48 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorldRouteImport } from './routes/world'
+import { Route as WeatherRouteImport } from './routes/weather'
+import { Route as WarRouteImport } from './routes/war'
 import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ScienceRouteImport } from './routes/science'
-import { Route as SavedRouteImport } from './routes/saved'
+import { Route as PretextDemoRouteImport } from './routes/pretext-demo'
+import { Route as PoliticsRouteImport } from './routes/politics'
 import { Route as EditionsRouteImport } from './routes/editions'
 import { Route as CultureRouteImport } from './routes/culture'
+import { Route as CryptoRouteImport } from './routes/crypto'
 import { Route as BusinessRouteImport } from './routes/business'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectionCategoryRouteImport } from './routes/section.$category'
 import { Route as EditionsDateRouteImport } from './routes/editions.$date'
 import { Route as ArticleSlugRouteImport } from './routes/article.$slug'
+import { Route as ApiWorldMarketsTickerRouteImport } from './routes/api/world-markets-ticker'
+import { Route as ApiStockTickerRouteImport } from './routes/api/stock-ticker'
+import { Route as ApiSettingsRouteImport } from './routes/api/settings'
+import { Route as ApiSearchRouteImport } from './routes/api/search'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as ApiEditionsRouteImport } from './routes/api/editions'
+import { Route as ApiCryptoTickerRouteImport } from './routes/api/crypto-ticker'
+import { Route as ApiEditionsDateRouteImport } from './routes/api/editions/$date'
+import { Route as ApiEditionLatestRouteImport } from './routes/api/edition/latest'
+import { Route as ApiArticlesIdRouteImport } from './routes/api/articles/$id'
+import { Route as ApiAdminRollbackRouteImport } from './routes/api/admin/rollback'
+import { Route as ApiAdminGenerateRouteImport } from './routes/api/admin/generate'
 
 const WorldRoute = WorldRouteImport.update({
   id: '/world',
   path: '/world',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeatherRoute = WeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WarRoute = WarRouteImport.update({
+  id: '/war',
+  path: '/war',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TechnologyRoute = TechnologyRouteImport.update({
@@ -48,9 +74,14 @@ const ScienceRoute = ScienceRouteImport.update({
   path: '/science',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SavedRoute = SavedRouteImport.update({
-  id: '/saved',
-  path: '/saved',
+const PretextDemoRoute = PretextDemoRouteImport.update({
+  id: '/pretext-demo',
+  path: '/pretext-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticsRoute = PoliticsRouteImport.update({
+  id: '/politics',
+  path: '/politics',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EditionsRoute = EditionsRouteImport.update({
@@ -61,6 +92,11 @@ const EditionsRoute = EditionsRouteImport.update({
 const CultureRoute = CultureRouteImport.update({
   id: '/culture',
   path: '/culture',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CryptoRoute = CryptoRouteImport.update({
+  id: '/crypto',
+  path: '/crypto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessRoute = BusinessRouteImport.update({
@@ -88,114 +124,285 @@ const ArticleSlugRoute = ArticleSlugRouteImport.update({
   path: '/article/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiWorldMarketsTickerRoute = ApiWorldMarketsTickerRouteImport.update({
+  id: '/api/world-markets-ticker',
+  path: '/api/world-markets-ticker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStockTickerRoute = ApiStockTickerRouteImport.update({
+  id: '/api/stock-ticker',
+  path: '/api/stock-ticker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSettingsRoute = ApiSettingsRouteImport.update({
+  id: '/api/settings',
+  path: '/api/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSearchRoute = ApiSearchRouteImport.update({
+  id: '/api/search',
+  path: '/api/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiEditionsRoute = ApiEditionsRouteImport.update({
+  id: '/api/editions',
+  path: '/api/editions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCryptoTickerRoute = ApiCryptoTickerRouteImport.update({
+  id: '/api/crypto-ticker',
+  path: '/api/crypto-ticker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiEditionsDateRoute = ApiEditionsDateRouteImport.update({
+  id: '/$date',
+  path: '/$date',
+  getParentRoute: () => ApiEditionsRoute,
+} as any)
+const ApiEditionLatestRoute = ApiEditionLatestRouteImport.update({
+  id: '/api/edition/latest',
+  path: '/api/edition/latest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiArticlesIdRoute = ApiArticlesIdRouteImport.update({
+  id: '/api/articles/$id',
+  path: '/api/articles/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminRollbackRoute = ApiAdminRollbackRouteImport.update({
+  id: '/api/admin/rollback',
+  path: '/api/admin/rollback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminGenerateRoute = ApiAdminGenerateRouteImport.update({
+  id: '/api/admin/generate',
+  path: '/api/admin/generate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/business': typeof BusinessRoute
+  '/crypto': typeof CryptoRoute
   '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
-  '/saved': typeof SavedRoute
+  '/politics': typeof PoliticsRoute
+  '/pretext-demo': typeof PretextDemoRoute
   '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
+  '/war': typeof WarRoute
+  '/weather': typeof WeatherRoute
   '/world': typeof WorldRoute
+  '/api/crypto-ticker': typeof ApiCryptoTickerRoute
+  '/api/editions': typeof ApiEditionsRouteWithChildren
+  '/api/health': typeof ApiHealthRoute
+  '/api/search': typeof ApiSearchRoute
+  '/api/settings': typeof ApiSettingsRoute
+  '/api/stock-ticker': typeof ApiStockTickerRoute
+  '/api/world-markets-ticker': typeof ApiWorldMarketsTickerRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
+  '/api/admin/generate': typeof ApiAdminGenerateRoute
+  '/api/admin/rollback': typeof ApiAdminRollbackRoute
+  '/api/articles/$id': typeof ApiArticlesIdRoute
+  '/api/edition/latest': typeof ApiEditionLatestRoute
+  '/api/editions/$date': typeof ApiEditionsDateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/business': typeof BusinessRoute
+  '/crypto': typeof CryptoRoute
   '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
-  '/saved': typeof SavedRoute
+  '/politics': typeof PoliticsRoute
+  '/pretext-demo': typeof PretextDemoRoute
   '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
+  '/war': typeof WarRoute
+  '/weather': typeof WeatherRoute
   '/world': typeof WorldRoute
+  '/api/crypto-ticker': typeof ApiCryptoTickerRoute
+  '/api/editions': typeof ApiEditionsRouteWithChildren
+  '/api/health': typeof ApiHealthRoute
+  '/api/search': typeof ApiSearchRoute
+  '/api/settings': typeof ApiSettingsRoute
+  '/api/stock-ticker': typeof ApiStockTickerRoute
+  '/api/world-markets-ticker': typeof ApiWorldMarketsTickerRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
+  '/api/admin/generate': typeof ApiAdminGenerateRoute
+  '/api/admin/rollback': typeof ApiAdminRollbackRoute
+  '/api/articles/$id': typeof ApiArticlesIdRoute
+  '/api/edition/latest': typeof ApiEditionLatestRoute
+  '/api/editions/$date': typeof ApiEditionsDateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/business': typeof BusinessRoute
+  '/crypto': typeof CryptoRoute
   '/culture': typeof CultureRoute
   '/editions': typeof EditionsRouteWithChildren
-  '/saved': typeof SavedRoute
+  '/politics': typeof PoliticsRoute
+  '/pretext-demo': typeof PretextDemoRoute
   '/science': typeof ScienceRoute
   '/search': typeof SearchRoute
   '/settings': typeof SettingsRoute
   '/technology': typeof TechnologyRoute
+  '/war': typeof WarRoute
+  '/weather': typeof WeatherRoute
   '/world': typeof WorldRoute
+  '/api/crypto-ticker': typeof ApiCryptoTickerRoute
+  '/api/editions': typeof ApiEditionsRouteWithChildren
+  '/api/health': typeof ApiHealthRoute
+  '/api/search': typeof ApiSearchRoute
+  '/api/settings': typeof ApiSettingsRoute
+  '/api/stock-ticker': typeof ApiStockTickerRoute
+  '/api/world-markets-ticker': typeof ApiWorldMarketsTickerRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editions/$date': typeof EditionsDateRoute
   '/section/$category': typeof SectionCategoryRoute
+  '/api/admin/generate': typeof ApiAdminGenerateRoute
+  '/api/admin/rollback': typeof ApiAdminRollbackRoute
+  '/api/articles/$id': typeof ApiArticlesIdRoute
+  '/api/edition/latest': typeof ApiEditionLatestRoute
+  '/api/editions/$date': typeof ApiEditionsDateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/business'
+    | '/crypto'
     | '/culture'
     | '/editions'
-    | '/saved'
+    | '/politics'
+    | '/pretext-demo'
     | '/science'
     | '/search'
     | '/settings'
     | '/technology'
+    | '/war'
+    | '/weather'
     | '/world'
+    | '/api/crypto-ticker'
+    | '/api/editions'
+    | '/api/health'
+    | '/api/search'
+    | '/api/settings'
+    | '/api/stock-ticker'
+    | '/api/world-markets-ticker'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
+    | '/api/admin/generate'
+    | '/api/admin/rollback'
+    | '/api/articles/$id'
+    | '/api/edition/latest'
+    | '/api/editions/$date'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/business'
+    | '/crypto'
     | '/culture'
     | '/editions'
-    | '/saved'
+    | '/politics'
+    | '/pretext-demo'
     | '/science'
     | '/search'
     | '/settings'
     | '/technology'
+    | '/war'
+    | '/weather'
     | '/world'
+    | '/api/crypto-ticker'
+    | '/api/editions'
+    | '/api/health'
+    | '/api/search'
+    | '/api/settings'
+    | '/api/stock-ticker'
+    | '/api/world-markets-ticker'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
+    | '/api/admin/generate'
+    | '/api/admin/rollback'
+    | '/api/articles/$id'
+    | '/api/edition/latest'
+    | '/api/editions/$date'
   id:
     | '__root__'
     | '/'
     | '/business'
+    | '/crypto'
     | '/culture'
     | '/editions'
-    | '/saved'
+    | '/politics'
+    | '/pretext-demo'
     | '/science'
     | '/search'
     | '/settings'
     | '/technology'
+    | '/war'
+    | '/weather'
     | '/world'
+    | '/api/crypto-ticker'
+    | '/api/editions'
+    | '/api/health'
+    | '/api/search'
+    | '/api/settings'
+    | '/api/stock-ticker'
+    | '/api/world-markets-ticker'
     | '/article/$slug'
     | '/editions/$date'
     | '/section/$category'
+    | '/api/admin/generate'
+    | '/api/admin/rollback'
+    | '/api/articles/$id'
+    | '/api/edition/latest'
+    | '/api/editions/$date'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BusinessRoute: typeof BusinessRoute
+  CryptoRoute: typeof CryptoRoute
   CultureRoute: typeof CultureRoute
   EditionsRoute: typeof EditionsRouteWithChildren
-  SavedRoute: typeof SavedRoute
+  PoliticsRoute: typeof PoliticsRoute
+  PretextDemoRoute: typeof PretextDemoRoute
   ScienceRoute: typeof ScienceRoute
   SearchRoute: typeof SearchRoute
   SettingsRoute: typeof SettingsRoute
   TechnologyRoute: typeof TechnologyRoute
+  WarRoute: typeof WarRoute
+  WeatherRoute: typeof WeatherRoute
   WorldRoute: typeof WorldRoute
+  ApiCryptoTickerRoute: typeof ApiCryptoTickerRoute
+  ApiEditionsRoute: typeof ApiEditionsRouteWithChildren
+  ApiHealthRoute: typeof ApiHealthRoute
+  ApiSearchRoute: typeof ApiSearchRoute
+  ApiSettingsRoute: typeof ApiSettingsRoute
+  ApiStockTickerRoute: typeof ApiStockTickerRoute
+  ApiWorldMarketsTickerRoute: typeof ApiWorldMarketsTickerRoute
   ArticleSlugRoute: typeof ArticleSlugRoute
   SectionCategoryRoute: typeof SectionCategoryRoute
+  ApiAdminGenerateRoute: typeof ApiAdminGenerateRoute
+  ApiAdminRollbackRoute: typeof ApiAdminRollbackRoute
+  ApiArticlesIdRoute: typeof ApiArticlesIdRoute
+  ApiEditionLatestRoute: typeof ApiEditionLatestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -205,6 +412,20 @@ declare module '@tanstack/react-router' {
       path: '/world'
       fullPath: '/world'
       preLoaderRoute: typeof WorldRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weather': {
+      id: '/weather'
+      path: '/weather'
+      fullPath: '/weather'
+      preLoaderRoute: typeof WeatherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/war': {
+      id: '/war'
+      path: '/war'
+      fullPath: '/war'
+      preLoaderRoute: typeof WarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/technology': {
@@ -235,11 +456,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScienceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/saved': {
-      id: '/saved'
-      path: '/saved'
-      fullPath: '/saved'
-      preLoaderRoute: typeof SavedRouteImport
+    '/pretext-demo': {
+      id: '/pretext-demo'
+      path: '/pretext-demo'
+      fullPath: '/pretext-demo'
+      preLoaderRoute: typeof PretextDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politics': {
+      id: '/politics'
+      path: '/politics'
+      fullPath: '/politics'
+      preLoaderRoute: typeof PoliticsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/editions': {
@@ -254,6 +482,13 @@ declare module '@tanstack/react-router' {
       path: '/culture'
       fullPath: '/culture'
       preLoaderRoute: typeof CultureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crypto': {
+      id: '/crypto'
+      path: '/crypto'
+      fullPath: '/crypto'
+      preLoaderRoute: typeof CryptoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/business': {
@@ -291,6 +526,90 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/world-markets-ticker': {
+      id: '/api/world-markets-ticker'
+      path: '/api/world-markets-ticker'
+      fullPath: '/api/world-markets-ticker'
+      preLoaderRoute: typeof ApiWorldMarketsTickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stock-ticker': {
+      id: '/api/stock-ticker'
+      path: '/api/stock-ticker'
+      fullPath: '/api/stock-ticker'
+      preLoaderRoute: typeof ApiStockTickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/settings': {
+      id: '/api/settings'
+      path: '/api/settings'
+      fullPath: '/api/settings'
+      preLoaderRoute: typeof ApiSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/search': {
+      id: '/api/search'
+      path: '/api/search'
+      fullPath: '/api/search'
+      preLoaderRoute: typeof ApiSearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/editions': {
+      id: '/api/editions'
+      path: '/api/editions'
+      fullPath: '/api/editions'
+      preLoaderRoute: typeof ApiEditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/crypto-ticker': {
+      id: '/api/crypto-ticker'
+      path: '/api/crypto-ticker'
+      fullPath: '/api/crypto-ticker'
+      preLoaderRoute: typeof ApiCryptoTickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/editions/$date': {
+      id: '/api/editions/$date'
+      path: '/$date'
+      fullPath: '/api/editions/$date'
+      preLoaderRoute: typeof ApiEditionsDateRouteImport
+      parentRoute: typeof ApiEditionsRoute
+    }
+    '/api/edition/latest': {
+      id: '/api/edition/latest'
+      path: '/api/edition/latest'
+      fullPath: '/api/edition/latest'
+      preLoaderRoute: typeof ApiEditionLatestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/articles/$id': {
+      id: '/api/articles/$id'
+      path: '/api/articles/$id'
+      fullPath: '/api/articles/$id'
+      preLoaderRoute: typeof ApiArticlesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/rollback': {
+      id: '/api/admin/rollback'
+      path: '/api/admin/rollback'
+      fullPath: '/api/admin/rollback'
+      preLoaderRoute: typeof ApiAdminRollbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/generate': {
+      id: '/api/admin/generate'
+      path: '/api/admin/generate'
+      fullPath: '/api/admin/generate'
+      preLoaderRoute: typeof ApiAdminGenerateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -306,20 +625,57 @@ const EditionsRouteWithChildren = EditionsRoute._addFileChildren(
   EditionsRouteChildren,
 )
 
+interface ApiEditionsRouteChildren {
+  ApiEditionsDateRoute: typeof ApiEditionsDateRoute
+}
+
+const ApiEditionsRouteChildren: ApiEditionsRouteChildren = {
+  ApiEditionsDateRoute: ApiEditionsDateRoute,
+}
+
+const ApiEditionsRouteWithChildren = ApiEditionsRoute._addFileChildren(
+  ApiEditionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BusinessRoute: BusinessRoute,
+  CryptoRoute: CryptoRoute,
   CultureRoute: CultureRoute,
   EditionsRoute: EditionsRouteWithChildren,
-  SavedRoute: SavedRoute,
+  PoliticsRoute: PoliticsRoute,
+  PretextDemoRoute: PretextDemoRoute,
   ScienceRoute: ScienceRoute,
   SearchRoute: SearchRoute,
   SettingsRoute: SettingsRoute,
   TechnologyRoute: TechnologyRoute,
+  WarRoute: WarRoute,
+  WeatherRoute: WeatherRoute,
   WorldRoute: WorldRoute,
+  ApiCryptoTickerRoute: ApiCryptoTickerRoute,
+  ApiEditionsRoute: ApiEditionsRouteWithChildren,
+  ApiHealthRoute: ApiHealthRoute,
+  ApiSearchRoute: ApiSearchRoute,
+  ApiSettingsRoute: ApiSettingsRoute,
+  ApiStockTickerRoute: ApiStockTickerRoute,
+  ApiWorldMarketsTickerRoute: ApiWorldMarketsTickerRoute,
   ArticleSlugRoute: ArticleSlugRoute,
   SectionCategoryRoute: SectionCategoryRoute,
+  ApiAdminGenerateRoute: ApiAdminGenerateRoute,
+  ApiAdminRollbackRoute: ApiAdminRollbackRoute,
+  ApiArticlesIdRoute: ApiArticlesIdRoute,
+  ApiEditionLatestRoute: ApiEditionLatestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -1,29 +1,45 @@
 /**
  * API client layer.
  *
- * All UI calls go through these functions. The default implementation
- * returns mock data so the app is fully functional offline. Replace the
- * bodies with `fetch("/api/...")` calls once the Cloudflare Pages
- * Functions backend is wired up — the signatures are stable.
- *
- * See README.md for the backend contract and migration path.
+ * All UI calls go through these functions. In the current implementation the
+ * edition data is read from public/data/current-edition.json and adapted to
+ * the legacy Edition shape. Once Cloudflare Pages Functions are wired in, the
+ * bodies can be replaced with fetch("/api/...") calls without changing the
+ * function signatures.
  */
+import { MOCK_EDITION, MOCK_EDITION_SUMMARIES, MOCK_SETTINGS } from "./mock-edition";
 import {
-  MOCK_EDITION,
-  MOCK_EDITION_SUMMARIES,
-  MOCK_SETTINGS,
-} from "./mock-edition";
+  loadCurrentEdition,
+  loadEditionByDate,
+  loadEditionSummaries,
+  newspaperEditionToEdition,
+  adaptArticle,
+} from "./edition-loader";
+import { queryOptions } from "@tanstack/react-query";
 import type {
   Article,
   Edition,
   EditionSummary,
   Feed,
   Settings,
+  NewspaperEdition,
+  NewspaperArticle,
 } from "./types";
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-const SAVED_KEY = "tmw.saved";
+function isServer(): boolean {
+  return typeof window === "undefined";
+}
+
+async function fetchJson<T>(path: string): Promise<T> {
+  const response = await fetch(path);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${path}: ${response.status} ${response.statusText}`);
+  }
+  return response.json() as Promise<T>;
+}
+
 const READ_KEY = "tmw.read";
 
 function readSet(key: string): Set<string> {
@@ -39,57 +55,146 @@ function writeSet(key: string, set: Set<string>) {
   localStorage.setItem(key, JSON.stringify([...set]));
 }
 
+async function loadEdition(): Promise<Edition> {
+  try {
+    const newspaper = isServer()
+      ? await loadCurrentEdition()
+      : await fetchJson<NewspaperEdition>("/api/edition/latest");
+    return newspaperEditionToEdition(newspaper);
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn("Failed to load current edition from JSON, falling back to mock:", error);
+      return MOCK_EDITION;
+    }
+    throw error;
+  }
+}
+
 export async function getLatestEdition(): Promise<Edition> {
   await wait(120);
-  return MOCK_EDITION;
+  return loadEdition();
 }
+
+export async function getLatestNewspaperEdition(): Promise<NewspaperEdition> {
+  try {
+    return isServer()
+      ? await loadCurrentEdition()
+      : await fetchJson<NewspaperEdition>("/api/edition/latest");
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn("Failed to load current newspaper edition, falling back to mock source:", error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return MOCK_EDITION as any;
+    }
+    throw error;
+  }
+}
+
+export const newspaperEditionQuery = queryOptions({
+  queryKey: ["edition", "newspaper", "latest"],
+  queryFn: () => getLatestNewspaperEdition(),
+  staleTime: 60_000,
+});
 
 export async function getEditionByDate(date: string): Promise<Edition> {
   await wait(120);
-  // Mock: always return the same edition with a different date label.
-  return { ...MOCK_EDITION, editionDate: date };
+  try {
+    const newspaper = isServer()
+      ? await loadEditionByDate(date)
+      : await fetchJson<NewspaperEdition>(`/api/editions/${date}`);
+    return newspaperEditionToEdition(newspaper);
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn(`Failed to load edition ${date}, falling back to mock:`, error);
+      return { ...MOCK_EDITION, editionDate: date };
+    }
+    throw error;
+  }
+}
+
+export async function getEditionByDateNewspaper(date: string): Promise<NewspaperEdition> {
+  try {
+    return isServer()
+      ? await loadEditionByDate(date)
+      : await fetchJson<NewspaperEdition>(`/api/editions/${date}`);
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn(`Failed to load newspaper edition ${date}, falling back to mock source:`, error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return { ...MOCK_EDITION, editionDate: date } as any;
+    }
+    throw error;
+  }
 }
 
 export async function listEditions(): Promise<EditionSummary[]> {
   await wait(80);
-  return MOCK_EDITION_SUMMARIES;
+  try {
+    // Client always hits the D1-backed API route. Server falls back to the
+    // static index file so SSR still works when D1 is not bound (local dev).
+    return isServer()
+      ? await loadEditionSummaries()
+      : await fetchJson<EditionSummary[]>("/api/editions");
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn("Failed to load edition index, falling back to mock:", error);
+      return MOCK_EDITION_SUMMARIES;
+    }
+    throw error;
+  }
 }
 
 export async function getArticle(slugOrId: string): Promise<Article | undefined> {
   await wait(60);
-  return MOCK_EDITION.articles.find(
-    (a) => a.slug === slugOrId || a.id === slugOrId,
-  );
+  if (isServer()) {
+    const edition = await loadEdition();
+    return edition.articles.find((a) => a.slug === slugOrId || a.id === slugOrId);
+  }
+  try {
+    const response = await fetch(`/api/articles/${encodeURIComponent(slugOrId)}`);
+    if (response.status === 404) return undefined;
+    if (!response.ok) throw new Error(`Failed to fetch article: ${response.status}`);
+    const article = (await response.json()) as NewspaperArticle;
+    return adaptArticle(article);
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn("Failed to fetch article from API, falling back to local loader:", error);
+      const edition = await loadEdition();
+      return edition.articles.find((a) => a.slug === slugOrId || a.id === slugOrId);
+    }
+    throw error;
+  }
 }
 
 export async function searchArticles(query: string): Promise<Article[]> {
   await wait(80);
   const q = query.trim().toLowerCase();
   if (!q) return [];
-  return MOCK_EDITION.articles.filter((a) =>
-    [a.headline, a.summary, a.source.name, a.category, ...a.tags]
-      .join(" ")
-      .toLowerCase()
-      .includes(q),
-  );
-}
-
-export async function getSavedArticles(): Promise<Article[]> {
-  await wait(40);
-  const ids = readSet(SAVED_KEY);
-  return MOCK_EDITION.articles.filter((a) => ids.has(a.id));
-}
-
-export async function toggleSaved(articleId: string): Promise<boolean> {
-  const set = readSet(SAVED_KEY);
-  if (set.has(articleId)) set.delete(articleId);
-  else set.add(articleId);
-  writeSet(SAVED_KEY, set);
-  return set.has(articleId);
-}
-
-export function isSaved(articleId: string): boolean {
-  return readSet(SAVED_KEY).has(articleId);
+  if (isServer()) {
+    const edition = await loadEdition();
+    return edition.articles.filter((a) =>
+      [a.headline, a.summary, a.source.name, a.category, ...a.tags]
+        .join(" ")
+        .toLowerCase()
+        .includes(q),
+    );
+  }
+  try {
+    const results = await fetchJson<NewspaperArticle[]>(`/api/search?q=${encodeURIComponent(q)}`);
+    return results.map(adaptArticle);
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn("Failed to fetch search from API, falling back to local loader:", error);
+      const edition = await loadEdition();
+      return edition.articles.filter((a) =>
+        [a.headline, a.summary, a.source.name, a.category, ...a.tags]
+          .join(" ")
+          .toLowerCase()
+          .includes(q),
+      );
+    }
+    throw error;
+  }
 }
 
 export async function markRead(articleId: string): Promise<void> {
@@ -100,11 +205,39 @@ export async function markRead(articleId: string): Promise<void> {
 
 export async function getSettings(): Promise<Settings> {
   await wait(40);
-  return MOCK_SETTINGS;
+  if (isServer()) {
+    return MOCK_SETTINGS;
+  }
+  try {
+    return await fetchJson<Settings>("/api/settings");
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn("Failed to fetch settings from API, falling back to mock:", error);
+      return MOCK_SETTINGS;
+    }
+    throw error;
+  }
 }
 
 export async function updateSettings(next: Settings): Promise<Settings> {
   await wait(80);
+  if (typeof window !== "undefined") {
+    try {
+      const response = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(next),
+      });
+      if (!response.ok) throw new Error(`Failed to update settings: ${response.status}`);
+      return next;
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.warn("Failed to update settings via API, falling back to mock:", error);
+      } else {
+        throw error;
+      }
+    }
+  }
   Object.assign(MOCK_SETTINGS, next);
   return MOCK_SETTINGS;
 }
@@ -118,7 +251,13 @@ export async function testFeed(id: string): Promise<{ ok: boolean; message: stri
   await wait(400);
   const feed = MOCK_SETTINGS.feeds.find((f) => f.id === id);
   if (!feed) return { ok: false, message: "Feed not found" };
-  return { ok: feed.health !== "down", message: feed.health === "down" ? feed.lastError ?? "Feed unreachable" : "Feed reachable; 12 items parsed." };
+  return {
+    ok: feed.health !== "down",
+    message:
+      feed.health === "down"
+        ? (feed.lastError ?? "Feed unreachable")
+        : "Feed reachable; 12 items parsed.",
+  };
 }
 
 export async function triggerGeneration(): Promise<{ jobId: string }> {
