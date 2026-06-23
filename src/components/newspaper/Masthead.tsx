@@ -10,7 +10,7 @@ export function Masthead({ data }: { data: NewspaperMasthead }) {
           <img
             src="/logos/logob-Photoroom.png"
             alt=""
-            className="h-10 w-auto sm:h-14 md:h-16 shrink-0"
+            className="h-14 w-auto sm:h-20 md:h-24 shrink-0"
           />
           <Link to="/" className="block min-w-0 flex-1">
             <h1 className="font-serif font-black text-[var(--ink)]" style={{ lineHeight: 1 }}>
@@ -28,7 +28,7 @@ export function Masthead({ data }: { data: NewspaperMasthead }) {
           <img
             src="/logos/logor-Photoroom.png"
             alt=""
-            className="h-10 w-auto sm:h-14 md:h-16 shrink-0"
+            className="h-14 w-auto sm:h-20 md:h-24 shrink-0"
           />
         </div>
         <div className="mt-3 flex items-center justify-center gap-4">
