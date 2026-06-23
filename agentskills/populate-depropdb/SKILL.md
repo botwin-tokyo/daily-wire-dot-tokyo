@@ -51,7 +51,8 @@ npx tsx agentskills/populate-depropdb/populate-depropdb.ts path/to/other-daily.m
 
 ## Expected daily.md format
 
-The script expects the same format the `rewrite-articles` skill writes:
+The script expects the same format the `rewrite-articles` skill writes, with one
+important rule: **category headings must be lowercase**.
 
 ```markdown
 # Botwin's Daily Wire — Neutral Brief
@@ -60,7 +61,7 @@ Generated: 2026-06-21
 
 ---
 
-## World
+## world
 
 ### [Neutral rewritten headline]
 
@@ -71,7 +72,7 @@ Neutral rewritten article body.
 
 ---
 
-## Politics
+## politics
 
 ### [Neutral rewritten headline]
 
@@ -80,6 +81,10 @@ Neutral rewritten article body.
 
 Neutral rewritten article body.
 ```
+
+Use the category exactly as it appears in `news.db`, lowercased (e.g. `world`,
+`politics`, `technology`, `business`, `science`, `culture`). Do not use title
+-case such as `World` or `Politics`; the parser stores the heading verbatim.
 
 ## Idempotency
 
@@ -99,7 +104,7 @@ Inserted: 42
 ## Troubleshooting
 
 - **"No articles found"**: The markdown headings do not match the expected
-  format. Make sure categories are `## Heading` and article titles are
+  format. Make sure categories are lowercase `## heading` and article titles are
   `### Heading`.
 - **Validation error**: An article is missing a title, URL, or body. Review the
   file and re-run.
