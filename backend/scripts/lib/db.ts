@@ -22,6 +22,7 @@ export interface ArticleInput {
   author?: string;
   language?: string;
   fetchedAt: string;
+  importance?: number;
 }
 
 export interface ArticleRow extends ArticleInput {
@@ -128,8 +129,8 @@ export function insertArticles(
 ): { inserted: number; duplicates: number } {
   const stmt = db.prepare(`
     INSERT OR IGNORE INTO articles
-      (runId, source, category, title, url, summary, content, publishedAt, imageUrl, author, language, fetchedAt)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (runId, source, category, title, url, summary, content, publishedAt, imageUrl, author, language, fetchedAt, importance)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   let attempted = 0;
@@ -151,6 +152,7 @@ export function insertArticles(
       article.author ?? null,
       article.language ?? null,
       article.fetchedAt,
+      article.importance ?? null,
     );
     const changeRow = changesStmt.get() as { c: number };
     inserted += changeRow.c;

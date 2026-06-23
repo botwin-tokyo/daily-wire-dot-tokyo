@@ -66,7 +66,9 @@ Generated: 2026-06-21
 ### [Neutral rewritten headline]
 
 **Source:** original-source-name  
-**Original:** [original article URL]
+**Original:** [original article URL]  
+**Importance:** 8/10  
+**Topics:** diplomacy, sanctions, russia
 
 Neutral rewritten article body.
 
@@ -77,7 +79,9 @@ Neutral rewritten article body.
 ### [Neutral rewritten headline]
 
 **Source:** original-source-name  
-**Original:** [original article URL]
+**Original:** [original article URL]  
+**Importance:** 6/10  
+**Topics:** congress, budget
 
 Neutral rewritten article body.
 ```

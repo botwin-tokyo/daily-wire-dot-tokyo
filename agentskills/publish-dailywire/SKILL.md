@@ -21,7 +21,7 @@ Generate the site's edition JSON from the neutralized articles in
 ## Prerequisites
 
 - Working directory is the repository root.
-- `backend/db/deprop.db` contains rewritten articles from the last 24 hours.
+- `backend/db/deprop.db` contains rewritten articles from the latest populate run.
 - `backend/db/deprop.db` will be created from the template if missing, but it
   will be empty until populated.
 
@@ -33,10 +33,10 @@ npx tsx agentskills/publish-dailywire/publish-dailywire.ts
 
 ## What the script does
 
-1. Reads every article in `deprop.db` from the last 24 hours.
+1. Reads every article in `deprop.db` from the latest populate run, sorted by
+   `importance` descending.
 2. Builds valid `Article`, `Section`, and `Navigation` objects.
-3. Picks a lead story (preferring `world`, then `technology`, then the first
-   article).
+3. Picks the highest-importance article as the lead story.
 4. Runs the edition through `validateNewspaperEdition` and
    `validateBusinessRules`.
 5. Writes:
