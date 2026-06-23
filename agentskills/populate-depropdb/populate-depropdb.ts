@@ -44,7 +44,7 @@ function parseDailyMarkdown(text: string): ParsedArticle[] {
 
     const categoryMatch = line.match(/^##\s+(.+)$/);
     if (categoryMatch) {
-      currentCategory = categoryMatch[1].trim();
+      currentCategory = categoryMatch[1].trim().toLowerCase();
       i++;
       continue;
     }
