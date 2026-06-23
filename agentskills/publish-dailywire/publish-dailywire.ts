@@ -179,6 +179,7 @@ interface DepropRow {
   author: string | null;
   language: string | null;
   fetchedAt: string;
+  importance: number;
 }
 
 function slugify(title: string): string {
@@ -325,25 +326,33 @@ function assignDisplayPositions(articles: Article[]): void {
   if (articles.length === 0) return;
   articles[0]!.displayPosition = "lead";
   articles[0]!.editorialProminence = 1;
-  let majorCount = 0;
-  for (let i = 1; i < articles.length && majorCount < 2; i++) {
-    if (articles[i]!.image) {
-      articles[i]!.displayPosition = "major";
-      articles[i]!.editorialProminence = 0.7;
-      majorCount++;
+  for (let i = 1; i < articles.length; i++) {
+    const article = articles[i]!;
+    if (article.image) {
+      article.displayPosition = "major";
     }
+    article.editorialProminence = Math.min(1, Math.max(0, article.importance / 10));
   }
 }
 
+function getLatestRunId(db: DatabaseSync): number {
+  const stmt = db.prepare("SELECT id FROM runs ORDER BY startedAt DESC LIMIT 1");
+  const row = stmt.get() as { id: number } | undefined;
+  if (!row) {
+    throw new Error("No runs found in deprop.db. Run populate-depropdb first.");
+  }
+  return row.id;
+}
+
 function getArticlesFromDeprop(db: DatabaseSync): DepropRow[] {
+  const runId = getLatestRunId(db);
   const stmt = db.prepare(`
     SELECT *
     FROM articles
-    WHERE datetime(publishedAt) > datetime('now', '-1 day')
-       OR datetime(fetchedAt) > datetime('now', '-1 day')
-    ORDER BY publishedAt DESC, fetchedAt DESC
+    WHERE runId = ?
+    ORDER BY importance DESC, datetime(COALESCE(publishedAt, fetchedAt)) DESC
   `);
-  return stmt.all() as DepropRow[];
+  return stmt.all(runId) as DepropRow[];
 }
 
 async function main(): Promise<void> {
@@ -356,22 +365,15 @@ async function main(): Promise<void> {
 
   const rows = getArticlesFromDeprop(db);
   if (rows.length === 0) {
-    console.error("No rewritten articles from the last 24 hours found in deprop.db.");
+    console.error("No rewritten articles from the latest populate run found in deprop.db.");
     console.error("Run the rewrite-articles and populate-depropdb skills first.");
     process.exit(1);
   }
 
   const articles: Article[] = rows.map((row, index) => buildArticle(row, index));
 
-  const leadIndex =
-    articles.findIndex((a) => a.category === "world") !== -1
-      ? articles.findIndex((a) => a.category === "world")
-      : articles.findIndex((a) => a.category === "technology") !== -1
-        ? articles.findIndex((a) => a.category === "technology")
-        : 0;
-
-  const [lead] = articles.splice(leadIndex, 1);
-  articles.unshift(lead);
+  // Rows are already sorted by importance descending. The first article is the lead.
+  const [lead] = articles;
   assignDisplayPositions(articles);
 
   const sections: Section[] = CATEGORIES.filter((cat) =>

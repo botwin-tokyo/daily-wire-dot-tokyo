@@ -1,153 +1,93 @@
 ---
 name: rewrite-articles
-description: Feed the last 24 hours of aggregated news to the agent, instruct it to rewrite each article as neutral, propaganda-free copy, and save the result to drafts/daily.md.
+description: Deploy 5.4-mini codex subagents to rewrite the chunk files in drafts/rewrite_chunks/ and write the results to drafts/rewrite_outputs/.
 license: Proprietary
 metadata:
   author: Botwin's Daily Wire
-  version: "1.3"
+  version: "2.0"
 ---
 
 # Rewrite Articles
 
-Extract the last 24 hours of articles from `backend/db/news.db`, rewrite each
-one as neutral, Pulitzer-grade wire copy, and save the result to
-`drafts/daily.md`. This file is temporary and overwritten every day.
-
-## How to tackle this
-
-Use subagents to parallelize the rewriting work:
-
-1. **Split the articles into batches.** Group them by category, by source, or
-   into fixed-size chunks — whichever keeps each batch coherent and manageable.
-2. **Spawn one subagent per batch.** Give each subagent:
-   - Its batch of raw articles (title, summary, content, URL, source, category).
-   - A full copy of `agentskills/rewrite-articles/STYLE.md`.
-   - The instruction to return every article rewritten in the daily.md format.
-3. **Collect the subagent outputs.** Verify each rewritten batch follows the
-   style guide and the daily.md format.
-4. **Assemble the final file.** Merge the batches into a single `drafts/daily.md`,
-   grouped by category, and overwrite any previous version.
-
-The parent agent is responsible for coordination and final assembly. The
-subagents are responsible for executing the rewrites.
+Deploy one subagent per chunk file in `drafts/rewrite_chunks/`. Each subagent
+rewrites its assigned chunk as neutral, Pulitzer-grade wire copy and writes the
+result to `drafts/rewrite_outputs/`. The parent agent monitors every subagent and
+handles failures.
 
 ## When to use
 
 - User asks for a daily rewrite, de-biased digest, or neutral news brief.
-- User says "rewrite today's articles", "make daily.md", or "run rewrite".
-- After `npm run ingest:articles` and before generating a new edition.
+- User says "rewrite today's articles", "run rewrite", or "rewrite chunks".
+- After `chunk-articles` and before `review-rewrite`.
 
 ## Prerequisites
 
 - Working directory is the repository root.
-- `backend/db/news.db` exists with recent articles.
+- `drafts/rewrite_chunks/` exists with chunk files from the latest fetch run.
+- `agentskills/rewrite-articles/STYLE.md` is available and must not be modified.
 
-## Read this first
+## How to run
 
-Read the style guide before rewriting:
+This is an agentic step. The parent agent coordinates; subagents do the writing.
+
+### 1. List the chunk files
+
+```bash
+ls drafts/rewrite_chunks/
+```
+
+Each file is named `{category}-{n}of{m}.md` and contains raw articles from the
+latest fetch run.
+
+### 2. Deploy one subagent per chunk
+
+For every chunk file, spawn a subagent with these exact instructions:
 
 ```text
-agentskills/rewrite-articles/STYLE.md
-```
+Read the chunk file at: drafts/rewrite_chunks/{filename}
 
-## Step 1 — Extract articles
+Read the style guide at: agentskills/rewrite-articles/STYLE.md
 
-Run this query against `backend/db/news.db`:
+Rewrite every article in the chunk according to the style guide. Produce neutral,
+factual, attributed wire copy. Do not recategorize stories. Preserve the original
+category, source, and URL for every article.
 
-```sql
-SELECT *
-FROM articles
-WHERE datetime(publishedAt) > datetime('now', '-1 day')
-ORDER BY category, publishedAt DESC;
-```
+Write your output to: drafts/rewrite_outputs/{filename}
 
-If `publishedAt` is unreliable, use `fetchedAt` instead:
+Use this exact format, with lowercase category headings:
 
-```sql
-SELECT *
-FROM articles
-WHERE datetime(fetchedAt) > datetime('now', '-1 day')
-ORDER BY category, fetchedAt DESC;
-```
-
-## Step 1b — Skip already-rewritten articles
-
-Before rewriting, check `backend/db/deprop.db` for URLs that have already been
-rewritten. The simplest way is to query both databases in one go by attaching
-`deprop.db`:
-
-```sql
-ATTACH DATABASE 'backend/db/deprop.db' AS deprop;
-
-SELECT n.*
-FROM articles n
-LEFT JOIN deprop.articles d ON n.url = d.url
-WHERE datetime(n.publishedAt) > datetime('now', '-1 day')
-  AND d.url IS NULL
-ORDER BY n.category, n.publishedAt DESC;
-```
-
-If `publishedAt` is unreliable, replace the date filter with `n.fetchedAt`.
-
-Drop any article whose URL is already in `deprop.articles`. Only the remaining
-articles go into the rewrite batches.
-
-## Step 2 — Rewrite every article
-
-For each article:
-
-1. Read the original `title`, `summary`, and `content`.
-2. Apply the style guide:
-   - Neutral, propaganda-free, non-partisan.
-   - Remove loaded language and partisan framing.
-   - Keep every verifiable fact, number, date, location, and named actor.
-   - Attribute contested claims.
-   - Use inverted-pyramid structure.
-3. Produce a clean headline and body.
-
-Do not recategorize stories. Preserve the original `category`, `source`, and
-`url` for attribution.
-
-## Step 3 — Save to drafts/daily.md
-
-Overwrite `drafts/daily.md` with the rewritten articles. Use this format:
-
-```markdown
-# Botwin's Daily Wire — Neutral Brief
-
-Generated: 2026-06-21
-
----
-
-## World
+## {lowercase-category}
 
 ### [Neutral rewritten headline]
 
-**Source:** original-source-name  
+**Source:** original-source-name
 **Original:** [original article URL]
-
-Neutral rewritten article body. Follows the style guide. Factual, attributed,
-and free of propaganda.
-
----
-
-## Politics
-
-### [Neutral rewritten headline]
-
-**Source:** original-source-name  
-**Original:** [original article URL]
+**Importance:** {1-10}/10
+**Topics:** comma, separated, topic, tags
 
 Neutral rewritten article body.
+
+---
+
+If a chunk contains multiple categories, group the articles under their correct
+lowercase category headings. Write only the markdown to the output file.
 ```
 
-Group articles under their original category headings. If a category has no
-articles, omit it.
+Use the **5.4-mini codex** subagent model if your environment allows model
+selection. Otherwise use the default subagent capability.
+
+### 3. Monitor the subagents
+
+- Track every subagent you spawn.
+- Wait for all of them to return before continuing.
+- If a subagent fails, times out, or returns garbage, redeploy it with the same
+  chunk file. If it fails twice, rewrite that chunk yourself.
+- Verify each written chunk follows the style guide and the daily.md format.
 
 ## Rules
 
-- Overwrite `drafts/daily.md`; do not append.
-- Do not commit `drafts/daily.md`.
+- Do not modify `agentskills/rewrite-articles/STYLE.md`.
+- Subagents must write to `drafts/rewrite_outputs/`, not to `drafts/daily.md`.
+- Do not commit `drafts/rewrite_outputs/` or `drafts/daily.md`.
 - Keep the original URLs so a human can verify the source.
-- If the source material is already neutral, still review it against the style
-  guide before including it.
+- Category headings must be lowercase (e.g., `## world`, `## politics`).

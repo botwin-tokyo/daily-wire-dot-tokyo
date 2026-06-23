@@ -23,6 +23,8 @@ const articleSchema = z.object({
   title: z.string().min(1),
   url: z.string().url(),
   content: z.string().min(1),
+  importance: z.number().min(1).max(10).default(5),
+  topics: z.string().default(""),
 });
 
 type ParsedArticle = z.infer<typeof articleSchema>;
@@ -44,7 +46,7 @@ function parseDailyMarkdown(text: string): ParsedArticle[] {
 
     const categoryMatch = line.match(/^##\s+(.+)$/);
     if (categoryMatch) {
-      currentCategory = categoryMatch[1].trim().toLowerCase();
+      currentCategory = categoryMatch[1].trim();
       i++;
       continue;
     }
@@ -59,12 +61,18 @@ function parseDailyMarkdown(text: string): ParsedArticle[] {
 
       let source = "";
       let url = "";
+      let importance = 5;
+      let topics = "";
       while (i < lines.length && lines[i].trim().startsWith("**")) {
         const meta = lines[i].trim();
         const sourceMatch = meta.match(/^\*\*Source:\*\*\s*(.+)$/);
         const originalMatch = meta.match(/^\*\*Original:\*\*\s*(.+)$/);
+        const importanceMatch = meta.match(/^\*\*Importance:\*\*\s*(\d+)\s*\/\s*10\s*$/i);
+        const topicsMatch = meta.match(/^\*\*Topics:\*\*\s*(.+)$/);
         if (sourceMatch) source = sourceMatch[1].trim();
         if (originalMatch) url = extractUrl(originalMatch[1].trim());
+        if (importanceMatch) importance = Number(importanceMatch[1]);
+        if (topicsMatch) topics = topicsMatch[1].trim();
         i++;
       }
 
@@ -92,6 +100,8 @@ function parseDailyMarkdown(text: string): ParsedArticle[] {
           title,
           url,
           content,
+          importance,
+          topics,
         });
       }
       continue;
@@ -161,7 +171,7 @@ function main(): void {
     runId,
     articlesToInsert.map((a) => ({
       source: a.source,
-      category: a.category,
+      category: a.category.toLowerCase(),
       title: a.title,
       url: a.url,
       summary: null,
@@ -171,6 +181,7 @@ function main(): void {
       author: null,
       language: "en",
       fetchedAt: new Date().toISOString(),
+      importance: a.importance,
     })),
   );
 
