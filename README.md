@@ -11,19 +11,28 @@ Cloudflare enters the picture only for hosting and long-term archive storage.
 
 ## What it does
 
-1. **Ingest** — the `fetch-news` agent skill runs `npm run ingest:articles` to
-   fetch the last 24 hours of news from configured RSS, API, and HTML sources
-   into a local SQLite database (`backend/db/news.db`).
-2. **Rewrite** — the `rewrite-articles` agent skill reads the ingested articles,
-   distributes them to subagents, and has each one rewrite stories in a neutral,
-   Pulitzer-grade wire-service style. Output lands in `drafts/daily.md`.
-3. **Populate** — the `populate-depropdb` agent skill parses `drafts/daily.md`
+1. **Fetch** — the `fetch-news` agent skill runs `npm run ingest:articles` to
+   pull today's news from configured RSS, API, and HTML sources into
+   `backend/db/news.db`.
+2. **Clean** — the `clean-chunks` agent skill removes leftover chunk and rewrite
+   files from the previous run.
+3. **Chunk** — the `chunk-articles` agent skill splits the latest fetch run into
+   manageable markdown chunk files in `drafts/rewrite_chunks/`.
+4. **Rewrite** — the `rewrite-articles` agent skill deploys subagents to rewrite
+   each chunk as neutral, Pulitzer-grade wire copy, using a per-category
+   importance rubric. Subagents write their output to
+   `drafts/rewrite_outputs/`.
+5. **Review** — the `review-rewrite` agent skill removes duplicate coverage,
+   bumps importance when multiple sources report the same topic, and fixes
+   formatting issues in the chunk files.
+6. **Assemble** — the `create-daily` agent skill combines the reviewed chunks
+   into a single `drafts/daily.md`.
+7. **Populate** — the `populate-depropdb` agent skill parses `drafts/daily.md`
    and inserts the rewritten articles into `backend/db/deprop.db`.
-4. **Publish** — the `publish-dailywire` agent skill runs
-   `npx tsx agentskills/publish-dailywire/publish-dailywire.ts` to build a
-   schema-valid `NewspaperEdition` from `deprop.db`, write
-   `public/data/current-edition.json`, and archive the edition in Cloudflare D1
-   when credentials are configured.
+8. **Publish** — the `publish-dailywire` agent skill builds a schema-valid
+   `NewspaperEdition` from `deprop.db`, picks the highest-importance article as
+   the lead, writes `public/data/current-edition.json`, and archives the edition
+   in Cloudflare D1 when credentials are configured.
 
 The frontend then renders today's edition, section pages, article pages, search,
 and an archive view.
@@ -66,15 +75,20 @@ agent consumption. Each skill is a self-contained recipe the agent can execute.
 | Skill                | Purpose                                                              |
 | -------------------- | -------------------------------------------------------------------- |
 | `fetch-news`         | Run the news ingest pipeline (`npm run ingest:articles`).            |
-| `rewrite-articles`   | Extract last-24h articles, deploy subagents to rewrite them, and     |
-|                      | write `drafts/daily.md` in the project style.                        |
+| `clean-chunks`       | Delete leftover chunk/rewrite files before a new rewrite pass.       |
+| `chunk-articles`     | Split the latest fetch run into chunk files for subagents.           |
+| `rewrite-articles`   | Deploy subagents to rewrite each chunk and assign per-category       |
+|                      | importance scores.                                                   |
+| `review-rewrite`     | Remove duplicates, boost trending topics, and fix formatting.        |
+| `create-daily`       | Assemble reviewed chunk files into `drafts/daily.md`.                |
 | `populate-depropdb`  | Parse `drafts/daily.md` and insert rewritten articles into           |
 |                      | `backend/db/deprop.db`.                                              |
-| `publish-dailywire`  | Generate a valid `NewspaperEdition` from `deprop.db` and write       |
-|                      | `public/data/current-edition.json` (and archive to D1 when set up).  |
+| `publish-dailywire`  | Generate a valid `NewspaperEdition` from `deprop.db`, rank by        |
+|                      | importance, and write `public/data/current-edition.json`.            |
 
 The `rewrite-articles` skill includes a style guide (`STYLE.md`) that every
-subagent receives. Rewrites are neutral, propaganda-free, and attributed.
+subagent receives. The guide defines the neutral rewrite voice and a
+per-category 1–10 importance rubric.
 
 ## Local development
 
@@ -105,25 +119,46 @@ Cloudflare variables are only needed for deployment and D1 archiving.
 
 ## Running the daily pipeline
 
-A full cycle is driven by four agent skills. The agent should invoke each skill
-in order; each skill wraps the underlying script or judgement work:
+A full cycle is driven by eight agent skills. The agent should invoke each skill
+in order:
 
 ```bash
-# 1. Fetch fresh articles — run the fetch-news agent skill
-#    Internally executes: npm run ingest:articles
+# 1. Fetch fresh articles
+#    Skill: fetch-news
+#    Script: npm run ingest:articles
 
-# 2. Rewrite — run the rewrite-articles agent skill
-#    Produces drafts/daily.md
+# 2. Clean leftover chunk/rewrite files
+#    Skill: clean-chunks
+#    Script: npx tsx agentskills/clean-chunks/clean-chunks.ts
 
-# 3. Populate deprop.db — run the populate-depropdb agent skill
+# 3. Chunk the latest fetch run
+#    Skill: chunk-articles
+#    Script: npx tsx agentskills/chunk-articles/chunk-articles.ts
 
-# 4. Publish the edition — run the publish-dailywire agent skill
-#    Internally executes: npx tsx agentskills/publish-dailywire/publish-dailywire.ts
+# 4. Rewrite each chunk (agentic — subagents)
+#    Skill: rewrite-articles
+#    Writes: drafts/rewrite_outputs/{category}-{n}of{m}.md
+
+# 5. Review and deduplicate rewritten chunks
+#    Skill: review-rewrite
+#    Script: npx tsx agentskills/review-rewrite/review-rewrite.ts
+
+# 6. Assemble drafts/daily.md
+#    Skill: create-daily
+#    Script: npx tsx agentskills/create-daily/create-daily.ts
+
+# 7. Populate deprop.db
+#    Skill: populate-depropdb
+#    Script: npx tsx agentskills/populate-depropdb/populate-depropdb.ts
+
+# 8. Publish the edition
+#    Skill: publish-dailywire
+#    Script: npx tsx agentskills/publish-dailywire/publish-dailywire.ts
 ```
 
-All four steps are agent skills. Steps 2 and 3 are the most open-ended: the
-agent reads source material, applies the style guide, and saves output. Steps 1
-and 4 are primarily wrappers around deterministic scripts.
+Steps 4 and 5 are the most open-ended: the agent reads source material, applies
+the style guide, assigns per-category importance scores, and removes duplicate
+coverage. The other steps are deterministic scripts.
 
 ## Edition JSON
 
@@ -133,11 +168,9 @@ Zod. Two reference files are included:
 - `drafts/template-edition.json` — minimal schema-valid skeleton.
 - `examples/example-edition.json` — fuller example edition.
 
-You can validate any draft before publishing:
-
-```bash
-npm run validate:edition -- drafts/my-draft.json
-```
+`publish-dailywire` validates the edition against `src/lib/schema.ts` before
+writing `current-edition.json`; any schema or business-rule errors are printed
+to the terminal.
 
 ## Cloudflare deployment
 
