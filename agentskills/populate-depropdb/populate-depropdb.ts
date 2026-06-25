@@ -63,7 +63,12 @@ function parseDailyMarkdown(text: string): ParsedArticle[] {
       let url = "";
       let importance = 5;
       let topics = "";
-      while (i < lines.length && lines[i].trim().startsWith("**")) {
+      while (i < lines.length) {
+        if (lines[i].trim() === "") {
+          i++;
+          continue;
+        }
+        if (!lines[i].trim().startsWith("**")) break;
         const meta = lines[i].trim();
         const sourceMatch = meta.match(/^\*\*Source:\*\*\s*(.+)$/);
         const originalMatch = meta.match(/^\*\*Original:\*\*\s*(.+)$/);

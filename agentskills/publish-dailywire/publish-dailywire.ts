@@ -12,6 +12,7 @@
  *   public/data/editions/index.json
  */
 
+import "dotenv/config";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
@@ -297,7 +298,7 @@ function buildArticle(row: DepropRow, index: number): Article {
       url: sourceUrl(row.source),
       reliability: "high",
     },
-    originalUrl: row.url,
+    originalUrl: row.url.replace(/^http:\/\//, "https://"),
     publishedAt: toIsoUtc(row.publishedAt ?? row.fetchedAt),
     retrievedAt: toIsoUtc(row.fetchedAt),
     readingTimeMin: estimateReadingTime(content),
@@ -331,7 +332,7 @@ function assignDisplayPositions(articles: Article[]): void {
     if (article.image) {
       article.displayPosition = "major";
     }
-    article.editorialProminence = Math.min(1, Math.max(0, article.importance / 10));
+    article.editorialProminence = Math.min(1, Math.max(0, (article.importance ?? 5) / 10));
   }
 }
 
