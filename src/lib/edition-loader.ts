@@ -138,11 +138,10 @@ function isServer(): boolean {
 }
 
 async function loadJson(path: string): Promise<unknown> {
-  if (isServer()) {
-    // During SSR/pre-render we read directly from the repo. This path is
-    // relative to the project root, which is the cwd for `vite dev`,
-    // `vite build`, and `vite preview`. It will be replaced by Pages
-    // Functions once the Cloudflare backend is wired up.
+  // In local dev SSR we still need filesystem access because Node's fetch
+  // can't resolve relative URLs without a request context. In production
+  // (Cloudflare Pages / Workers) we fetch the static asset directly.
+  if (import.meta.env.DEV && isServer()) {
     const { readFileSync } = await import("node:fs");
     const raw = readFileSync(`public${path}`, "utf-8");
     return JSON.parse(raw);

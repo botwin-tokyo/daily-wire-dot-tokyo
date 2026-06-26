@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { getCloudflareEnv } from "@/lib/cloudflare";
 import { createRateLimiter } from "@/lib/rate-limit";
 import { loadEditionByDate } from "@/lib/edition-loader";
-import { writeFileSync } from "node:fs";
 
 export const Route = createFileRoute("/api/admin/rollback")({
   server: {
@@ -48,9 +47,26 @@ export const Route = createFileRoute("/api/admin/rollback")({
 
         try {
           const edition = await loadEditionByDate(date);
-          // Write current-edition.json. This works in local SSR/dev; in a
-          // Cloudflare Pages deployment the filesystem is read-only, so a
-          // production rollback should use the Publishing Agent or git revert.
+
+          if (!import.meta.env.DEV) {
+            // Cloudflare Pages/Workers have no writable project filesystem.
+            // Production rollbacks should use the dashboard, D1 archive, or
+            // the Publishing Agent (scripts/publish-edition.ts).
+            return new Response(
+              JSON.stringify({
+                ok: false,
+                editionId: edition.editionId,
+                message: `Rollback to ${date} is not supported in production via this endpoint. Use the Publishing Agent or D1 archive.`,
+              }),
+              {
+                status: 501,
+                headers: { "Content-Type": "application/json" },
+              },
+            );
+          }
+
+          // Local dev only: write the current-edition.json file directly.
+          const { writeFileSync } = await import("node:fs");
           writeFileSync("public/data/current-edition.json", JSON.stringify(edition, null, 2));
           return new Response(
             JSON.stringify({

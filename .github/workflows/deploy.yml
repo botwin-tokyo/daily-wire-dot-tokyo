@@ -1,0 +1,39 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  # Manual deploy only. The repo does not commit generated edition data, so a
+  # GitHub-hosted runner won't have public/data/current-edition.json. Trigger
+  # this workflow from a runner that has run the pipeline, or after you've
+  # committed the day's edition data.
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Ensure edition data exists
+        run: npm run ensure:edition
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build for Cloudflare Pages
+        run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        run: npx wrangler pages deploy .output --project-name=morning-wire
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
