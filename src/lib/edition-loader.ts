@@ -5,6 +5,7 @@
  * to the legacy Edition shape that the existing components expect.
  */
 
+import { getCloudflareEnv } from "./cloudflare";
 import {
   validateNewspaperEdition,
   type NewspaperEdition,
@@ -178,4 +179,37 @@ export async function loadEditionSummaries(): Promise<EditionSummary[]> {
     throw new Error("Edition index must be an array");
   }
   return data as EditionSummary[];
+}
+
+/**
+ * Load the current edition from D1 when running in a Cloudflare Pages/Workers
+ * environment. Returns undefined if D1 is not bound so callers can fall back
+ * to the static filesystem copy.
+ */
+export async function loadCurrentEditionFromD1(
+  request: Request,
+): Promise<NewspaperEdition | undefined> {
+  const db = getCloudflareEnv(request)?.DB;
+  if (!db) return undefined;
+
+  const { results } = await db
+    .prepare(
+      `
+      SELECT edition_json
+      FROM editions
+      ORDER BY edition_date DESC
+      LIMIT 1
+    `,
+    )
+    .all<{ edition_json: string }>();
+
+  const row = results?.[0];
+  if (!row?.edition_json) return undefined;
+
+  const data = JSON.parse(row.edition_json);
+  const result = validateNewspaperEdition(data);
+  if (!result.success) {
+    throw new Error(`Invalid current edition in D1:\n${result.errors.join("\n")}`);
+  }
+  return result.data;
 }

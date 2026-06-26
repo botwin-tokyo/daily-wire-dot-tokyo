@@ -23,9 +23,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Ensure edition data exists
-        run: npm run ensure:edition
-
       - name: Typecheck
         run: npx tsc --noEmit
 

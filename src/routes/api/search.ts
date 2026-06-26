@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { loadCurrentEdition } from "@/lib/edition-loader";
+import { loadCurrentEdition, loadCurrentEditionFromD1 } from "@/lib/edition-loader";
 
 export const Route = createFileRoute("/api/search")({
   server: {
@@ -7,7 +7,8 @@ export const Route = createFileRoute("/api/search")({
       GET: async ({ request }) => {
         const url = new URL(request.url);
         const q = url.searchParams.get("q")?.trim().toLowerCase() ?? "";
-        const edition = await loadCurrentEdition();
+        const edition =
+          (await loadCurrentEditionFromD1(request)) ?? (await loadCurrentEdition());
         if (!q) {
           return new Response(JSON.stringify([]), {
             headers: { "Content-Type": "application/json" },
