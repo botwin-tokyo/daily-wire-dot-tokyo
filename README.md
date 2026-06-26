@@ -233,8 +233,9 @@ wrangler.toml             # Cloudflare Pages / Workers bindings
 
 4. **Add your own news sources**
 
-   Source fetchers live in `backend/scripts/lib/sources/`. Add new fetchers for the
-   RSS feeds, APIs, or sites you want, then register them in the ingest orchestrator.
+   Source fetchers live directly in `backend/scripts/`. Add new fetchers for the
+   RSS feeds, APIs, or sites you want, then register them in the ingest orchestrator
+   (`backend/scripts/compile-to-db.ts`).
 
 5. **Provision Cloudflare resources** (if deploying)
 
