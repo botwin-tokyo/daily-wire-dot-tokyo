@@ -1,8 +1,7 @@
 # Cloudflare Pages configuration for The Morning Wire.
 # Replace placeholder IDs with real values from your Cloudflare dashboard.
 
-name = "morning-wire"
-account_id = "82953817cd19cd4cd8d6b68a673021c6"
+name = "botwins-morning-wire"
 compatibility_date = "2025-06-19"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".output"
@@ -16,12 +15,12 @@ id = "3b05b707785a4c1c8ae5d41b4fa0189b"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "morning-wire"
+database_name = "botwins-morning-wire"
 database_id = "d56e6544-68a6-45a8-9282-73be8186f37d"
 
 [vars]
 EDITION_SCHEMA_VERSION = "1.0.0"
-SITE_URL = "https://morning-wire.pages.dev"
+SITE_URL = "https://botwins-morning-wire.pages.dev"
 
 # Secrets (set via `wrangler secret put` or Cloudflare dashboard):
 #   ADMIN_TOKEN

@@ -18,7 +18,7 @@
     "ladder:down": "docker compose -f docker-compose.ladder.yml down",
     "publish:edition": "tsx scripts/publish-edition.ts",
     "rollback:edition": "tsx scripts/rollback-edition.ts",
-    "deploy": "wrangler pages deploy .output --project-name=morning-wire",
+    "deploy": "wrangler pages deploy .output --project-name=botwins-morning-wire",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "echo 'E2E tests not yet configured. Install Playwright and add e2e/smoke.spec.ts to enable.'"
