@@ -45,7 +45,7 @@ export const Route = createFileRoute("/api/crypto-ticker")({
         } catch (err) {
           console.error("Crypto ticker fetch failed:", err);
           return new Response(JSON.stringify([]), {
-            status: 500,
+            status: 200,
             headers: { "Content-Type": "application/json" },
           });
         }

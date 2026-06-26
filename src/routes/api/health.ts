@@ -1,19 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { loadCurrentEdition } from "@/lib/edition-loader";
+import { loadCurrentEdition, loadCurrentEditionFromD1 } from "@/lib/edition-loader";
 import { CURRENT_SCHEMA_VERSION } from "@/lib/schema";
 
 export const Route = createFileRoute("/api/health")({
   server: {
     handlers: {
-      GET: async () => {
-        const edition = await loadCurrentEdition();
+      GET: async ({ request }) => {
+        const edition =
+          (await loadCurrentEditionFromD1(request).catch(() => undefined)) ??
+          (await loadCurrentEdition().catch(() => undefined));
+
         return new Response(
           JSON.stringify({
             ok: true,
             schemaVersion: CURRENT_SCHEMA_VERSION,
-            editionId: edition.editionId,
-            editionDate: edition.editionDate,
-            status: edition.status,
+            editionId: edition?.editionId ?? null,
+            editionDate: edition?.editionDate ?? null,
+            status: edition?.status ?? null,
           }),
           {
             headers: {
