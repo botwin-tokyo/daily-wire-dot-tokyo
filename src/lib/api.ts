@@ -15,6 +15,7 @@ import {
   newspaperEditionToEdition,
   adaptArticle,
 } from "./edition-loader";
+import { getCloudflareEnv } from "./cloudflare";
 import { queryOptions } from "@tanstack/react-query";
 import type {
   Article,
@@ -32,8 +33,21 @@ function isServer(): boolean {
   return typeof window === "undefined";
 }
 
+/**
+ * Resolve an API path to an absolute URL when running on the server in
+ * Cloudflare Pages. Relative fetch works in the browser and in local dev, but
+ * the Workers SSR runtime requires absolute URLs for outbound fetch calls.
+ */
+function getApiUrl(path: string): string {
+  if (!isServer()) return path;
+  const env = getCloudflareEnv();
+  const base = env?.SITE_URL ?? process.env.SITE_URL;
+  if (!base) return path;
+  return `${base.replace(/\/$/, "")}${path}`;
+}
+
 async function fetchJson<T>(path: string): Promise<T> {
-  const response = await fetch(path);
+  const response = await fetch(getApiUrl(path));
   if (!response.ok) {
     throw new Error(`Failed to fetch ${path}: ${response.status} ${response.statusText}`);
   }
@@ -150,7 +164,7 @@ export async function listEditions(): Promise<EditionSummary[]> {
 export async function getArticle(slugOrId: string): Promise<Article | undefined> {
   await wait(60);
   try {
-    const response = await fetch(`/api/articles/${encodeURIComponent(slugOrId)}`);
+    const response = await fetch(getApiUrl(`/api/articles/${encodeURIComponent(slugOrId)}`));
     if (response.status === 404) return undefined;
     if (!response.ok) throw new Error(`Failed to fetch article: ${response.status}`);
     const article = (await response.json()) as NewspaperArticle;
@@ -219,7 +233,7 @@ export async function updateSettings(next: Settings): Promise<Settings> {
   await wait(80);
   if (typeof window !== "undefined") {
     try {
-      const response = await fetch("/api/settings", {
+      const response = await fetch(getApiUrl("/api/settings"), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(next),

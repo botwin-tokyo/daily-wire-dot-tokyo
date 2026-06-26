@@ -4,6 +4,8 @@ export interface CloudflareEnv {
   DB?: D1Database;
   KV?: KVNamespace;
   ADMIN_TOKEN?: string;
+  EDITION_SCHEMA_VERSION?: string;
+  SITE_URL?: string;
 }
 
 declare module "react-router" {
