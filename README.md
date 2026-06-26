@@ -1,4 +1,4 @@
-# Botwin's Daily Wire
+# Botwin's Morning Wire
 
 A self-hosted, AI-assisted daily newspaper. It ingests news from public RSS feeds,
 APIs, and publisher pages; rewrites stories into neutral, wire-style copy;
@@ -7,16 +7,15 @@ schema-valid JSON. A TanStack Start frontend renders each edition as a
 broadsheet-style page and serves it from Cloudflare Pages, with Cloudflare D1 as
 the source of truth for live editions.
 
-> **Naming note:** the repository folder is `the-daily-ledger`, the deployed
-> Pages project and domain are `botwins-morning-wire`, and legacy assets still
-> say **Botwin's Morning Wire**. This README uses **Botwin's Daily Wire** as the
-> product name while noting the live deployment is **Morning Wire**.
+> **Naming note:** the GitHub repository is `TianJieHeng/botwinmorningwireapp`
+> and the deployed Pages project and domain are `botwins-morning-wire`. The
+> product name used in this README is **Botwin's Morning Wire**.
 
 ---
 
 ## Executive summary
 
-Botwin's Daily Wire is a fully autonomous news product:
+Botwin's Morning Wire is a fully autonomous news product:
 
 - **Ingests** hundreds of stories per day from configured RSS / API / web
   sources.
@@ -498,8 +497,8 @@ npm run deploy
 
 ## Known issues / roadmap
 
-- **Naming drift:** the repo folder, product name, deployed domain, and legacy
-  assets disagree on whether this is "Daily Wire" or "Morning Wire".
+- **Naming drift:** resolved in the README and GitHub repo name; some legacy
+  assets may still reference older names.
 - **Generated data no longer committed:** `public/data/current-edition.json` and
   archive files are now local dev fallbacks; the canonical store is D1.
 - **Legacy scripts:** `scripts/generate-edition-from-db.ts` is mostly superseded
@@ -514,4 +513,4 @@ npm run deploy
 
 ## License
 
-Proprietary — Botwin's Daily Wire.
+Proprietary — Botwin's Morning Wire.
