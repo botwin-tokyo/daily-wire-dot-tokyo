@@ -12,7 +12,7 @@ pages_build_output_dir = ".output"
 
 [[kv_namespaces]]
 binding = "KV"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "3b05b707785a4c1c8ae5d41b4fa0189b"
 
 [[d1_databases]]
 binding = "DB"
