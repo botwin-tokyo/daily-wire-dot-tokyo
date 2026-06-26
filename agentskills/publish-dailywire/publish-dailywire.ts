@@ -12,6 +12,7 @@
  *   public/data/editions/index.json
  */
 
+import "dotenv/config";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
@@ -297,7 +298,7 @@ function buildArticle(row: DepropRow, index: number): Article {
       url: sourceUrl(row.source),
       reliability: "high",
     },
-    originalUrl: row.url,
+    originalUrl: row.url.replace(/^http:\/\//, "https://"),
     publishedAt: toIsoUtc(row.publishedAt ?? row.fetchedAt),
     retrievedAt: toIsoUtc(row.fetchedAt),
     readingTimeMin: estimateReadingTime(content),
@@ -331,7 +332,7 @@ function assignDisplayPositions(articles: Article[]): void {
     if (article.image) {
       article.displayPosition = "major";
     }
-    article.editorialProminence = Math.min(1, Math.max(0, article.importance / 10));
+    article.editorialProminence = Math.min(1, Math.max(0, (article.importance ?? 5) / 10));
   }
 }
 
@@ -528,32 +529,36 @@ async function main(): Promise<void> {
   writeFileSync(currentPath, json);
   console.log(`Wrote ${validated.data.articles.length} articles to ${currentPath}`);
 
-  // If Cloudflare credentials are configured, store the archive in D1 and do
-  // not add a new static per-date file to the deploy bundle. Otherwise fall
-  // back to static files so local dev still works before D1 is set up.
+  // Always write static archive files for local dev and fallback. They are
+  // gitignored, so they won't bloat the Cloudflare Pages deploy bundle.
+  const archivePath = resolve(editionsDir, `${editionDate}.json`);
+  const indexPath = resolve(editionsDir, "index.json");
+  writeFileSync(archivePath, json);
+
+  const index = [
+    {
+      id: validated.data.editionId,
+      editionDate: validated.data.editionDate,
+      status: validated.data.status,
+      storyCount: validated.data.articles.length,
+      leadHeadline: validated.data.articles[0]?.headline ?? "",
+      categories: sections.map((s) => s.id),
+    },
+  ];
+  writeFileSync(indexPath, JSON.stringify(index, null, 2));
+
+  console.log(`Wrote archive to ${archivePath}`);
+  console.log(`Wrote index to ${indexPath}`);
+
+  // If Cloudflare credentials are configured, also push the edition to D1 so
+  // the deployed site can serve it from Cloudflare instead of static files.
   const d1Config = getD1Config();
   if (d1Config) {
     await upsertEditionToD1(validated.data);
   } else {
-    const archivePath = resolve(editionsDir, `${editionDate}.json`);
-    const indexPath = resolve(editionsDir, "index.json");
-
-    writeFileSync(archivePath, json);
-
-    const index = [
-      {
-        id: validated.data.editionId,
-        editionDate: validated.data.editionDate,
-        status: validated.data.status,
-        storyCount: validated.data.articles.length,
-        leadHeadline: validated.data.articles[0]?.headline ?? "",
-        categories: sections.map((s) => s.id),
-      },
-    ];
-    writeFileSync(indexPath, JSON.stringify(index, null, 2));
-
-    console.log(`Wrote archive to ${archivePath}`);
-    console.log(`Wrote index to ${indexPath}`);
+    console.log(
+      "Skipping D1 upsert: CLOUDFLARE_ACCOUNT_ID, D1_DATABASE_ID, and CLOUDFLARE_API_TOKEN are not all set.",
+    );
   }
 
   db.close();

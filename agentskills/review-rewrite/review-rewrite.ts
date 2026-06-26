@@ -79,8 +79,13 @@ function parseArticles(text: string, file: string): Article[] {
       let url = "";
       let importance = 5;
       let topics: string[] = [];
-      while (i < lines.length && lines[i].trim().startsWith("**")) {
+      while (i < lines.length) {
         const meta = lines[i].trim();
+        if (meta === "") {
+          i++;
+          continue;
+        }
+        if (!meta.startsWith("**")) break;
         const sourceMatch = meta.match(/^\*\*Source:\*\*\s*(.+)$/);
         const originalMatch = meta.match(/^\*\*Original:\*\*\s*(.+)$/);
         const importanceMatch = meta.match(/^\*\*Importance:\*\*\s*(.+)$/);

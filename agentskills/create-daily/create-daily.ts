@@ -56,7 +56,15 @@ function parseArticles(text: string): Article[] {
       let url = "";
       let importance = 5;
       let topics: string[] = [];
-      while (i < lines.length && lines[i].trim().startsWith("**")) {
+      while (i < lines.length) {
+        // Skip blank lines inside the metadata block.
+        if (lines[i].trim() === "") {
+          i++;
+          continue;
+        }
+        // Stop when we hit body text or the next article/section.
+        if (!lines[i].trim().startsWith("**")) break;
+
         const meta = lines[i].trim();
         const sourceMatch = meta.match(/^\*\*Source:\*\*\s*(.+)$/);
         const originalMatch = meta.match(/^\*\*Original:\*\*\s*(.+)$/);

@@ -14,6 +14,7 @@
 import { DatabaseSync } from "node:sqlite";
 import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { spawn } from "node:child_process";
 
 interface Article {
   id: number;
@@ -129,6 +130,26 @@ function sanitizeFilename(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
+function launchRewriteArticles(): void {
+  const scriptPath = resolve(process.cwd(), "agentskills/rewrite-articles/rewrite-articles.ts");
+  console.log("\n--- Launching rewrite-articles in background ---");
+  console.log(`Script: ${scriptPath}`);
+
+  const child = spawn("npx", ["tsx", scriptPath], {
+    cwd: process.cwd(),
+    detached: true,
+    stdio: "ignore",
+  });
+
+  child.on("error", (err) => {
+    console.error(`Failed to spawn rewrite-articles: ${err.message}`);
+  });
+
+  child.unref();
+  console.log(`Spawned rewrite-articles (pid ${child.pid}). It will run independently.`);
+  console.log("Progress log: logs/rewrite-articles.log");
+}
+
 function formatChunk(
   chunk: Article[],
   chunkNumber: number,
@@ -212,6 +233,8 @@ function main(): void {
   for (const [category, total] of categoryTotals) {
     console.log(`  ${category}: ${total} chunk(s)`);
   }
+
+  launchRewriteArticles();
 }
 
 main();

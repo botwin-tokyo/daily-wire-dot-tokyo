@@ -104,6 +104,13 @@ export function initSchema(db: DatabaseSync): void {
   } catch {
     // Column already exists; ignore.
   }
+
+  // Migrate existing databases that were created before the importance column.
+  try {
+    db.exec("ALTER TABLE articles ADD COLUMN importance INTEGER;");
+  } catch {
+    // Column already exists; ignore.
+  }
 }
 
 export function startRun(db: DatabaseSync): number {

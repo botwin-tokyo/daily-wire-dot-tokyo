@@ -71,6 +71,11 @@ Use classic inverted-pyramid reporting:
 
 - Factual, specific, and free of loaded words.
 - Summarize the main event, not the most provocative angle.
+- Use **title case**: capitalize the first and last words and all major words
+  (nouns, pronouns, verbs, adjectives, adverbs). Lowercase articles (`a`, `an`,
+  `the`), coordinating conjunctions (`and`, `but`, `for`, `nor`, `or`, `so`,
+  `yet`), and short prepositions (`in`, `on`, `at`, `to`, `of`, `with`) unless
+  they are the first or last word.
 - Example rewrite:
   - Source: `Catastrophic Biden Policy Wrecks Economy, Experts Warn`
   - Rewrite: `Inflation Rose 0.3% in May, Labor Department Reports`

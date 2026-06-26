@@ -4,7 +4,7 @@ description: Split the last 24 hours of fetched articles into manageable markdow
 license: Proprietary
 metadata:
   author: Botwin's Daily Wire
-  version: "1.0"
+  version: "1.2"
 ---
 
 # Chunk Articles
@@ -31,11 +31,14 @@ them into manageable chunks, and writes each chunk as a markdown file in
 
 ## How to run
 
-From the repository root:
+Use your **terminal tool** to execute this exact command from the repository root
+`/Users/ryokobotwin/Desktop/newsapp/the-daily-ledger`:
 
 ```bash
 npx tsx agentskills/chunk-articles/chunk-articles.ts
 ```
+
+Do not use the Python/code-execution tool. Do not change the command.
 
 ## Expected output
 

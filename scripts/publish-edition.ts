@@ -15,6 +15,7 @@
  *   6. Optionally poll Cloudflare Pages for deployment verification.
  */
 
+import "dotenv/config";
 import { readFileSync, copyFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { execSync } from "node:child_process";

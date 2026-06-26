@@ -5,6 +5,7 @@
  * to the legacy Edition shape that the existing components expect.
  */
 
+import { getCloudflareEnv } from "./cloudflare";
 import {
   validateNewspaperEdition,
   type NewspaperEdition,
@@ -138,11 +139,10 @@ function isServer(): boolean {
 }
 
 async function loadJson(path: string): Promise<unknown> {
-  if (isServer()) {
-    // During SSR/pre-render we read directly from the repo. This path is
-    // relative to the project root, which is the cwd for `vite dev`,
-    // `vite build`, and `vite preview`. It will be replaced by Pages
-    // Functions once the Cloudflare backend is wired up.
+  // In local dev SSR we still need filesystem access because Node's fetch
+  // can't resolve relative URLs without a request context. In production
+  // (Cloudflare Pages / Workers) we fetch the static asset directly.
+  if (import.meta.env.DEV && isServer()) {
     const { readFileSync } = await import("node:fs");
     const raw = readFileSync(`public${path}`, "utf-8");
     return JSON.parse(raw);
@@ -179,4 +179,37 @@ export async function loadEditionSummaries(): Promise<EditionSummary[]> {
     throw new Error("Edition index must be an array");
   }
   return data as EditionSummary[];
+}
+
+/**
+ * Load the current edition from D1 when running in a Cloudflare Pages/Workers
+ * environment. Returns undefined if D1 is not bound so callers can fall back
+ * to the static filesystem copy.
+ */
+export async function loadCurrentEditionFromD1(
+  request: Request,
+): Promise<NewspaperEdition | undefined> {
+  const db = getCloudflareEnv(request)?.DB;
+  if (!db) return undefined;
+
+  const { results } = await db
+    .prepare(
+      `
+      SELECT edition_json
+      FROM editions
+      ORDER BY edition_date DESC
+      LIMIT 1
+    `,
+    )
+    .all<{ edition_json: string }>();
+
+  const row = results?.[0];
+  if (!row?.edition_json) return undefined;
+
+  const data = JSON.parse(row.edition_json);
+  const result = validateNewspaperEdition(data);
+  if (!result.success) {
+    throw new Error(`Invalid current edition in D1:\n${result.errors.join("\n")}`);
+  }
+  return result.data;
 }

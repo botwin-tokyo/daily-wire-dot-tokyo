@@ -1,94 +1,216 @@
-# Botwin's Morning Wire
+# Botwin's Daily Wire
 
-A self-hosted, AI-assisted daily newspaper. It ingests news from open web
-sources, lets an agent rewrite stories into neutral, propaganda-free copy,
-stores the results, and publishes a validated edition as static JSON that a
-TanStack Start frontend renders as a broadsheet-style page.
+A self-hosted, AI-assisted daily newspaper. It ingests news from public RSS feeds,
+APIs, and publisher pages; rewrites stories into neutral, wire-style copy;
+validates every rewrite; stores the results; and publishes a ranked edition as
+static JSON that a TanStack Start frontend renders as a broadsheet-style page.
 
-The entire workflow is designed to run on your machine: ingest, rewrite,
-database population, and edition generation are local scripts and agent skills.
-Cloudflare enters the picture only for hosting and long-term archive storage.
+The pipeline is designed to run on your own machine, with Cloudflare handling
+hosting and optional long-term archive storage.
+
+> **Naming note:** the repository folder is `the-daily-ledger`, the skill docs
+> call the product **Botwin's Daily Wire**, and several legacy assets still say
+> **Botwin's Morning Wire**. This README uses **Daily Wire**; you may want to
+> consolidate the naming in a future pass.
+
+---
 
 ## What it does
 
-1. **Fetch** — the `fetch-news` agent skill runs `npm run ingest:articles` to
-   pull today's news from configured RSS, API, and HTML sources into
-   `backend/db/news.db`.
-2. **Clean** — the `clean-chunks` agent skill removes leftover chunk and rewrite
-   files from the previous run.
-3. **Chunk** — the `chunk-articles` agent skill splits the latest fetch run into
-   manageable markdown chunk files in `drafts/rewrite_chunks/`.
-4. **Rewrite** — the `rewrite-articles` agent skill deploys subagents to rewrite
-   each chunk as neutral, Pulitzer-grade wire copy, using a per-category
-   importance rubric. Subagents write their output to
-   `drafts/rewrite_outputs/`.
-5. **Review** — the `review-rewrite` agent skill removes duplicate coverage,
-   bumps importance when multiple sources report the same topic, and fixes
-   formatting issues in the chunk files.
-6. **Assemble** — the `create-daily` agent skill combines the reviewed chunks
-   into a single `drafts/daily.md`.
-7. **Populate** — the `populate-depropdb` agent skill parses `drafts/daily.md`
-   and inserts the rewritten articles into `backend/db/deprop.db`.
-8. **Publish** — the `publish-dailywire` agent skill builds a schema-valid
-   `NewspaperEdition` from `deprop.db`, picks the highest-importance article as
-   the lead, writes `public/data/current-edition.json`, and archives the edition
-   in Cloudflare D1 when credentials are configured.
+1. **Fetch** — pull today's news from configured sources into a local SQLite
+   database (`backend/db/news.db`).
+2. **Clean** — remove leftover chunk and rewrite files from the previous run.
+3. **Chunk** — split the latest fetch into category chunk files.
+4. **Rewrite** — rewrite each article as neutral, factual wire copy via a local
+   LLM, one article at a time.
+5. **Validate** — check every rewrite for chain-of-thought, raw JSON, empty
+   content, or second-person advice. Invalid rewrites are queued for a separate
+   retry phase (`retry-invalid.ts`) that rewrites each one with a warning and
+   either recovers it to the chunk output or quarantines it.
+6. **Review** — remove duplicates, boost trending topics, and fix formatting.
+7. **Assemble** — merge reviewed articles into `drafts/daily.md`.
+8. **Populate** — insert the articles into `backend/db/deprop.db`.
+9. **Publish** — generate a schema-valid edition JSON, pick a lead story, write
+   `public/data/current-edition.json`, and optionally archive to Cloudflare D1.
 
-The frontend then renders today's edition, section pages, article pages, search,
-and an archive view.
+The frontend then renders the edition, section pages, individual articles,
+search, and an archive view.
 
-## Stack
+---
 
-| Layer           | Choice                                                   |
-| --------------- | -------------------------------------------------------- |
-| UI              | React 19 · TypeScript · Tailwind CSS v4                  |
-| Framework / SSR | TanStack Start (file-based routes, Cloudflare-ready)     |
-| Server state    | TanStack Query                                           |
-| Validation      | Zod                                                      |
-| Local data      | SQLite via Node's built-in `node:sqlite`                 |
-| Archive data    | Cloudflare D1 (optional; static files are the fallback)  |
-| Icons           | Lucide                                                   |
-| Fonts           | Playfair Display · Source Serif 4 · Source Sans 3 · JetBrains Mono |
-| Deploy target   | Cloudflare Pages                                         |
+## Architecture
+
+The system has three layers:
+
+- **Hermes skills** — four slash commands that start each phase.
+- **Direct TypeScript scripts** — deterministic or LLM-backed scripts that the
+  skills run internally.
+- **TanStack Start frontend** — broadsheet UI and API routes.
+
+### Hermes skills (slash commands)
+
+| Skill | Purpose |
+|-------|---------|
+| `fetch-news` | Run the ingest pipeline (`npm run ingest:articles`). |
+| `clean-chunks` | Delete leftover chunk/rewrite files. |
+| `chunk-articles` | Split the latest fetch into chunks and auto-spawn `rewrite-articles`. |
+| `publish-pipeline` | Orchestrate `review-rewrite` → `create-daily` → `populate-depropdb` → `publish-dailywire`. |
+
+These skills are invoked through Hermes. The production scheduler currently
+uses a Cloudflare webhook as the transport to reach Hermes, but the skills
+themselves are Hermes slash commands, not webhook endpoints.
+
+### Internal scripts
+
+| Script | Purpose |
+|--------|---------|
+| `rewrite-articles` | Direct-LLM rewriter; validates each rewrite and queues failures for retry. |
+| `retry-invalid` | Retry phase for failed validations: warning-prompt rewrite, validate, recover or quarantine. |
+| `review-rewrite` | Deduplicate, boost trending topics, fix formatting. |
+| `create-daily` | Assemble `drafts/daily.md`. |
+| `populate-depropdb` | Parse `daily.md` and insert into `deprop.db`. |
+| `publish-dailywire` | Build and validate `current-edition.json`; archive to D1 if configured. |
+
+### Data flow
+
+```text
+┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌──────────────────┐
+│  fetch-news │ → │ clean-chunks│ → │chunk-articles│ → │ rewrite-articles │
+└─────────────┘   └─────────────┘   └─────────────┘   └──────────────────┘
+                                                              │
+                                                              ▼
+                                                   ┌──────────────────┐
+                                                   │ validate + queue │
+                                                   │ invalid rewrites │
+                                                   └──────────────────┘
+                                                              │
+                                                              ▼
+                                                   ┌──────────────────┐
+                                                   │  retry-invalid   │
+                                                   │ recover /        │
+                                                   │ quarantine       │
+                                                   └──────────────────┘
+                                                              │
+                                                              ▼
+                                                   ┌──────────────────┐
+                                                   │ publish-pipeline │
+                                                   │ review → create  │
+                                                   │ populate → publish│
+                                                   └──────────────────┘
+                                                              │
+                                                              ▼
+                                                   ┌──────────────────┐
+                                                   │ current-edition  │
+                                                   │      .json       │
+                                                   └──────────────────┘
+```
+
+---
+
+## Tech stack
+
+| Layer | Choice |
+|-------|--------|
+| UI | React 19 · TypeScript 5.8 · Tailwind CSS v4 |
+| Framework / SSR | TanStack Start with file-based routing |
+| Router | `@tanstack/react-router` |
+| Build | Vite 8 + Nitro Cloudflare Pages preset |
+| Validation | Zod |
+| Local data | SQLite via Node's built-in `node:sqlite` |
+| Archive data | Cloudflare D1 (optional) |
+| Server cache / rate limit | Cloudflare KV (optional) |
+| Icons | Lucide React |
+| Fonts | Playfair Display · Source Serif 4 · Source Sans 3 · JetBrains Mono |
+| Text wrapping / fitting | [`@chenglou/pretext`](https://github.com/chenglou/pretext) |
+| Deploy target | Cloudflare Pages |
+
+The project relies on [`@chenglou/pretext`](https://github.com/chenglou/pretext)
+for precise browser text measurement, fitting, and wrapping. It powers the
+headline scaling (`FitText`) and article-body wrapping around obstacles
+(`PretextWrappedText`, `PretextCanvasText`) used throughout the broadsheet
+layout.
+
+---
 
 ## Project layout
 
 ```text
-agentskills/              # Agent skills for rewriting and publishing
+agentskills/              # Hermes skills and supporting scripts
+  fetch-news/
+  clean-chunks/
+  chunk-articles/
+  publish-pipeline/
+  rewrite-articles/       # STYLE.md, validator, direct-LLM rewriter
+  review-rewrite/
+  create-daily/
+  populate-depropdb/
+  publish-dailywire/
 backend/
-  db/                     # SQLite databases (templates tracked, .db ignored)
-  scripts/                # News fetchers and aggregation pipeline
+  db/                     # SQLite databases and templates
+  scripts/                # ~50 per-source fetchers + shared lib
+drafts/                   # Intermediate chunks, rewrites, daily.md
+logs/                     # Skill and validator logs
 migrations/               # D1 schema migrations
-public/data/              # Generated edition JSON
-scripts/                  # Edition generation, publishing, rollback helpers
+public/data/              # Generated edition JSON + archive
+public/logos/             # Masthead logos
+scripts/                  # Publish/rollback helpers
 src/
-  routes/                 # TanStack Start routes, including API routes
+  routes/                 # TanStack Start page and API routes
   components/newspaper/   # Broadsheet UI components
   lib/                    # Schema, types, API client, layout engine
+  hooks/                  # use-local-weather, use-mobile
+  test/                   # Test fixtures
 ```
 
-## Agent skills
+---
 
-Skills live under `agentskills/` and are mirrored to a local skill registry for
-agent consumption. Each skill is a self-contained recipe the agent can execute.
+## Running the pipeline
 
-| Skill                | Purpose                                                              |
-| -------------------- | -------------------------------------------------------------------- |
-| `fetch-news`         | Run the news ingest pipeline (`npm run ingest:articles`).            |
-| `clean-chunks`       | Delete leftover chunk/rewrite files before a new rewrite pass.       |
-| `chunk-articles`     | Split the latest fetch run into chunk files for subagents.           |
-| `rewrite-articles`   | Deploy subagents to rewrite each chunk and assign per-category       |
-|                      | importance scores.                                                   |
-| `review-rewrite`     | Remove duplicates, boost trending topics, and fix formatting.        |
-| `create-daily`       | Assemble reviewed chunk files into `drafts/daily.md`.                |
-| `populate-depropdb`  | Parse `drafts/daily.md` and insert rewritten articles into           |
-|                      | `backend/db/deprop.db`.                                              |
-| `publish-dailywire`  | Generate a valid `NewspaperEdition` from `deprop.db`, rank by        |
-|                      | importance, and write `public/data/current-edition.json`.            |
+### Hermes-driven (production path)
 
-The `rewrite-articles` skill includes a style guide (`STYLE.md`) that every
-subagent receives. The guide defines the neutral rewrite voice and a
-per-category 1–10 importance rubric.
+The canonical execution path is through Hermes. The four slash-command calls,
+in order, are:
+
+1. `/fetch-news`
+2. `/clean-chunks`
+3. `/chunk-articles`
+4. `/publish-pipeline`
+
+The current scheduler sends these to Hermes via a Cloudflare webhook, but the
+calls themselves are Hermes slash commands. Wait for
+`logs/rewrite-articles.log` to report completion before triggering
+`/publish-pipeline`.
+
+### Locally, by hand
+
+```bash
+# 1. Fetch
+npm run ingest:articles
+
+# 2. Clean
+npx tsx agentskills/clean-chunks/clean-chunks.ts
+
+# 3. Chunk + auto-spawn rewrite
+npx tsx agentskills/chunk-articles/chunk-articles.ts
+
+# Wait for logs/rewrite-articles.log to finish
+
+# 4. Publish pipeline
+npx tsx agentskills/publish-pipeline/publish-pipeline.ts
+```
+
+Individual scripts can also be run directly for debugging:
+
+```bash
+npx tsx agentskills/rewrite-articles/rewrite-articles.ts
+npx tsx agentskills/rewrite-articles/retry-invalid.ts
+npx tsx agentskills/review-rewrite/review-rewrite.ts
+npx tsx agentskills/create-daily/create-daily.ts
+npx tsx agentskills/populate-depropdb/populate-depropdb.ts
+npx tsx agentskills/publish-dailywire/publish-dailywire.ts
+```
+
+---
 
 ## Local development
 
@@ -98,15 +220,29 @@ npm run dev
 ```
 
 `npm run dev` starts the TanStack Start dev server. The site reads
-`public/data/current-edition.json`, which is regenerated by the publish skill.
+`public/data/current-edition.json`, which is regenerated by the publish script.
 
-### Required environment
+### Environment
 
-Copy `.env.example` to `.env` and fill in anything you need for fetching:
+Copy `.env.example` to `.env` and fill in the values you need:
 
 ```bash
 cp .env.example .env
 ```
+
+Important variables:
+
+| Variable | Purpose |
+|----------|---------|
+| `LADDER_URL` | Proxy for fetching publisher pages. |
+| `FIRECRAWL_API_KEY` | Optional fallback for hard-to-fetch sources. |
+| `BRAIN_API_URL` | LLM endpoint used for rewrites and validation. |
+| `BRAIN_API_KEY` | API key for the LLM endpoint. |
+| `BRAIN_MODEL` | Model name used for rewrites and validation. |
+| `CLOUDFLARE_ACCOUNT_ID` | Required for D1 archive writes. |
+| `D1_DATABASE_ID` | D1 database UUID for archive writes. |
+| `CLOUDFLARE_API_TOKEN` | API token with D1 edit permissions. |
+| `ADMIN_TOKEN` | Protects admin API routes if enabled. |
 
 For local dev the only hard requirement is the Ladder proxy if you use
 Ladder-dependent fetchers:
@@ -117,67 +253,46 @@ npm run ladder:up
 
 Cloudflare variables are only needed for deployment and D1 archiving.
 
-## Running the daily pipeline
+---
 
-A full cycle is driven by eight agent skills. The agent should invoke each skill
-in order:
+## Frontend routes
 
-```bash
-# 1. Fetch fresh articles
-#    Skill: fetch-news
-#    Script: npm run ingest:articles
+| Path | Purpose |
+|------|---------|
+| `/` | Today's edition — broadsheet layout |
+| `/article/:slug` | Individual story with source transparency |
+| `/section/:category` | Stories grouped by section |
+| `/world`, `/war`, `/technology`, `/business`, `/science`, `/culture`, `/crypto`, `/politics`, `/weather` | Dedicated category pages |
+| `/editions` | Archive of past editions |
+| `/editions/:date` | Historical edition rendered like today's |
+| `/search?q=` | Search headlines, summaries, sources, and tags |
+| `/settings` | Personalization, schedule, feeds, and AI config |
+| `/pretext-demo` | Demo page for the Pretext text-wrapping engine |
 
-# 2. Clean leftover chunk/rewrite files
-#    Skill: clean-chunks
-#    Script: npx tsx agentskills/clean-chunks/clean-chunks.ts
+## API routes
 
-# 3. Chunk the latest fetch run
-#    Skill: chunk-articles
-#    Script: npx tsx agentskills/chunk-articles/chunk-articles.ts
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/edition/latest` | Returns `public/data/current-edition.json` |
+| `GET /api/editions` | Lists archived edition summaries (D1 or static fallback) |
+| `GET /api/editions/:date` | Returns a historical edition (D1 or static fallback) |
+| `GET /api/articles/:id` | Looks up a single article from today's edition |
+| `GET /api/search?q=` | Searches today's articles |
+| `GET /api/settings` | Returns user settings |
+| `GET /api/crypto-ticker` | Crypto market ticker |
+| `GET /api/stock-ticker` | Stock ticker |
+| `GET /api/world-markets-ticker` | World markets ticker |
+| `GET /api/health` | Health check |
+| `POST /api/admin/generate` | Rate-limited admin generate trigger |
+| `POST /api/admin/rollback` | Rate-limited admin rollback |
 
-# 4. Rewrite each chunk (agentic — subagents)
-#    Skill: rewrite-articles
-#    Writes: drafts/rewrite_outputs/{category}-{n}of{m}.md
+---
 
-# 5. Review and deduplicate rewritten chunks
-#    Skill: review-rewrite
-#    Script: npx tsx agentskills/review-rewrite/review-rewrite.ts
+## Deployment
 
-# 6. Assemble drafts/daily.md
-#    Skill: create-daily
-#    Script: npx tsx agentskills/create-daily/create-daily.ts
+The site deploys to Cloudflare Pages.
 
-# 7. Populate deprop.db
-#    Skill: populate-depropdb
-#    Script: npx tsx agentskills/populate-depropdb/populate-depropdb.ts
-
-# 8. Publish the edition
-#    Skill: publish-dailywire
-#    Script: npx tsx agentskills/publish-dailywire/publish-dailywire.ts
-```
-
-Steps 4 and 5 are the most open-ended: the agent reads source material, applies
-the style guide, assigns per-category importance scores, and removes duplicate
-coverage. The other steps are deterministic scripts.
-
-## Edition JSON
-
-The canonical edition shape is defined in `src/lib/schema.ts` and validated with
-Zod. Two reference files are included:
-
-- `drafts/template-edition.json` — minimal schema-valid skeleton.
-- `examples/example-edition.json` — fuller example edition.
-
-`publish-dailywire` validates the edition against `src/lib/schema.ts` before
-writing `current-edition.json`; any schema or business-rule errors are printed
-to the terminal.
-
-## Cloudflare deployment
-
-The site deploys to Cloudflare Pages. Before deploying you need to provision
-Cloudflare resources and update `wrangler.toml`.
-
-1. **Create a D1 database:**
+1. **Provision D1:**
 
    ```bash
    wrangler d1 create morning-wire
@@ -199,69 +314,45 @@ Cloudflare resources and update `wrangler.toml`.
    wrangler secret put ADMIN_TOKEN
    ```
 
-4. **Create a Pages project** and bind the D1 database (`DB`).
+4. **Create a Pages project** and bind the D1 database (`DB`) and KV namespace
+   (`KV`).
 
-5. **Deploy:**
+5. **Build and deploy:**
 
    ```bash
    npm run build
    npm run deploy
    ```
 
-   The build is output to `.output/`; `npm run deploy` publishes that directory
-   to Cloudflare Pages.
+The publish script archives editions to D1 when the Cloudflare env vars are
+set; otherwise it falls back to static files in `public/data/editions/`.
 
-The publish skill archives editions to D1 when `CLOUDFLARE_ACCOUNT_ID`,
-`D1_DATABASE_ID`, and `CLOUDFLARE_API_TOKEN` are set as environment variables.
-Until then it falls back to static files in `public/data/editions/`, which is
-fine for local development.
-
-## Environment variables
-
-See `.env.example` for the full list. Important variables:
-
-| Variable                  | Purpose                                                     |
-| ------------------------- | ----------------------------------------------------------- |
-| `LADDER_URL`              | Proxy for fetching publisher pages.                         |
-| `FIRECRAWL_API_KEY`       | Optional fallback for hard-to-fetch sources.                |
-| `CLOUDFLARE_ACCOUNT_ID`   | Required for D1 archive writes from the publish skill.      |
-| `D1_DATABASE_ID`          | D1 database UUID for archive writes.                        |
-| `CLOUDFLARE_API_TOKEN`    | API token with D1 edit permissions.                         |
-| `ADMIN_TOKEN`             | Protects admin API routes if you enable them.               |
-
-## Routes
-
-| Path                 | Purpose                                              |
-| -------------------- | ---------------------------------------------------- |
-| `/`                  | Today's edition — broadsheet layout                  |
-| `/article/:slug`     | Individual story with source transparency            |
-| `/section/:category` | Stories grouped by section                           |
-| `/editions`          | Archive of past editions                             |
-| `/editions/:date`    | Historical edition rendered in the same layout       |
-| `/search?q=`         | Search headlines, summaries, sources, and tags       |
-| `/settings`          | Personalization, schedule, feeds, and AI config      |
-
-## API routes
-
-Server routes under `src/routes/api/` become Cloudflare Pages Functions in
-production:
-
-| Endpoint              | Description                                     |
-| --------------------- | ----------------------------------------------- |
-| `GET /api/edition/latest` | Returns `public/data/current-edition.json`  |
-| `GET /api/editions`       | Lists archived edition summaries (D1 or static fallback) |
-| `GET /api/editions/:date` | Returns a historical edition (D1 or static fallback)     |
-| `GET /api/articles/:id`   | Looks up a single article from today's edition |
-| `GET /api/search?q=`      | Searches today's articles                       |
-| `GET /api/settings`       | Returns user settings                           |
+---
 
 ## Safety and transparency
 
-- Only neutral, rewritten summaries and metadata are displayed. Original URLs
+- Only neutral, rewritten summaries and metadata are displayed; original URLs
   are preserved for verification.
 - AI-generated content is labeled in `aiDisclosure` fields.
 - API keys and tokens are never exposed to the browser.
-- Source reliability scores and confidence scores are stored per article.
+- Source reliability and confidence scores are stored per article.
+- Bad rewrites are detected by the validator and quarantined before publication.
+
+---
+
+## Known issues / rough edges
+
+- **Naming drift:** the repo folder, product name, and legacy assets disagree on
+  whether this is "Daily Wire" or "Morning Wire".
+- **Generated data committed:** `public/data/current-edition.json` and archive
+  files are tracked even though they are pipeline outputs.
+- **Legacy scripts:** `scripts/generate-edition-from-db.ts` is mostly superseded
+  by `publish-dailywire`. `scripts/publish-edition.ts` and
+  `scripts/rollback-edition.ts` reference an `npm run validate:edition` script
+  that no longer exists.
+- **Hardcoded path:** `clean-chunks.ts` still hardcodes an absolute repo path.
+
+---
 
 ## License
 

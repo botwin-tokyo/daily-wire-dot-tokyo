@@ -4,7 +4,7 @@ description: Launch Botwin's Daily Wire news fetcher to populate the local SQLit
 license: Proprietary
 metadata:
   author: Botwin's Daily Wire
-  version: "1.0"
+  version: "1.3"
 ---
 
 # Fetch News
@@ -14,16 +14,20 @@ Launch the news aggregation pipeline and populate `backend/db/news.db` with fres
 ## When to use
 
 - User asks for fresh news articles.
-- User says something like "fetch news", "run the fetcher", "update articles", or "ingest articles".
+- User says something like "fetch news", "run the fetcher", "update articles", "ingest articles", or "/fetch-news".
 - Before generating a new edition of the site.
 
 ## How to run
 
-Run the following command from the repository root:
+Use your **terminal tool** to execute this exact command from the repository root
+`/Users/ryokobotwin/Desktop/newsapp/the-daily-ledger`:
 
 ```bash
 npm run ingest:articles
 ```
+
+Do not use the Python/code-execution tool. Do not change the command. Run it
+exactly as shown.
 
 This executes `backend/scripts/compile-to-db.ts`, which:
 

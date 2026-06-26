@@ -4,7 +4,7 @@ description: Delete leftover rewrite chunk/output directories and the previous d
 license: Proprietary
 metadata:
   author: Botwin's Daily Wire
-  version: "1.0"
+  version: "1.2"
 ---
 
 # Clean Chunks
@@ -34,11 +34,14 @@ edition JSON in `public/data/`.
 
 ## How to run
 
-From the repository root:
+Use your **terminal tool** to execute this exact command from the repository root
+`/Users/ryokobotwin/Desktop/newsapp/the-daily-ledger`:
 
 ```bash
 npx tsx agentskills/clean-chunks/clean-chunks.ts
 ```
+
+Do not use the Python/code-execution tool. Do not change the command.
 
 ## Expected output
 

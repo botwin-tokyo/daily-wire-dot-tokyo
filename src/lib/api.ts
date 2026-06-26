@@ -57,14 +57,16 @@ function writeSet(key: string, set: Set<string>) {
 
 async function loadEdition(): Promise<Edition> {
   try {
-    const newspaper = isServer()
-      ? await loadCurrentEdition()
-      : await fetchJson<NewspaperEdition>("/api/edition/latest");
+    const newspaper = await fetchJson<NewspaperEdition>("/api/edition/latest");
     return newspaperEditionToEdition(newspaper);
   } catch (error) {
     if (import.meta.env.DEV) {
-      console.warn("Failed to load current edition from JSON, falling back to mock:", error);
-      return MOCK_EDITION;
+      console.warn(
+        "Failed to fetch current edition from API, falling back to static file:",
+        error,
+      );
+      const newspaper = await loadCurrentEdition();
+      return newspaperEditionToEdition(newspaper);
     }
     throw error;
   }
@@ -77,14 +79,14 @@ export async function getLatestEdition(): Promise<Edition> {
 
 export async function getLatestNewspaperEdition(): Promise<NewspaperEdition> {
   try {
-    return isServer()
-      ? await loadCurrentEdition()
-      : await fetchJson<NewspaperEdition>("/api/edition/latest");
+    return await fetchJson<NewspaperEdition>("/api/edition/latest");
   } catch (error) {
     if (import.meta.env.DEV) {
-      console.warn("Failed to load current newspaper edition, falling back to mock source:", error);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return MOCK_EDITION as any;
+      console.warn(
+        "Failed to fetch current newspaper edition from API, falling back to static file:",
+        error,
+      );
+      return await loadCurrentEdition();
     }
     throw error;
   }
@@ -99,14 +101,16 @@ export const newspaperEditionQuery = queryOptions({
 export async function getEditionByDate(date: string): Promise<Edition> {
   await wait(120);
   try {
-    const newspaper = isServer()
-      ? await loadEditionByDate(date)
-      : await fetchJson<NewspaperEdition>(`/api/editions/${date}`);
+    const newspaper = await fetchJson<NewspaperEdition>(`/api/editions/${date}`);
     return newspaperEditionToEdition(newspaper);
   } catch (error) {
     if (import.meta.env.DEV) {
-      console.warn(`Failed to load edition ${date}, falling back to mock:`, error);
-      return { ...MOCK_EDITION, editionDate: date };
+      console.warn(
+        `Failed to fetch edition ${date} from API, falling back to static file:`,
+        error,
+      );
+      const newspaper = await loadEditionByDate(date);
+      return newspaperEditionToEdition(newspaper);
     }
     throw error;
   }
@@ -114,14 +118,14 @@ export async function getEditionByDate(date: string): Promise<Edition> {
 
 export async function getEditionByDateNewspaper(date: string): Promise<NewspaperEdition> {
   try {
-    return isServer()
-      ? await loadEditionByDate(date)
-      : await fetchJson<NewspaperEdition>(`/api/editions/${date}`);
+    return await fetchJson<NewspaperEdition>(`/api/editions/${date}`);
   } catch (error) {
     if (import.meta.env.DEV) {
-      console.warn(`Failed to load newspaper edition ${date}, falling back to mock source:`, error);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return { ...MOCK_EDITION, editionDate: date } as any;
+      console.warn(
+        `Failed to fetch newspaper edition ${date} from API, falling back to static file:`,
+        error,
+      );
+      return await loadEditionByDate(date);
     }
     throw error;
   }
@@ -130,15 +134,14 @@ export async function getEditionByDateNewspaper(date: string): Promise<Newspaper
 export async function listEditions(): Promise<EditionSummary[]> {
   await wait(80);
   try {
-    // Client always hits the D1-backed API route. Server falls back to the
-    // static index file so SSR still works when D1 is not bound (local dev).
-    return isServer()
-      ? await loadEditionSummaries()
-      : await fetchJson<EditionSummary[]>("/api/editions");
+    return await fetchJson<EditionSummary[]>("/api/editions");
   } catch (error) {
     if (import.meta.env.DEV) {
-      console.warn("Failed to load edition index, falling back to mock:", error);
-      return MOCK_EDITION_SUMMARIES;
+      console.warn(
+        "Failed to fetch edition index from API, falling back to static file:",
+        error,
+      );
+      return await loadEditionSummaries();
     }
     throw error;
   }
@@ -146,10 +149,6 @@ export async function listEditions(): Promise<EditionSummary[]> {
 
 export async function getArticle(slugOrId: string): Promise<Article | undefined> {
   await wait(60);
-  if (isServer()) {
-    const edition = await loadEdition();
-    return edition.articles.find((a) => a.slug === slugOrId || a.id === slugOrId);
-  }
   try {
     const response = await fetch(`/api/articles/${encodeURIComponent(slugOrId)}`);
     if (response.status === 404) return undefined;
@@ -158,7 +157,10 @@ export async function getArticle(slugOrId: string): Promise<Article | undefined>
     return adaptArticle(article);
   } catch (error) {
     if (import.meta.env.DEV) {
-      console.warn("Failed to fetch article from API, falling back to local loader:", error);
+      console.warn(
+        "Failed to fetch article from API, falling back to local loader:",
+        error,
+      );
       const edition = await loadEdition();
       return edition.articles.find((a) => a.slug === slugOrId || a.id === slugOrId);
     }
@@ -170,21 +172,15 @@ export async function searchArticles(query: string): Promise<Article[]> {
   await wait(80);
   const q = query.trim().toLowerCase();
   if (!q) return [];
-  if (isServer()) {
-    const edition = await loadEdition();
-    return edition.articles.filter((a) =>
-      [a.headline, a.summary, a.source.name, a.category, ...a.tags]
-        .join(" ")
-        .toLowerCase()
-        .includes(q),
-    );
-  }
   try {
     const results = await fetchJson<NewspaperArticle[]>(`/api/search?q=${encodeURIComponent(q)}`);
     return results.map(adaptArticle);
   } catch (error) {
     if (import.meta.env.DEV) {
-      console.warn("Failed to fetch search from API, falling back to local loader:", error);
+      console.warn(
+        "Failed to fetch search from API, falling back to local loader:",
+        error,
+      );
       const edition = await loadEdition();
       return edition.articles.filter((a) =>
         [a.headline, a.summary, a.source.name, a.category, ...a.tags]

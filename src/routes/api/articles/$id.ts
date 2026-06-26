@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { loadCurrentEdition } from "@/lib/edition-loader";
+import { loadCurrentEdition, loadCurrentEditionFromD1 } from "@/lib/edition-loader";
 
 export const Route = createFileRoute("/api/articles/$id")({
   server: {
     handlers: {
-      GET: async ({ params }) => {
-        const edition = await loadCurrentEdition();
+      GET: async ({ request, params }) => {
+        const edition =
+          (await loadCurrentEditionFromD1(request)) ?? (await loadCurrentEdition());
         const article = edition.articles.find((a) => a.id === params.id || a.slug === params.id);
         if (!article) {
           return new Response(JSON.stringify({ error: "Article not found" }), {
