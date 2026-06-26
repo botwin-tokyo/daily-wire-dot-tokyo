@@ -513,4 +513,4 @@ npm run deploy
 
 ## License
 
-Proprietary — Botwin's Morning Wire.
+[MIT](./LICENSE) © 2026 Botwin's Morning Wire.
