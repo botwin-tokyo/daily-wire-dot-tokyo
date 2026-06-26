@@ -40,10 +40,10 @@ export function UtilityBar({ data }: { data: NewspaperUtilityBar }) {
         </div>
         <div className="group relative hidden cursor-help md:block">
           <span className="border-b border-dashed border-[var(--ink-mid)] hover:text-[var(--ink)]">
-            What Is Botwin's Daily Wire?
+            What Is Botwin's Morning Wire?
           </span>
           <div className="pointer-events-none absolute left-1/2 top-full z-50 mt-2 w-80 -translate-x-1/2 rounded border border-[var(--rule)] bg-[var(--paper)] p-4 text-left text-[13px] leading-relaxed text-[var(--ink)] opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-            Botwin's Daily Wire is your personal morning intelligence briefing — a curated,
+            Botwin's Morning Wire is your personal morning intelligence briefing — a curated,
             AI-assisted newspaper that aggregates global news, markets, science, culture, and
             weather into one clean, readable edition each day.
           </div>

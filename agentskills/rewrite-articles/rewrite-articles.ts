@@ -25,9 +25,14 @@ import { resolve } from "node:path";
 import { spawn } from "node:child_process";
 import { validateArticle } from "./validate-article.js";
 
-const API_URL =
-  process.env.BRAIN_API_URL || "https://brain.ryoko.okinawa/v1/chat/completions";
+const API_URL = process.env.BRAIN_API_URL;
 const API_KEY = process.env.BRAIN_API_KEY;
+
+if (!API_URL) {
+  throw new Error(
+    "BRAIN_API_URL is not set. Add it to your .env file (e.g., http://localhost:5000/v1/chat/completions).",
+  );
+}
 const MODEL =
   process.env.BRAIN_MODEL ||
   "nvidia-nemotron-3-nano-omni-30b-a3b-reasoning-q8_0";
@@ -302,7 +307,7 @@ async function callLlm(prompt: string): Promise<LlmResponse> {
       headers: {
         Authorization: `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
-        "User-Agent": "BotwinDailyWireRewriter/1.0",
+        "User-Agent": "BotwinMorningWireRewriter/1.0",
       },
       body,
       signal: controller.signal,

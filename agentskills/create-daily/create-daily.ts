@@ -123,7 +123,7 @@ function buildDailyMarkdown(articles: Article[]): string {
 
   const today = new Date().toISOString().slice(0, 10);
   const lines = [
-    "# Botwin's Daily Wire — Neutral Brief",
+    "# Botwin's Morning Wire — Neutral Brief",
     "",
     `Generated: ${today}`,
     "",

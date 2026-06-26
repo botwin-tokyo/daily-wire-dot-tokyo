@@ -1,4 +1,4 @@
-# Botwin's Daily Wire — Neutral Rewrite Style Guide
+# Botwin's Morning Wire — Neutral Rewrite Style Guide
 
 This document defines the editorial voice for articles that are rewritten from the
 aggregated SQL news library into the `deprop.db` database.

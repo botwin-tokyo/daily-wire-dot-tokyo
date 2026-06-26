@@ -3,7 +3,7 @@ name: publish-pipeline
 description: Run the full post-rewrite pipeline (review-rewrite, create-daily, populate-depropdb, publish-dailywire) sequentially as one orchestrated step. Use after rewrite-articles has finished and before reading the published edition.
 license: Proprietary
 metadata:
-  author: Botwin's Daily Wire
+  author: Botwin's Morning Wire
   version: "1.0"
 ---
 
@@ -30,8 +30,7 @@ the frontend edition JSON.
 
 ## How to run
 
-Use your **terminal tool** to execute this exact command from the repository root
-`/Users/ryokobotwin/Desktop/newsapp/the-daily-ledger`:
+Use your **terminal tool** to execute this exact command from the repository root:
 
 ```bash
 npx tsx agentskills/publish-pipeline/publish-pipeline.ts

@@ -1,9 +1,9 @@
 ---
 name: fetch-news
-description: Launch Botwin's Daily Wire news fetcher to populate the local SQLite database with fresh articles from all configured sources. Use when the user asks for fresh news, updated articles, a new ingest, or before generating a new edition.
+description: Launch Botwin's Morning Wire news fetcher to populate the local SQLite database with fresh articles from all configured sources. Use when the user asks for fresh news, updated articles, a new ingest, or before generating a new edition.
 license: Proprietary
 metadata:
-  author: Botwin's Daily Wire
+  author: Botwin's Morning Wire
   version: "1.3"
 ---
 
@@ -19,8 +19,7 @@ Launch the news aggregation pipeline and populate `backend/db/news.db` with fres
 
 ## How to run
 
-Use your **terminal tool** to execute this exact command from the repository root
-`/Users/ryokobotwin/Desktop/newsapp/the-daily-ledger`:
+Use your **terminal tool** to execute this exact command from the repository root:
 
 ```bash
 npm run ingest:articles

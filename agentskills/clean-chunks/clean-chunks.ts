@@ -10,7 +10,7 @@
 import { existsSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
 
-const REPO_ROOT = "/Users/ryokobotwin/Desktop/newsapp/the-daily-ledger";
+const REPO_ROOT = resolve(import.meta.dirname, "../..");
 
 const targets = [
   "drafts/rewrite_chunks",

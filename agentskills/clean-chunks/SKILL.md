@@ -3,7 +3,7 @@ name: clean-chunks
 description: Delete leftover rewrite chunk/output directories and the previous day's drafts/daily.md before running rewrite-articles.
 license: Proprietary
 metadata:
-  author: Botwin's Daily Wire
+  author: Botwin's Morning Wire
   version: "1.2"
 ---
 
@@ -34,8 +34,7 @@ edition JSON in `public/data/`.
 
 ## How to run
 
-Use your **terminal tool** to execute this exact command from the repository root
-`/Users/ryokobotwin/Desktop/newsapp/the-daily-ledger`:
+Use your **terminal tool** to execute this exact command from the repository root:
 
 ```bash
 npx tsx agentskills/clean-chunks/clean-chunks.ts

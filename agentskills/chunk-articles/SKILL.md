@@ -3,7 +3,7 @@ name: chunk-articles
 description: Split the last 24 hours of fetched articles into manageable markdown chunks ready for the rewrite-articles skill.
 license: Proprietary
 metadata:
-  author: Botwin's Daily Wire
+  author: Botwin's Morning Wire
   version: "1.2"
 ---
 
@@ -31,8 +31,7 @@ them into manageable chunks, and writes each chunk as a markdown file in
 
 ## How to run
 
-Use your **terminal tool** to execute this exact command from the repository root
-`/Users/ryokobotwin/Desktop/newsapp/the-daily-ledger`:
+Use your **terminal tool** to execute this exact command from the repository root:
 
 ```bash
 npx tsx agentskills/chunk-articles/chunk-articles.ts
