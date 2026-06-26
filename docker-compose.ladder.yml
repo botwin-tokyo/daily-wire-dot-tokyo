@@ -1,0 +1,34 @@
+# Ladder proxy + FlareSolverr for fetching publisher pages during local aggregation.
+# Run with: docker compose -f docker-compose.ladder.yml up -d
+# Stop with: docker compose -f docker-compose.ladder.yml down
+#
+# Ladder is a developer tool for testing and analyzing paywall implementations.
+# FlareSolverr solves Cloudflare / bot challenges for sites that require it.
+# Make sure your use complies with the target websites' terms of service and
+# applicable laws.
+services:
+  ladder:
+    image: ghcr.io/everywall/ladder:latest
+    container_name: morning-wire-ladder
+    ports:
+      - "8081:8080"
+    environment:
+      - PORT=8080
+      - RULESET=/ruleset
+      - EXPOSE_RULESET=true
+      - LOG_URLS=true
+      - FLARESOLVERR_HOST=http://flaresolverr:8191
+    volumes:
+      - ./backend/scripts/lib/ladder-rules:/ruleset:ro
+    depends_on:
+      - flaresolverr
+    restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: morning-wire-flaresolverr
+    ports:
+      - "8191:8191"
+    environment:
+      - LOG_LEVEL=info
+    restart: unless-stopped
