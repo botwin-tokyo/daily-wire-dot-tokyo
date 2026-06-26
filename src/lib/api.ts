@@ -37,6 +37,8 @@ function isServer(): boolean {
  * Resolve an API path to an absolute URL when running on the server in
  * Cloudflare Pages. Relative fetch works in the browser and in local dev, but
  * the Workers SSR runtime requires absolute URLs for outbound fetch calls.
+ *
+ * Deploy-check comment: this branch is only used to verify Pages auto-deploys.
  */
 function getApiUrl(path: string): string {
   if (!isServer()) return path;
