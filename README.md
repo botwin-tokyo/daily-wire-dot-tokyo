@@ -3,15 +3,37 @@
 A self-hosted, AI-assisted daily newspaper. It ingests news from public RSS feeds,
 APIs, and publisher pages; rewrites stories into neutral, wire-style copy;
 validates every rewrite; stores the results; and publishes a ranked edition as
-static JSON that a TanStack Start frontend renders as a broadsheet-style page.
+schema-valid JSON. A TanStack Start frontend renders each edition as a
+broadsheet-style page and serves it from Cloudflare Pages, with Cloudflare D1 as
+the source of truth for live editions.
 
-The pipeline is designed to run on your own machine, with Cloudflare handling
-hosting and optional long-term archive storage.
+> **Naming note:** the repository folder is `the-daily-ledger`, the deployed
+> Pages project and domain are `botwins-morning-wire`, and legacy assets still
+> say **Botwin's Morning Wire**. This README uses **Botwin's Daily Wire** as the
+> product name while noting the live deployment is **Morning Wire**.
 
-> **Naming note:** the repository folder is `the-daily-ledger`, the skill docs
-> call the product **Botwin's Daily Wire**, and several legacy assets still say
-> **Botwin's Morning Wire**. This README uses **Daily Wire**; you may want to
-> consolidate the naming in a future pass.
+---
+
+## Executive summary
+
+Botwin's Daily Wire is a fully autonomous news product:
+
+- **Ingests** hundreds of stories per day from configured RSS / API / web
+  sources.
+- **Rewrites** every story with a local LLM into neutral, factual, wire-style
+  copy.
+- **Validates** each rewrite for chain-of-thought leaks, raw JSON artifacts,
+  second-person advice, and empty content; invalid items are retried or
+  quarantined.
+- **Ranks** stories, picks a lead, and assembles a front-page layout.
+- **Publishes** the edition to Cloudflare D1 so the live site updates
+  immediately — no rebuild or Git push required.
+- **Renders** the edition as a responsive broadsheet with section pages,
+  article pages, search, and archive views.
+
+The pipeline is designed to run on your own machine under Hermes, with
+Cloudflare handling global hosting and long-term storage. The current scheduler
+triggers the pipeline via a Cloudflare webhook that reaches Hermes each morning.
 
 ---
 
@@ -31,21 +53,26 @@ hosting and optional long-term archive storage.
 7. **Assemble** — merge reviewed articles into `drafts/daily.md`.
 8. **Populate** — insert the articles into `backend/db/deprop.db`.
 9. **Publish** — generate a schema-valid edition JSON, pick a lead story, write
-   `public/data/current-edition.json`, and optionally archive to Cloudflare D1.
+   local static copies for dev fallback, and **upsert the canonical edition to
+   Cloudflare D1**. The live site reads from D1 first and only falls back to
+   static files when D1 is not bound.
 
 The frontend then renders the edition, section pages, individual articles,
 search, and an archive view.
 
 ---
 
-## Architecture
+## System architecture
 
-The system has three layers:
+The system has four layers:
 
 - **Hermes skills** — four slash commands that start each phase.
 - **Direct TypeScript scripts** — deterministic or LLM-backed scripts that the
   skills run internally.
-- **TanStack Start frontend** — broadsheet UI and API routes.
+- **Cloudflare platform** — D1 (canonical edition storage), KV (rate limiting /
+  future caching), and Pages (global hosting and edge SSR).
+- **TanStack Start frontend** — broadsheet UI, API routes, and server-side
+  rendering at the edge.
 
 ### Hermes skills (slash commands)
 
@@ -69,7 +96,7 @@ themselves are Hermes slash commands, not webhook endpoints.
 | `review-rewrite` | Deduplicate, boost trending topics, fix formatting. |
 | `create-daily` | Assemble `drafts/daily.md`. |
 | `populate-depropdb` | Parse `daily.md` and insert into `deprop.db`. |
-| `publish-dailywire` | Build and validate `current-edition.json`; archive to D1 if configured. |
+| `publish-dailywire` | Build and validate the edition; upsert to D1 when Cloudflare credentials are present; write static files for local fallback. |
 
 ### Data flow
 
@@ -100,8 +127,14 @@ themselves are Hermes slash commands, not webhook endpoints.
                                                               │
                                                               ▼
                                                    ┌──────────────────┐
-                                                   │ current-edition  │
-                                                   │      .json       │
+                                                   │  Cloudflare D1   │
+                                                   │ canonical edition │
+                                                   └──────────────────┘
+                                                              │
+                                                              ▼
+                                                   ┌──────────────────┐
+                                                   │  Cloudflare Pages │
+                                                   │  SSR + static UI  │
                                                    └──────────────────┘
 ```
 
@@ -117,12 +150,13 @@ themselves are Hermes slash commands, not webhook endpoints.
 | Build | Vite 8 + Nitro Cloudflare Pages preset |
 | Validation | Zod |
 | Local data | SQLite via Node's built-in `node:sqlite` |
-| Archive data | Cloudflare D1 (optional) |
-| Server cache / rate limit | Cloudflare KV (optional) |
+| Canonical archive | Cloudflare D1 |
+| Server cache / rate limit | Cloudflare KV |
 | Icons | Lucide React |
 | Fonts | Playfair Display · Source Serif 4 · Source Sans 3 · JetBrains Mono |
 | Text wrapping / fitting | [`@chenglou/pretext`](https://github.com/chenglou/pretext) |
-| Deploy target | Cloudflare Pages |
+| Deploy target | Cloudflare Pages (Git-connected) |
+| Edge runtime | Cloudflare Workers (`nodejs_compat`) |
 
 The project relies on [`@chenglou/pretext`](https://github.com/chenglou/pretext)
 for precise browser text measurement, fitting, and wrapping. It powers the
@@ -151,15 +185,19 @@ backend/
 drafts/                   # Intermediate chunks, rewrites, daily.md
 logs/                     # Skill and validator logs
 migrations/               # D1 schema migrations
-public/data/              # Generated edition JSON + archive
+public/data/              # Generated edition JSON (local dev fallback)
 public/logos/             # Masthead logos
-scripts/                  # Publish/rollback helpers
+scripts/                  # Publish/rollback helpers and run checks
 src/
   routes/                 # TanStack Start page and API routes
   components/newspaper/   # Broadsheet UI components
   lib/                    # Schema, types, API client, layout engine
   hooks/                  # use-local-weather, use-mobile
   test/                   # Test fixtures
+.github/workflows/        # Optional manual GitHub Actions deploy
+wrangler.toml             # Cloudflare Pages / Workers bindings
+.env.example              # Local environment template
+.dev.vars.example         # Local Cloudflare dev-secrets template
 ```
 
 ---
@@ -220,7 +258,8 @@ npm run dev
 ```
 
 `npm run dev` starts the TanStack Start dev server. The site reads
-`public/data/current-edition.json`, which is regenerated by the publish script.
+`public/data/current-edition.json`, which is regenerated by the publish script
+when D1 is not bound locally.
 
 ### Environment
 
@@ -239,10 +278,10 @@ Important variables:
 | `BRAIN_API_URL` | LLM endpoint used for rewrites and validation. |
 | `BRAIN_API_KEY` | API key for the LLM endpoint. |
 | `BRAIN_MODEL` | Model name used for rewrites and validation. |
-| `CLOUDFLARE_ACCOUNT_ID` | Required for D1 archive writes. |
+| `CLOUDFLARE_ACCOUNT_ID` | Required for D1 archive writes and deploys. |
 | `D1_DATABASE_ID` | D1 database UUID for archive writes. |
-| `CLOUDFLARE_API_TOKEN` | API token with D1 edit permissions. |
-| `ADMIN_TOKEN` | Protects admin API routes if enabled. |
+| `CLOUDFLARE_API_TOKEN` | API token with D1 edit and Pages edit permissions. |
+| `ADMIN_TOKEN` | Protects admin API routes. |
 
 For local dev the only hard requirement is the Ladder proxy if you use
 Ladder-dependent fetchers:
@@ -251,7 +290,9 @@ Ladder-dependent fetchers:
 npm run ladder:up
 ```
 
-Cloudflare variables are only needed for deployment and D1 archiving.
+Cloudflare variables are only needed for deployment and D1 archiving. If you
+want `wrangler pages dev` to use local secrets, copy `.dev.vars.example` to
+`.dev.vars` and set `ADMIN_TOKEN` there.
 
 ---
 
@@ -273,9 +314,9 @@ Cloudflare variables are only needed for deployment and D1 archiving.
 
 | Endpoint | Description |
 |----------|-------------|
-| `GET /api/edition/latest` | Returns `public/data/current-edition.json` |
-| `GET /api/editions` | Lists archived edition summaries (D1 or static fallback) |
-| `GET /api/editions/:date` | Returns a historical edition (D1 or static fallback) |
+| `GET /api/edition/latest` | Returns the latest edition (D1 primary; static fallback) |
+| `GET /api/editions` | Lists archived edition summaries (D1 primary; static fallback) |
+| `GET /api/editions/:date` | Returns a historical edition (D1 primary; static fallback) |
 | `GET /api/articles/:id` | Looks up a single article from today's edition |
 | `GET /api/search?q=` | Searches today's articles |
 | `GET /api/settings` | Returns user settings |
@@ -283,16 +324,35 @@ Cloudflare variables are only needed for deployment and D1 archiving.
 | `GET /api/stock-ticker` | Stock ticker |
 | `GET /api/world-markets-ticker` | World markets ticker |
 | `GET /api/health` | Health check |
-| `POST /api/admin/generate` | Rate-limited admin generate trigger |
-| `POST /api/admin/rollback` | Rate-limited admin rollback |
+| `POST /api/admin/generate` | Rate-limited admin generate trigger (requires `ADMIN_TOKEN`) |
+| `POST /api/admin/rollback` | Rate-limited admin rollback (requires `ADMIN_TOKEN`) |
+
+All edition-reading routes prefer D1. If the `DB` binding is unavailable, they
+fall back to the static files in `public/data/`. This makes local development
+work without Cloudflare credentials while keeping production fully dynamic.
 
 ---
 
-## Deployment
+## Cloudflare deployment
 
-The site deploys to Cloudflare Pages.
+The site deploys to **Cloudflare Pages** and is connected to the GitHub repo.
+Pushing to `main` triggers a production build and deploy. Pushing any other
+branch triggers a preview deploy with its own URL.
 
-1. **Provision D1:**
+### Current production environment
+
+| Resource | Value |
+|----------|-------|
+| Pages project | `botwins-morning-wire` |
+| Domain | `https://botwins-morning-wire.pages.dev` |
+| D1 database binding | `DB` (`d56e6544-68a6-45a8-9282-73be8186f37d`) |
+| KV namespace binding | `KV` (`3b05b707785a4c1c8ae5d41b4fa0189b`) |
+| Compatibility date | `2025-06-19` |
+| Compatibility flags | `nodejs_compat` |
+
+### Initial provisioning
+
+1. **Create the D1 database:**
 
    ```bash
    wrangler d1 create morning-wire
@@ -308,49 +368,147 @@ The site deploys to Cloudflare Pages.
    wrangler d1 execute morning-wire --file=migrations/0002_create_editions_table.sql
    ```
 
-3. **Set secrets:**
+3. **Create a KV namespace** (optional; used for rate limiting):
 
    ```bash
-   wrangler secret put ADMIN_TOKEN
+   wrangler kv namespace create KV
    ```
 
-4. **Create a Pages project** and bind the D1 database (`DB`) and KV namespace
-   (`KV`).
+   Copy the namespace ID into `wrangler.toml` under `[[kv_namespaces]] id`.
 
-5. **Build and deploy:**
+4. **Set secrets:**
+
+   ```bash
+   wrangler pages secret put ADMIN_TOKEN --project-name=botwins-morning-wire
+   ```
+
+5. **Create a Pages project** and bind the D1 database (`DB`) and KV namespace
+   (`KV`). The Git integration should point at `main` as the production branch.
+
+6. **Build and deploy manually** (optional; Git auto-deploy is the default):
 
    ```bash
    npm run build
    npm run deploy
    ```
 
-The publish script archives editions to D1 when the Cloudflare env vars are
-set; otherwise it falls back to static files in `public/data/editions/`.
+---
+
+## D1 as the source of truth
+
+Cloudflare D1 is the canonical store for published editions. When
+`publish-dailywire` runs with `CLOUDFLARE_ACCOUNT_ID`, `D1_DATABASE_ID`, and
+`CLOUDFLARE_API_TOKEN` set, it:
+
+1. Validates the generated edition against the Zod schema.
+2. Writes `public/data/current-edition.json` and `public/data/editions/:date.json`
+   for local dev and static fallback.
+3. Upserts the edition into the `editions` table in D1.
+
+The live site reads from D1 on every request. This means:
+
+- **No rebuild is required** when a new edition is published.
+- **No Git push is required** for daily content updates.
+- The static files are only used when D1 is not bound (local dev) or as a
+  degraded-mode fallback.
 
 ---
 
-## Safety and transparency
+## CI/CD and Git auto-deploy
 
-- Only neutral, rewritten summaries and metadata are displayed; original URLs
-  are preserved for verification.
-- AI-generated content is labeled in `aiDisclosure` fields.
-- API keys and tokens are never exposed to the browser.
-- Source reliability and confidence scores are stored per article.
-- Bad rewrites are detected by the validator and quarantined before publication.
+The repository includes `.github/workflows/deploy.yml` as an optional **manual**
+workflow. It is disabled from automatic triggers because the GitHub runner does
+not have the daily edition data; the canonical path is Cloudflare Pages' native
+Git integration, which builds on every push.
+
+### Branch behavior
+
+| Branch | Deploy environment |
+|--------|--------------------|
+| `main` | Production (`botwins-morning-wire.pages.dev`) |
+| anything else | Preview (`https://<hash>.botwins-morning-wire.pages.dev`) |
+
+### Monitoring a deploy
+
+```bash
+npx wrangler pages deployment list --project-name=botwins-morning-wire
+npx wrangler pages deployment tail --project-name=botwins-morning-wire
+```
+
+If a Git auto-deploy ever serves 404s while the code is correct, it is usually
+a Cloudflare Pages asset-dedup glitch caused by a commit that only changes
+non-build files (e.g., `.env.example`). The fix is to push a commit that
+changes an actual source file or to redeploy manually.
 
 ---
 
-## Known issues / rough edges
+## Operations runbook
 
-- **Naming drift:** the repo folder, product name, and legacy assets disagree on
-  whether this is "Daily Wire" or "Morning Wire".
-- **Generated data committed:** `public/data/current-edition.json` and archive
-  files are tracked even though they are pipeline outputs.
+### Publish a new edition manually
+
+```bash
+npx tsx agentskills/publish-pipeline/publish-pipeline.ts
+```
+
+The site will reflect the new edition immediately once D1 reports the upsert
+success.
+
+### Roll back to the previous edition
+
+Use the admin endpoint with the bearer token:
+
+```bash
+curl -X POST https://botwins-morning-wire.pages.dev/api/admin/rollback \
+  -H "Authorization: Bearer $ADMIN_TOKEN"
+```
+
+### Verify the live API
+
+```bash
+curl https://botwins-morning-wire.pages.dev/api/edition/latest
+curl https://botwins-morning-wire.pages.dev/api/editions
+curl https://botwins-morning-wire.pages.dev/api/health
+```
+
+### Redeploy manually if Git deploy fails
+
+```bash
+npm run build
+npm run deploy
+```
+
+---
+
+## Security
+
+- **Secrets stay out of the repo.** Real credentials live in `.env` (gitignored)
+  and in Cloudflare's encrypted secrets store. Only placeholders are in
+  `.env.example` and `.dev.vars.example`.
+- **No keys reach the browser.** `ADMIN_TOKEN`, `CLOUDFLARE_API_TOKEN`, and
+  D1/KV identifiers are only used in server-side code.
+- **Admin routes are bearer-token protected** and KV-backed rate limited.
+- **Only neutral, rewritten summaries and metadata are displayed.** Original
+  URLs are preserved for verification.
+- **AI-generated content is labeled** in `aiDisclosure` fields.
+- **Source reliability and confidence scores** are stored per article.
+- **Bad rewrites are detected by the validator** and quarantined before
+  publication.
+
+---
+
+## Known issues / roadmap
+
+- **Naming drift:** the repo folder, product name, deployed domain, and legacy
+  assets disagree on whether this is "Daily Wire" or "Morning Wire".
+- **Generated data no longer committed:** `public/data/current-edition.json` and
+  archive files are now local dev fallbacks; the canonical store is D1.
 - **Legacy scripts:** `scripts/generate-edition-from-db.ts` is mostly superseded
   by `publish-dailywire`. `scripts/publish-edition.ts` and
-  `scripts/rollback-edition.ts` reference an `npm run validate:edition` script
-  that no longer exists.
+  `scripts/rollback-edition.ts` are helpers that may drift from the main
+  pipeline.
 - **Hardcoded path:** `clean-chunks.ts` still hardcodes an absolute repo path.
+- **Monitoring:** runtime alerting is not yet wired; tail logs via Wrangler or
+  the Cloudflare dashboard.
 
 ---
 
