@@ -614,7 +614,6 @@ npm run deploy
   by `publish-dailywire`. `scripts/publish-edition.ts` and
   `scripts/rollback-edition.ts` are helpers that may drift from the main
   pipeline.
-- **Hardcoded path:** `clean-chunks.ts` still hardcodes an absolute repo path.
 - **Monitoring:** runtime alerting is not yet wired; tail logs via Wrangler or
   the Cloudflare dashboard.
 
